@@ -1,0 +1,11 @@
+# Templates
+- layout.pug
+- splash-page.pug
+- login.pug
+- register.pug
+- index.pug
+- profile.pug
+- post.pug
+- post-comments.pug
+- create-post.pug
+- edit-post.pug

@@ -2,13 +2,14 @@
 
 ## Model List
 
-- User
-- Post
-- Comment
-- Post Like
-- Comment Like
+- Users
+- Follows
+- Posts
+- Comments
+- Post Likes
+- Comment Likes
 
-### Users Table
+### Users
 
 | column   | type    | max length | default | constraints      |
 | -------- | ------- | ---------- | ------- | ---------------- |
@@ -17,7 +18,7 @@
 | email    | varchar | 50         | no      | not null, unique |
 | bio      | varchar | 100        | ""      | not null         |
 
-### Follows Table
+### Follows
 
 | column   | type    | max length | default | constraints                     |
 | -------- | ------- | ---------- | ------- | ------------------------------- |

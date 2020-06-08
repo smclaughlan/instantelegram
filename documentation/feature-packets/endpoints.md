@@ -17,8 +17,6 @@
 ## API Endpoints
 
 - Users
-  - GET /api/search/:hashtag
-    - returns posts whose caption contains the searched hashtag
   - POST /api/users
     - add user to users table
   - POST /api/users/:userid/follow
@@ -70,3 +68,6 @@
     - delete specific comment from comments table
   - PUT /api/comments/:commentid
     - edit a specific comment from comments table
+- Stretch Goals
+  - GET /api/search/:hashtag
+      - returns posts whose caption contains the searched hashtag

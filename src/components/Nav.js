@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -31,9 +32,18 @@ const NavBar = () => {
           {/* <Typography variant="h6" className={classes.title}>
             Instantelegram
           </Typography> */}
-          <Button color="inherit" href="/">Instantelegram</Button>
-          <Button color="inherit" href="/register">Register</Button>
-          <Button color="inherit" href="/login">Login</Button>
+          <NavLink style={{ color: 'white' }} to="/">
+            <Button color="inherit">Instantelegram</Button>
+          </NavLink>
+          <NavLink style={{ color: 'white' }} to="/register">
+            <Button color="inherit">Register</Button>
+          </NavLink>
+          <NavLink style={{ color: 'white' }} to="/login">
+            <Button color="inherit">Login</Button>
+          </NavLink>
+          <NavLink style={{ color: 'white' }} to="/logout">
+            <Button color="inherit">Logout</Button>
+          </NavLink>
         </Toolbar>
       </AppBar>
     </div>

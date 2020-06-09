@@ -2,9 +2,11 @@ import { apiBaseUrl } from '../config';
 
 const LOGIN_USER = 'instantelegram/login/LOGIN_USER';
 const LOGOUT_USER = 'instantelegram/logout/LOGOUT_USER';
+const USER_PROFILE = 'instantelegram/profile/USER_PROFILE';
 
 export const loginUser = token => ({ type: LOGIN_USER, token });
 export const logoutUser = () => ({ type: LOGOUT_USER });
+export const getUserProfile = (id) => ({ type: USER_PROFILE });
 
 export const sendRegisterReq = (userInfo) => async dispatch => {
   console.log(`sendRegisterReq function ran, ${apiBaseUrl}`);
@@ -46,6 +48,11 @@ export const sendLoginReq = (userInfo) => async dispatch => {
 export const sendLogoutReq = () => async dispatch => {
   window.localStorage.removeItem("x-access-token")
   dispatch(logoutUser())
+}
+
+export const getUserProfileReq = (id) => async dispatch => {
+
+  dispatch(getUserProfile(id))
 }
 
 export default function reducer(state = {}, action) {

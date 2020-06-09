@@ -29,27 +29,39 @@ const NavBar = (props) => {
     props.sendLogoutReq();
   }
 
+  const navigation = props.currentUserId ? (
+      <>
+        <NavLink style={{ color: 'white' }} to="/">
+          <Button color="inherit">Instantelegram</Button>
+        </NavLink>
+        <NavLink style={{ color: 'white' }} to="/profile">
+          <Button color="inherit">Profile</Button>
+        </NavLink>
+        <NavLink style={{ color: 'white' }} to="/upload">
+          <Button color="inherit">Upload</Button>
+        </NavLink>
+        <NavLink style={{ color: 'white' }} to="/login">
+          <Button color="inherit" onClick={logOut}>Logout</Button>
+        </NavLink>
+      </>
+    ) : (
+      <>
+        <NavLink style={{ color: 'white' }} to="/register">
+          <Button color="inherit">Register</Button>
+        </NavLink>
+        <NavLink style={{ color: 'white' }} to="/login">
+          <Button color="inherit">Login</Button>
+        </NavLink>
+      </>
+    )
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
           </IconButton>
-          {/* <Typography variant="h6" className={classes.title}>
-            Instantelegram
-          </Typography> */}
-          <NavLink style={{ color: 'white' }} to="/">
-            <Button color="inherit">Instantelegram</Button>
-          </NavLink>
-          <NavLink style={{ color: 'white' }} to="/register">
-            <Button color="inherit">Register</Button>
-          </NavLink>
-          <NavLink style={{ color: 'white' }} to="/login">
-            <Button color="inherit">Login</Button>
-          </NavLink>
-          <NavLink style={{ color: 'white' }} to="/">
-            <Button color="inherit" onClick={logOut}>Logout</Button>
-          </NavLink>
+          {navigation}
         </Toolbar>
       </AppBar>
     </div>

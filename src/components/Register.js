@@ -40,7 +40,8 @@ const Register = (props) => {
     });
   }
 
-  const registerUser = () => {
+  const registerUser = (e) => {
+    e.preventDefault();
     props.sendRegisterReq(registerData);
   }
 
@@ -49,9 +50,8 @@ const Register = (props) => {
     <div className="wrapper">
       <div className="form-wrapper">
         <h1>Create Account</h1>
-        <form>
+        <form onSubmit={registerUser}>
           <div className="userName">
-            <div>Username:</div>
             <TextField
               id="outlined-basic"
               label="Username"
@@ -60,7 +60,6 @@ const Register = (props) => {
             />
           </div>
           <div className="email">
-            <div>Email:</div>
             <TextField
               id="outlined-basic"
               label="Email"
@@ -69,7 +68,6 @@ const Register = (props) => {
             />
           </div>
           <div className="bio">
-            <div>Bio:</div>
             <TextField
               id="outlined-basic"
               label="Bio"
@@ -78,7 +76,6 @@ const Register = (props) => {
             />
           </div>
           <div className="password">
-            <div>Password:</div>
             <TextField
               id="outlined-basic"
               label="Password"
@@ -88,10 +85,10 @@ const Register = (props) => {
             />
           </div>
           <div className="createAccount">
-            <Button color="primary" onClick={registerUser}>
+            <Button color="primary" type="submit">
               Submit
            </Button>
-            <small>Already Have an Account?</small>
+            <a href='/login' >Already Have an Account?</a>
           </div>
         </form>
       </div>

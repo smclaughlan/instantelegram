@@ -10,10 +10,13 @@ const setImgUrl = (previewImgUrl) => (
     }
 );
 
-// THUNKSw
+// THUNKS
 
 export const updateImg = (newImg) => async (dispatch) => {
     try {
+        // console.log('YOU JUST ATTEMPTED TO UPLOAD')
+        // console.log('YOU JUST ATTEMPTED TO UPLOAD')
+        // console.log('YOU JUST ATTEMPTED TO UPLOAD')
         // console.log('YOU JUST ATTEMPTED TO UPLOAD')
         const data = new FormData();
         data.append('file', newImg);

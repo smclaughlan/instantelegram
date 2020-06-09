@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+// import { sendLogoutReq } from '../redux/user';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -22,6 +23,11 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar = () => {
   const classes = useStyles();
+
+  const logOut = () => {
+    // props.sendLogoutReq();
+    window.localStorage.removeItem("x-access-token")
+  }
 
   return (
     <div className={classes.root}>
@@ -42,7 +48,7 @@ const NavBar = () => {
             <Button color="inherit">Login</Button>
           </NavLink>
           <NavLink style={{ color: 'white' }} to="/logout">
-            <Button color="inherit">Logout</Button>
+            <Button color="inherit" onClick={logOut}>Logout</Button>
           </NavLink>
         </Toolbar>
       </AppBar>

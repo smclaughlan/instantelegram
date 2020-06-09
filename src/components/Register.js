@@ -13,23 +13,35 @@ const Register = (props) => {
   })
 
   const userNameChange = (event) => {
-    setRegisterData({ username: event.target.value });
+    setRegisterData({
+      ...registerData,
+      username: event.target.value,
+    });
   }
 
   const passwordChange = (event) => {
-    setRegisterData({ password: event.target.value });
+    setRegisterData({
+      ...registerData,
+      password: event.target.value
+    });
   }
 
   const emailChange = (event) => {
-    setRegisterData({ email: event.target.value });
+    setRegisterData({
+      ...registerData,
+      email: event.target.value
+    });
   }
 
   const bioChange = (event) => {
-    setRegisterData({ bio: event.target.value });
+    setRegisterData({
+      ...registerData,
+      bio: event.target.value
+    });
   }
 
   const registerUser = () => {
-    props.sendRegisterReq(/* Registration info */)
+    props.sendRegisterReq(registerData);
   }
 
   return (
@@ -76,7 +88,7 @@ const Register = (props) => {
             />
           </div>
           <div className="createAccount">
-            <Button color="primary" onSubmit={registerUser}>
+            <Button color="primary" onClick={registerUser}>
               Submit
            </Button>
             <small>Already Have an Account?</small>

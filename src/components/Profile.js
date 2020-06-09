@@ -5,7 +5,9 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import Avatar from '@material-ui/core/Avatar';
 import { getUserProfileReq } from '../redux/user';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,8 +37,6 @@ function Profile(props) {
 
 
   React.useEffect(() => {
-    //call redux function later
-    // http: / / localhost:3000 / profile / 1
     let id = window.location.href.split("/")[4];
     console.log(id);
     props.getUserProfileReq(id);
@@ -57,7 +57,7 @@ function Profile(props) {
   // }, []);
 
 
-  return (
+  return (props.profileId ?
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <Grid container spacing={2}>
@@ -65,16 +65,16 @@ function Profile(props) {
             {/* <ButtonBase className={classes.image}>
               <img className={classes.img} alt="complex" src="/static/images/grid/complex.jpg" />
             </ButtonBase> */}
-            <div>User image here?</div>
+            <Avatar alt="User avatar" src={`${props.profileImage}`} className={classes.large} />
           </Grid>
           <Grid item xs={12} sm container>
             <Grid item xs container direction="column" spacing={2}>
               <Grid item xs>
                 <Typography gutterBottom variant="subtitle1">
-                  userName?
+                  {props.profileUsername}
                 </Typography>
                 <Typography variant="body2" gutterBottom>
-                  user Bio
+                  {props.profileBio}
                 </Typography>
               </Grid>
             </Grid>
@@ -82,14 +82,23 @@ function Profile(props) {
         </Grid>
       </Paper>
     </div>
+    :
+    <div>Loading</div>
   );
 }
 
 
 const mapStateToProps = state => {
-  return {
-    token: state.user.token,
-  };
+  console.log(state)
+  if (state && state.user && state.user.profile) {
+    return {
+      token: state.user.token,
+      profileId: state.user.profile.id,
+      profileUsername: state.user.profile.username,
+      profileBio: state.user.profile.bio,
+      profileImage: state.user.profile.avatarUrl,
+    };
+  }
 };
 
 const mapDispatchToProps = dispatch => {

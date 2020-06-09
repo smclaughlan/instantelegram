@@ -6,7 +6,7 @@ const USER_PROFILE = 'instantelegram/profile/USER_PROFILE';
 
 export const loginUser = token => ({ type: LOGIN_USER, token });
 export const logoutUser = () => ({ type: LOGOUT_USER });
-export const getUserProfile = (id, username, bio) => ({ type: USER_PROFILE, id, username, bio });
+export const getUserProfile = (id, username, bio, avatarUrl) => ({ type: USER_PROFILE, id, username, bio, avatarUrl });
 
 export const sendRegisterReq = (userInfo) => async dispatch => {
   const res = await fetch(`${apiBaseUrl}/api/session/register`, {
@@ -55,7 +55,8 @@ export const getUserProfileReq = (id) => async dispatch => {
     const resJson = await res.json();
     const username = resJson.username;
     const bio = resJson.bio;
-    dispatch(getUserProfile(id, username, bio));
+    const avatarUrl = resJson.avatarUrl;
+    dispatch(getUserProfile(id, username, bio, avatarUrl));
   }
 }
 
@@ -75,14 +76,13 @@ export default function reducer(state = {}, action) {
     }
     case USER_PROFILE: {
       return {
+        profile: {
+          id: action.id,
+          username: action.username,
+          bio: action.bio,
+          avatarUrl: action.avatarUrl,
+        },
         ...state,
-        state: {
-          profile: {
-            id: action.id,
-            username: action.username,
-            bio: action.bio,
-          }
-        }
       }
     }
     default: return state;

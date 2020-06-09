@@ -11,17 +11,21 @@ const Login = (props) => {
   })
 
   const userNameChange = (event) => {
-    setLoginData({ username: event.target.value });
-    console.log(loginData);
+    setLoginData({
+      ...loginData,
+      username: event.target.value
+    });
   }
 
   const passwordChange = (event) => {
-    setLoginData({ password: event.target.value });
+    setLoginData({
+      ...loginData,
+      password: event.target.value
+    });
   }
 
   const loginUser = () => {
-    //redux
-    props.sendLoginReq(/* Login info */)
+    props.sendLoginReq(loginData);
   }
 
   return (
@@ -50,7 +54,7 @@ const Login = (props) => {
             />
           </div>
           <div className="logIn">
-            <Button color="primary" onSubmit={loginUser}>Submit</Button>
+            <Button color="primary" onClick={loginUser}>Submit</Button>
             <small>Create An Acount</small>
           </div>
         </form>

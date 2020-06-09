@@ -27,7 +27,6 @@ export const sendRegisterReq = (userInfo) => async dispatch => {
 }
 
 export const sendLoginReq = (userInfo) => async dispatch => {
-  //TODO: Send login request
   const res = await fetch(`${apiBaseUrl}/api/session/login`, {
     method: "post",
     headers: { "Content-Type": "application/json" },
@@ -45,7 +44,7 @@ export const sendLoginReq = (userInfo) => async dispatch => {
 }
 
 export const sendLogoutReq = () => async dispatch => {
-  // window.localStorage.removeItem("x-access-token")// need to upadte the actual name of the key
+  window.localStorage.removeItem("x-access-token")
   dispatch(logoutUser())
 }
 

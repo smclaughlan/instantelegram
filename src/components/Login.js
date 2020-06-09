@@ -24,7 +24,8 @@ const Login = (props) => {
     });
   }
 
-  const loginUser = () => {
+  const loginUser = (e) => {
+    e.preventDefault()
     props.sendLoginReq(loginData);
   }
 
@@ -33,9 +34,8 @@ const Login = (props) => {
     <div className="wrapper">
       <div className="form-wrapper">
         <h1>Log In</h1>
-        <form>
+        <form onSubmit={loginUser}>
           <div className="userName">
-            <div>Username:</div>
             <TextField
               id="outlined-basic"
               label="Username"
@@ -44,7 +44,6 @@ const Login = (props) => {
             />
           </div>
           <div className="password">
-            <div>Password:</div>
             <TextField
               id="outlined-basic"
               label="Password"
@@ -54,8 +53,8 @@ const Login = (props) => {
             />
           </div>
           <div className="logIn">
-            <Button color="primary" onClick={loginUser}>Submit</Button>
-            <small>Create An Acount</small>
+            <Button color="primary" type='submit'>Submit</Button>
+            <a href="/register">Create An Acount</a>
           </div>
         </form>
       </div>

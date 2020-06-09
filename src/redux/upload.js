@@ -11,12 +11,11 @@ const setImgUrl = (previewImgUrl) => (
 );
 
 // THUNKS
-
 export const updateImg = (newImg) => async (dispatch) => {
     try {
         const data = new FormData();
-        data.append('file', newImg);
         data.append('upload_preset', cloudinaryPreset);
+        data.append('file', newImg);
         const res = await fetch(`${cloudinaryUrl}/image/upload`, {
             method: "POST",
             body: data,
@@ -33,7 +32,8 @@ export const updateImg = (newImg) => async (dispatch) => {
 export const post = (caption, imgUrl, token) => async (dispatch) => {
     try {
         const body = JSON.stringify({ caption, imgUrl, token})
-        const res = await fetch(`${apiBaseUrl}/posts`, {
+        console.log(token)
+        const res = await fetch(`${apiBaseUrl}/posts/`, {
             method: "POST",
             body,
             headers: {
@@ -42,18 +42,14 @@ export const post = (caption, imgUrl, token) => async (dispatch) => {
             },
         });
         if (!res.ok) throw res;
-        // window.location.href = ``;
+        return
     } catch (err) {
         console.error(err);
     }
 };
 
 // REDUCER
-const defaultUploadState = {
-    previewImgUrl: "https://res.cloudinary.com/dgzcv1mcs/image/upload/v1591723161/Instantelegram/Screen_Shot_2020-06-09_at_10.14.56_AM_jkxk7w.png"
-}
-
-export default function reducer(state = defaultUploadState, action) {
+export default function reducer(state = {}, action) {
     Object.freeze(state);
     const newState = Object.assign({}, state);
 

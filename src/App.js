@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Register from './components/Register'
 import Upload from './components/Upload'
 import NavBar from './components/Nav';
+import Profile from './components/Profile';
 import { ProtectedRoute, AuthRoute } from "./authRoutes";
 
 function App(props) {
@@ -12,6 +13,7 @@ function App(props) {
     <BrowserRouter>
       <NavBar />
       <Switch>
+        <Route path="/profile/:userid" component={Profile} />
         <AuthRoute
             path="/login"
             component={Login}

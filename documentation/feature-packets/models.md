@@ -11,12 +11,13 @@
 
 ### Users
 
-| column          | type    | max length | default | constraints      |
-| --------------- | ------- | ---------- | ------- | ---------------- |
-| userName        | varchar | 20         | no      | not null, unique |
-| hashed_password | binary  | none       | no      | not null         |
-| email           | varchar | 50         | no      | not null, unique |
-| bio             | varchar | 100        | ""      | not null         |
+| column          | type    | max length | default                                                                                  | constraints      |
+| --------------- | ------- | ---------- | ---------------------------------------------------------------------------------------- | ---------------- |
+| avatarUrl       | text    | none       | "https://res.cloudinary.com/dgzcv1mcs/image/upload/v1589817904/bw2djxdddpa1mjpshity.jpg" |
+| userName        | varchar | 20         | no                                                                                       | not null, unique |
+| hashed_password | binary  | none       | no                                                                                       | not null         |
+| email           | varchar | 50         | no                                                                                       | not null, unique |
+| bio             | varchar | 100        | ""                                                                                       | not null         |
 
 ### Follows
 

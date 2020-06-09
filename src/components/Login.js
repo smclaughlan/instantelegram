@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Container, TextField } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import "../css/register.css";
 import { sendLoginReq } from '../redux/user';
 

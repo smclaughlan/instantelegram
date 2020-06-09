@@ -16,25 +16,27 @@ const Upload = (props) => {
 
     const postImg = e => {
         e.preventDefault();
-        //redux
-        props.post(/* Post info */)
-      }
+        props.post(caption, props.previewImgUrl, props.token)
+        // console.log(props.token)
+        props.history.push('/profile')
+    }
 
     return (
       <Container>
         <div>Image Preview:</div>
-        <img src={props.previewImgUrl}/>
+        <img src={props.previewImgUrl} alt='preview'/>
         <InputLabel htmlFor="image-upload" >Select Image</InputLabel>
         <Input id="image-upload" type="file" label="Image" style={{display: 'none'}} onChange={handleNewImage}/>
         <div>Caption:</div>
         <TextField variant="outlined" type="caption" onChange={updateValue(setCaption)}/>
-        <Button color="primary" onSubmit={postImg} >Post</Button>
+        <Button color="primary" onClick={postImg} >Post</Button>
       </Container>
     )
 }
 
 const mapStateToProps = state => {
     return {
+        token: state.user.token,
         previewImgUrl: state.upload.previewImgUrl
     };
   };
@@ -42,7 +44,7 @@ const mapStateToProps = state => {
   const mapDispatchToProps = dispatch => {
     return {
         // TODO: update this with token to lock it down
-        post: (caption, imgUrl) => dispatch(post(caption, imgUrl)),
+        post: (...args) => dispatch(post(...args)),
         updateImg: (newImg) => dispatch(updateImg(newImg)),
     };
   };

@@ -3,7 +3,7 @@ import { apiBaseUrl } from '../config';
 const LOGIN_USER = 'instantelegram/login/LOGIN_USER';
 const LOGOUT_USER = 'instantelegram/logout/LOGOUT_USER';
 
-export const loginUser = token => ({ type: LOGIN_USER, token });
+export const loginUser = (token, currentUserId) => ({ type: LOGIN_USER, token, currentUserId });
 export const logoutUser = () => ({ type: LOGOUT_USER });
 
 export const sendRegisterReq = (userInfo) => async dispatch => {
@@ -20,9 +20,10 @@ export const sendRegisterReq = (userInfo) => async dispatch => {
   })
 
   if (res.ok) {
-    const { token } = await res.json();
+    const { token, currentUserId } = await res.json();
     window.localStorage.setItem("x-access-token", token);
-    dispatch(loginUser(token));
+    window.localStorage.setItem("currentUserId", currentUserId);
+    dispatch(loginUser(token, currentUserId));
   }
 }
 
@@ -37,14 +38,16 @@ export const sendLoginReq = (userInfo) => async dispatch => {
   })
 
   if (res.ok) {
-    const { token } = await res.json()
-    window.localStorage.setItem("x-access-token", token)
-    dispatch(loginUser(token))
+    const { token, currentUserId } = await res.json()
+    window.localStorage.setItem("x-access-token", token);
+    window.localStorage.setItem("currentUserId", currentUserId);
+    dispatch(loginUser(token, currentUserId))
   }
 }
 
 export const sendLogoutReq = () => async dispatch => {
-  window.localStorage.removeItem("x-access-token")
+  window.localStorage.removeItem("x-access-token");
+  window.localStorage.removeItem("currentUserId");
   dispatch(logoutUser())
 }
 
@@ -54,10 +57,12 @@ export default function reducer(state = {}, action) {
       return {
         ...state,
         token: action.token,
+        currentUserId: action.currentUserId,
       }
     }
     case LOGOUT_USER: {
       delete state.token;
+      delete state.currentUserId;
       return {
         ...state,
       }

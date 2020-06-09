@@ -108,8 +108,9 @@
     border: 2px solid #8a64c7;
   }
 
-  .createAccount small,
-  .logIn small {
+  .createAccount a,
+  .logIn a {
     color: #999;
     font-weight: lighter;
+    text-decoration: none;
   }

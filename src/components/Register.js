@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Container, TextField } from '@material-ui/core';
-
+import { Button, TextField } from '@material-ui/core';
+import "../css/register.css";
 import { sendRegisterReq } from '../redux/user';
 
 const Register = (props) => {
@@ -33,17 +33,58 @@ const Register = (props) => {
   }
 
   return (
-    <Container>
-      <div>Username:</div>
-      <TextField id="outlined-basic" label="Username" variant="outlined" onChange={userNameChange} />
-      <div>Email:</div>
-      <TextField id="outlined-basic" label="Email" variant="outlined" onChange={emailChange} />
-      <div>Bio:</div>
-      <TextField id="outlined-basic" label="Bio" variant="outlined" onChange={bioChange} />
-      <div>Password:</div>
-      <TextField id="outlined-basic" label="Password" variant="outlined" type="password" onChange={passwordChange} />
-      <Button color="primary" onSubmit={registerUser}>Submit</Button>
-    </Container>
+    // <Container ">
+    <div className="wrapper">
+      <div className="form-wrapper">
+        <h1>Create Account</h1>
+        <form>
+          <div className="userName">
+            <div>Username:</div>
+            <TextField
+              id="outlined-basic"
+              label="Username"
+              variant="outlined"
+              onChange={userNameChange}
+            />
+          </div>
+          <div className="email">
+            <div>Email:</div>
+            <TextField
+              id="outlined-basic"
+              label="Email"
+              variant="outlined"
+              onChange={emailChange}
+            />
+          </div>
+          <div className="bio">
+            <div>Bio:</div>
+            <TextField
+              id="outlined-basic"
+              label="Bio"
+              variant="outlined"
+              onChange={bioChange}
+            />
+          </div>
+          <div className="password">
+            <div>Password:</div>
+            <TextField
+              id="outlined-basic"
+              label="Password"
+              variant="outlined"
+              type="password"
+              onChange={passwordChange}
+            />
+          </div>
+          <div className="createAccount">
+            <Button color="primary" onSubmit={registerUser}>
+              Submit
+           </Button>
+            <small>Already Have an Account?</small>
+          </div>
+        </form>
+      </div>
+    </div>
+    // </Container>
   )
 }
 

@@ -11,19 +11,19 @@
 
 ### Users
 
-| column   | type    | max length | default | constraints      |
-| -------- | ------- | ---------- | ------- | ---------------- |
-| userName | varchar | 20         | no      | not null, unique |
-| password | binary  | none       | no      | not null         |
-| email    | varchar | 50         | no      | not null, unique |
-| bio      | varchar | 100        | ""      | not null         |
+| column          | type    | max length | default | constraints      |
+| --------------- | ------- | ---------- | ------- | ---------------- |
+| userName        | varchar | 20         | no      | not null, unique |
+| hashed_password | binary  | none       | no      | not null         |
+| email           | varchar | 50         | no      | not null, unique |
+| bio             | varchar | 100        | ""      | not null         |
 
 ### Follows
 
-| column   | type    | max length | default | constraints                     |
-| -------- | ------- | ---------- | ------- | ------------------------------- |
-| followed | integer | none       | no      | not null references: (Users.Id) |
-| follower | integer | none       | no      | not null references: (Users.Id) |
+| column      | type    | max length | default | constraints                     |
+| ----------- | ------- | ---------- | ------- | ------------------------------- |
+| followed_id | integer | none       | no      | not null references: (Users.Id) |
+| follower_id | integer | none       | no      | not null references: (Users.Id) |
 
 ### Posts
 

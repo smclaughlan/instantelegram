@@ -1,10 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
-
+import { getUserProfileReq } from '../redux/user';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,13 +28,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Profile(props) {
+function Profile(props) {
   const classes = useStyles();
   // const [data, setData] = React.useState(null); //if we can't pull data from redux store
 
+
+
   React.useEffect(() => {
     //call redux function later
-  })
+    // http: / / localhost:3000 / profile / 1
+    let id = window.location.href.split("/")[4];
+    console.log(id);
+    props.getUserProfileReq(id);
+
+  }, []);
+
+  // React.useEffect(() => {
+  //   (async () => {
+
+
+  //     //call redux function later
+  //     // http: / / localhost:3000 / profile / 1
+  //     let id = window.location.href.split("/")[4];
+  //     console.log(id);
+  //     await props.getUserProfileReq(id);
+
+  //   })()
+  // }, []);
+
 
   return (
     <div className={classes.root}>
@@ -62,3 +84,23 @@ export default function Profile(props) {
     </div>
   );
 }
+
+
+const mapStateToProps = state => {
+  return {
+    token: state.user.token,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getUserProfileReq: (...args) => dispatch(getUserProfileReq(...args)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  Profile
+);

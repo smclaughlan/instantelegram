@@ -13,21 +13,25 @@ function App(props) {
     <BrowserRouter>
       <NavBar />
       <Switch>
-        <Route path="/profile/:userid" component={Profile} />
         <AuthRoute
-            path="/login"
-            component={Login}
-            currentUserId={props.currentUserId}
+          path="/profile/:userid"
+          component={Profile}
+          currentUserId={props.currentUserId}
         />
         <AuthRoute
-            path="/register"
-            component={Register}
-            currentUserId={props.currentUserId}
+          path="/login"
+          component={Login}
+          currentUserId={props.currentUserId}
+        />
+        <AuthRoute
+          path="/register"
+          component={Register}
+          currentUserId={props.currentUserId}
         />
         <ProtectedRoute
-            path="/upload"
-            component={Upload}
-            currentUserId={props.currentUserId}
+          path="/upload"
+          component={Upload}
+          currentUserId={props.currentUserId}
         />
         {/* <Route path="/register" component={Login} /> */}
       </Switch>

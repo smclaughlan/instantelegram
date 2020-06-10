@@ -2,13 +2,13 @@ import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunk from 'redux-thunk';
 
 import user from './user';
-import upload from './upload';
+import image from './image';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const reducer = combineReducers({
   user,
-  upload,
+  image,
 });
 
 const configureStore = initialState => {

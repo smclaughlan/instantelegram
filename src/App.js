@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter, Switch } from 'react-router-dom';
+import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register'
 import Upload from './components/Upload'
 import NavBar from './components/Nav';
+import Image from './components/Image';
 import Profile from './components/Profile';
 import { ProtectedRoute, AuthRoute } from "./authRoutes";
 

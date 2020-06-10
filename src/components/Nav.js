@@ -8,13 +8,13 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import { sendLogoutReq } from '../redux/user';
+import Grid from '@material-ui/core/Grid';
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    color: theme.primaryColor,
-    backgroundColor: theme.primaryColor,
+    backgroundImage: theme.gradientBackground,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -22,6 +22,11 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  logout: {
+    marginLeft: 100,
+    // justifyItems: 'end',
+    // alignItems: 'end'
+  }
 }));
 
 const NavBar = (props) => {
@@ -32,20 +37,24 @@ const NavBar = (props) => {
   }
 
   const navigation = props.currentUserId ? (
-    <>
-      <NavLink style={{ color: 'white' }} to="/">
-        <Button color="inherit">Instantelegram</Button>
-      </NavLink>
-      <NavLink style={{ color: 'white' }} to="/profile">
-        <Button color="inherit">Profile</Button>
-      </NavLink>
-      <NavLink style={{ color: 'white' }} to="/upload">
-        <Button color="inherit">Upload</Button>
-      </NavLink>
-      <NavLink style={{ color: 'white' }} to="/login">
-        <Button color="inherit" onClick={logOut}>Logout</Button>
-      </NavLink>
-    </>
+    <Grid container spacing={3}>
+      <Grid item xs={10}>
+        <NavLink style={{ color: 'white' }} to="/">
+          <Button color="inherit">Instantelegram</Button>
+        </NavLink>
+        <NavLink style={{ color: 'white' }} to="/profile">
+          <Button color="inherit">Profile</Button>
+        </NavLink>
+        <NavLink style={{ color: 'white' }} to="/upload">
+          <Button color="inherit">Upload</Button>
+        </NavLink>
+      </Grid>
+      <Grid item xs={2}>
+        <NavLink className={classes.logout} style={{ color: 'white' }} to="/login">
+          <Button className={classes.logout} color="inherit" onClick={logOut}>Logout</Button>
+        </NavLink>
+      </Grid>
+    </Grid>
   ) : (
       <>
         <NavLink style={{ color: 'white' }} to="/register">
@@ -59,7 +68,7 @@ const NavBar = (props) => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.root}>
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
           </IconButton>

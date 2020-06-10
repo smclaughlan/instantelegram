@@ -1,3 +1,8 @@
 REACT_APP_API_BASE_URL=http://localhost:5000
+<<<<<<< HEAD
 REACT_APP_CLOUDINARY_URL=< your cloudinary url >
 REACT_APP_CLOUDINARY_UPLOAD_PRESET=< your cloudinary url preset >
+=======
+REACT_APP_CLOUDINARY_URL=yourcloudinaryurl
+REACT_APP_CLOUDINARY_UPLOAD_PRESET=yourcloudinarypreset
+>>>>>>> master

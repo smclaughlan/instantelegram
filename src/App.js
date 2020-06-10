@@ -5,7 +5,11 @@ import Login from './components/Login';
 import Register from './components/Register'
 import Upload from './components/Upload'
 import NavBar from './components/Nav';
+<<<<<<< HEAD
 import Image from './components/Image';
+=======
+import Profile from './components/Profile';
+>>>>>>> master
 import { ProtectedRoute, AuthRoute } from "./authRoutes";
 
 function App(props) {
@@ -14,19 +18,24 @@ function App(props) {
       <NavBar />
       <Switch>
         <AuthRoute
-            path="/login"
-            component={Login}
-            currentUserId={props.currentUserId}
+          path="/profile/:userid"
+          component={Profile}
+          currentUserId={props.currentUserId}
         />
         <AuthRoute
-            path="/register"
-            component={Register}
-            currentUserId={props.currentUserId}
+          path="/login"
+          component={Login}
+          currentUserId={props.currentUserId}
+        />
+        <AuthRoute
+          path="/register"
+          component={Register}
+          currentUserId={props.currentUserId}
         />
         <ProtectedRoute
-            path="/upload"
-            component={Upload}
-            currentUserId={props.currentUserId}
+          path="/upload"
+          component={Upload}
+          currentUserId={props.currentUserId}
         />
         <ProtectedRoute
             path="/image"

@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Avatar from '@material-ui/core/Avatar';
 import { getUserProfileReq } from '../redux/user';
+import EditProfile from './EditProfile';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -81,6 +82,7 @@ function Profile(props) {
           </Grid>
         </Grid>
       </Paper>
+      <EditProfile></EditProfile>
     </div>
     :
     <div>Loading</div>

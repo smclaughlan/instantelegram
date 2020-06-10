@@ -8,7 +8,7 @@ const UNFOLLOW = 'instantelegram/profile/UNFOLLOW';
 
 export const loginUser = (token, currentUserId) => ({ type: LOGIN_USER, token, currentUserId });
 export const logoutUser = () => ({ type: LOGOUT_USER });
-export const getUserProfile = (id, username, bio, avatarUrl) => ({ type: USER_PROFILE, id, username, bio, avatarUrl });
+export const getUserProfile = (id, username, bio, avatarUrl, posts) => ({ type: USER_PROFILE, id, username, bio, avatarUrl, posts });
 export const sendUserFollowReq = (userId, followedId) => ({ type: FOLLOW, userId, followedId });
 export const sendUserUnfollowReq = (userId, followedId) => ({ type: UNFOLLOW, userId, followedId });
 export const sendRegisterReq = (userInfo) => async dispatch => {
@@ -57,12 +57,17 @@ export const sendLogoutReq = () => async dispatch => {
 
 export const getUserProfileReq = (id) => async dispatch => {
   const res = await fetch(`${apiBaseUrl}/api/users/${id}`);
-  if (res.ok) {
+  const res2 = await fetch(`${apiBaseUrl}/posts/${id}`);
+  if (res.ok && res2.ok) {
     const resJson = await res.json();
+    const resJson2 = await res2.json();
     const username = resJson.username;
     const bio = resJson.bio;
     const avatarUrl = resJson.avatarUrl;
-    dispatch(getUserProfile(id, username, bio, avatarUrl));
+    const posts = resJson2.posts;
+    console.log(resJson2);
+    console.log(posts);
+    dispatch(getUserProfile(id, username, bio, avatarUrl, posts));
   }
 }
 
@@ -91,6 +96,8 @@ export const sendUnfollowReq = (userId, followedId) => async dispatch => {
   }
 }
 
+
+
 export default function reducer(state = {}, action) {
   switch (action.type) {
     case LOGIN_USER: {
@@ -115,7 +122,9 @@ export default function reducer(state = {}, action) {
           bio: action.bio,
           avatarUrl: action.avatarUrl,
         },
-        //posts: will be a array of post objects, contain each profile's posts for that page
+        posts: [
+          ...action.posts
+        ],
         ...state,
       }
     }

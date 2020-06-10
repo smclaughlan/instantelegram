@@ -115,6 +115,7 @@ export default function reducer(state = {}, action) {
           bio: action.bio,
           avatarUrl: action.avatarUrl,
         },
+        //posts: will be a array of post objects, contain each profile's posts for that page
         ...state,
       }
     }

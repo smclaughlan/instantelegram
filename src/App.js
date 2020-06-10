@@ -13,7 +13,7 @@ function App(props) {
     <BrowserRouter>
       <NavBar />
       <Switch>
-        <AuthRoute
+        <ProtectedRoute
           path="/profile/:userid"
           component={Profile}
           currentUserId={props.currentUserId}

@@ -9,6 +9,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { getUserProfileReq } from '../redux/user';
 import EditProfile from './EditProfile';
 
+import FollowBtn from './FollowBtn';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,30 +34,12 @@ const useStyles = makeStyles((theme) => ({
 
 function Profile(props) {
   const classes = useStyles();
-  // const [data, setData] = React.useState(null); //if we can't pull data from redux store
-
-
 
   React.useEffect(() => {
     let id = window.location.href.split("/")[4];
     console.log(id);
     props.getUserProfileReq(id);
-
   }, []);
-
-  // React.useEffect(() => {
-  //   (async () => {
-
-
-  //     //call redux function later
-  //     // http: / / localhost:3000 / profile / 1
-  //     let id = window.location.href.split("/")[4];
-  //     console.log(id);
-  //     await props.getUserProfileReq(id);
-
-  //   })()
-  // }, []);
-
 
   return (props.profileId ?
     <div className={classes.root}>
@@ -80,9 +63,13 @@ function Profile(props) {
               </Grid>
             </Grid>
           </Grid>
+          <Grid>
+            <FollowBtn></FollowBtn>
+          </Grid>
         </Grid>
       </Paper>
       <EditProfile></EditProfile>
+
     </div>
     :
     <div>Loading</div>
@@ -91,7 +78,6 @@ function Profile(props) {
 
 
 const mapStateToProps = state => {
-  console.log(state)
   if (state && state.user && state.user.profile) {
     return {
       token: state.user.token,
@@ -100,6 +86,10 @@ const mapStateToProps = state => {
       profileBio: state.user.profile.bio,
       profileImage: state.user.profile.avatarUrl,
     };
+  } else {
+    return {
+      token: state.user.token,
+    }
   }
 };
 

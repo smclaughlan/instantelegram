@@ -1,3 +1,5 @@
+import { updateCaption } from "./user";
+
 const { apiBaseUrl, cloudinaryUrl, cloudinaryPreset, } = require("../config");
 
 // ACTIONS
@@ -42,27 +44,6 @@ export const post = (caption, imgUrl, token) => async (dispatch) => {
             },
         });
         if (!res.ok) throw res;
-        return
-    } catch (err) {
-        console.error(err);
-    }
-};
-
-
-export const updateCapt = (caption, imageId, token) => async (dispatch) => {
-    try {
-        const body = JSON.stringify({ caption, token })
-        const res = await fetch(`${apiBaseUrl}/posts/${imageId}`, {
-            method: "PUT",
-            body,
-            headers: {
-                "x-access-token": `${token}`,
-                "Content-Type": "application/json"
-            },
-        });
-        if (!res.ok) throw res;
-        const postObj = await res.json()
-        console.log(postObj)
         return
     } catch (err) {
         console.error(err);

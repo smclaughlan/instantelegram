@@ -8,7 +8,8 @@ import {
   Avatar, IconButton, Typography,
   Button
 } from '@material-ui/core';
-import { updateCapt, deletePost } from '../redux/image'
+import {deletePost} from '../redux/image'
+import {updateCapt} from '../redux/user'
 import clsx from "clsx";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";

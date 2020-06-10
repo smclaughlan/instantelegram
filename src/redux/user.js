@@ -5,12 +5,15 @@ const LOGOUT_USER = 'instantelegram/logout/LOGOUT_USER';
 const USER_PROFILE = 'instantelegram/profile/USER_PROFILE';
 const FOLLOW = 'instantelegram/profile/FOLLOW';
 const UNFOLLOW = 'instantelegram/profile/UNFOLLOW';
+const UPDATE_CAPTION = 'instantelegram/image/UPDATE_CAPTION';
 
 export const loginUser = (token, currentUserId) => ({ type: LOGIN_USER, token, currentUserId });
 export const logoutUser = () => ({ type: LOGOUT_USER });
 export const getUserProfile = (id, username, bio, avatarUrl, posts) => ({ type: USER_PROFILE, id, username, bio, avatarUrl, posts });
 export const sendUserFollowReq = (userId, followedId) => ({ type: FOLLOW, userId, followedId });
 export const sendUserUnfollowReq = (userId, followedId) => ({ type: UNFOLLOW, userId, followedId });
+export const updateCaption = (postObj, imageId) => ({ type: UPDATE_CAPTION, postObj, imageId})
+
 export const sendRegisterReq = (userInfo) => async dispatch => {
   const res = await fetch(`${apiBaseUrl}/api/session/register`, {
     method: "post",
@@ -60,13 +63,11 @@ export const getUserProfileReq = (id) => async dispatch => {
   const res2 = await fetch(`${apiBaseUrl}/posts/${id}`);
   if (res.ok && res2.ok) {
     const resJson = await res.json();
-    const resJson2 = await res2.json();
+    const posts = await res2.json();
     const username = resJson.username;
     const bio = resJson.bio;
     const avatarUrl = resJson.avatarUrl;
-    const posts = resJson2.posts;
-    console.log(resJson2);
-    console.log(posts);
+    // console.log(posts);
     dispatch(getUserProfile(id, username, bio, avatarUrl, posts));
   }
 }
@@ -96,6 +97,29 @@ export const sendUnfollowReq = (userId, followedId) => async dispatch => {
   }
 }
 
+export const updateCapt = (caption, imageId, token) => async (dispatch) => {
+  try {
+      const body = JSON.stringify({ caption, token })
+      const res = await fetch(`${apiBaseUrl}/posts/${imageId}`, {
+          method: "PUT",
+          body,
+          headers: {
+              "x-access-token": `${token}`,
+              "Content-Type": "application/json"
+          },
+      });
+      if (!res.ok) throw res;
+      const postObj = await res.json();
+      const imgId = postObj.id;
+      delete postObj['id'];
+    //   console.log(postObj)
+      dispatch(updateCaption(postObj, imgId));
+
+      return
+  } catch (err) {
+      console.error(err);
+  }
+};
 
 
 export default function reducer(state = {}, action) {
@@ -122,9 +146,7 @@ export default function reducer(state = {}, action) {
           bio: action.bio,
           avatarUrl: action.avatarUrl,
         },
-        posts: [
-          ...action.posts
-        ],
+        posts: action.posts,
         ...state,
       }
     }
@@ -151,6 +173,13 @@ export default function reducer(state = {}, action) {
         ...state,
       }
 
+    }
+
+    case UPDATE_CAPTION: {
+        const newState = Object.assign({}, state)
+        console.log(action.imageId)
+        newState.posts[action.imageId] = action.postObj
+      return newState
     }
 
     default: return state;

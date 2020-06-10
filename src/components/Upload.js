@@ -33,7 +33,7 @@ const Upload = (props) => {
         <Button color="primary" onClick={postImg} >Post</Button>
         <Image
             currentUserId={props.currentUserId}
-            imageId={"4"}
+            imageId={"3"}
             imageUrl={"https://res.cloudinary.com/dgzcv1mcs/image/upload/v1591737637/bafisqqblpyxx5lx91fx.jpg"}
             imageCapt={"CJ"}
             imagePosterId={"3"}

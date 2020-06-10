@@ -13,21 +13,23 @@ const useStyles = makeStyles((theme) => ({
 
 const FollowBtn = (props) => {
   const classes = useStyles();
-  const [followed, setFollowed] = React.useState(false);
+  const [followed, setFollowed] = React.useState("not following");
 
   const handleFollow = async () => {
     let followedId = window.location.href.split("/")[4];
     let userId = window.localStorage.getItem("currentUserId");
     props.sendFollowReq(userId, followedId);
+    setFollowed("following");
   }
 
   const handleUnfollow = async () => {
     let followedId = window.location.href.split("/")[4];
     let userId = window.localStorage.getItem("currentUserId");
     props.sendUnfollowReq(userId, followedId);
+    setFollowed("not following");
   }
 
-  return (followed ?
+  return (followed === "not following" ?
     <div className={classes.root}>
       <Button variant="contained" color="primary" onClick={handleFollow}>
         Follow

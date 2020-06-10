@@ -7,36 +7,44 @@ import Upload from './components/Upload'
 import NavBar from './components/Nav';
 import Image from './components/Image';
 import Profile from './components/Profile';
-import { ProtectedRoute, AuthRoute } from "./authRoutes";
+import Theme from './Theme';
 
+import { ProtectedRoute, AuthRoute } from "./authRoutes";
+import { ThemeProvider } from '@material-ui/core';
+import { CssBaseline, } from "@material-ui/core";
 function App(props) {
   return (
-    <BrowserRouter>
-      <NavBar />
-      <Switch>
-        <ProtectedRoute
-          path="/profile/:userid"
-          component={Profile}
-          currentUserId={props.currentUserId}
-        />
-        <AuthRoute
-          path="/login"
-          component={Login}
-          currentUserId={props.currentUserId}
-        />
-        <AuthRoute
-          path="/register"
-          component={Register}
-          currentUserId={props.currentUserId}
-        />
-        <ProtectedRoute
-          path="/upload"
-          component={Upload}
-          currentUserId={props.currentUserId}
-        />
-        {/* <Route path="/register" component={Login} /> */}
-      </Switch>
-    </BrowserRouter>
+    <>
+      <CssBaseline />
+      <Theme>
+        <BrowserRouter>
+          <NavBar />
+          <Switch>
+            <ProtectedRoute
+              path="/profile/:userid"
+              component={Profile}
+              currentUserId={props.currentUserId}
+            />
+            <AuthRoute
+              path="/login"
+              component={Login}
+              currentUserId={props.currentUserId}
+            />
+            <AuthRoute
+              path="/register"
+              component={Register}
+              currentUserId={props.currentUserId}
+            />
+            <ProtectedRoute
+              path="/upload"
+              component={Upload}
+              currentUserId={props.currentUserId}
+            />
+            {/* <Route path="/register" component={Login} /> */}
+          </Switch>
+        </BrowserRouter>
+      </Theme>
+    </>
   );
 }
 

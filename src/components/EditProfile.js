@@ -31,7 +31,7 @@ const EditProfile = (props) => {
   return (
     <Container>
       <div>Image Preview:</div>
-      <img src={props.avatarUrl} alt='preview' width="500" />
+      <img src={props.avatarUrl} alt='preview' width="400" />
       <InputLabel htmlFor="image-upload" >Select Image</InputLabel>
       <Input id="image-upload" type="file" label="Image" style={{ display: 'none' }} onChange={handleNewImage} />
       <div>Bio:</div>

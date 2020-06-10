@@ -13,6 +13,8 @@ import { sendLogoutReq } from '../redux/user';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    color: theme.primaryColor,
+    backgroundColor: theme.primaryColor,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -30,21 +32,21 @@ const NavBar = (props) => {
   }
 
   const navigation = props.currentUserId ? (
-      <>
-        <NavLink style={{ color: 'white' }} to="/">
-          <Button color="inherit">Instantelegram</Button>
-        </NavLink>
-        <NavLink style={{ color: 'white' }} to="/profile">
-          <Button color="inherit">Profile</Button>
-        </NavLink>
-        <NavLink style={{ color: 'white' }} to="/upload">
-          <Button color="inherit">Upload</Button>
-        </NavLink>
-        <NavLink style={{ color: 'white' }} to="/login">
-          <Button color="inherit" onClick={logOut}>Logout</Button>
-        </NavLink>
-      </>
-    ) : (
+    <>
+      <NavLink style={{ color: 'white' }} to="/">
+        <Button color="inherit">Instantelegram</Button>
+      </NavLink>
+      <NavLink style={{ color: 'white' }} to="/profile">
+        <Button color="inherit">Profile</Button>
+      </NavLink>
+      <NavLink style={{ color: 'white' }} to="/upload">
+        <Button color="inherit">Upload</Button>
+      </NavLink>
+      <NavLink style={{ color: 'white' }} to="/login">
+        <Button color="inherit" onClick={logOut}>Logout</Button>
+      </NavLink>
+    </>
+  ) : (
       <>
         <NavLink style={{ color: 'white' }} to="/register">
           <Button color="inherit">Register</Button>

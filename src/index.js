@@ -11,7 +11,7 @@ const preloadedState = {
         token: localStorage.getItem('x-access-token'),
         currentUserId: localStorage.getItem('currentUserId'),
     },
-    upload: {
+    image: {
         previewImgUrl: "https://res.cloudinary.com/dgzcv1mcs/image/upload/v1591723161/Instantelegram/Screen_Shot_2020-06-09_at_10.14.56_AM_jkxk7w.png"
     }
 }

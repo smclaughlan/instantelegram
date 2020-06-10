@@ -9,16 +9,22 @@ const EditProfile = (props) => {
 
   const updateValue = cb => e => cb(e.target.value);
 
+  const redirectTo = (address) => {
+    window.location.replace(address);
+  }
+
   const handleNewImage = e => {
     const newImg = e.target.files[0];
     let userId = window.location.href.split("/")[4]; //refactor with redux later
     props.updateAvatar(userId, newImg, props.token);
+    redirectTo(window.location.href);
   }
 
   const updateBio = e => {
     e.preventDefault();
     let userId = window.location.href.split("/")[4]; //refactor with redux later
     props.updateBioReq(userId, bio, props.token)
+    redirectTo(window.location.href);
     // props.history.push('/profile')
   }
 

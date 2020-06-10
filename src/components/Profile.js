@@ -15,6 +15,7 @@ import { getUserProfileReq } from '../redux/user';
 import EditProfile from './EditProfile';
 
 import FollowBtn from './FollowBtn';
+import MessageBtn from './MessageBtn';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,7 +74,10 @@ function Profile(props) {
           </Grid>
           <Grid>
             {props.profileId !== userId ?
-              <FollowBtn></FollowBtn>
+              <div>
+                <FollowBtn></FollowBtn>
+                <MessageBtn></MessageBtn>
+              </div>
               :
               <div></div>
             }

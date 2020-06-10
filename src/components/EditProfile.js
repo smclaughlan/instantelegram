@@ -25,12 +25,14 @@ const EditProfile = (props) => {
   return (
     <Container>
       <div>Image Preview:</div>
-      <img src={props.avatarUrl} alt='preview' />
+      <img src={props.avatarUrl} alt='preview' width="500" />
       <InputLabel htmlFor="image-upload" >Select Image</InputLabel>
       <Input id="image-upload" type="file" label="Image" style={{ display: 'none' }} onChange={handleNewImage} />
       <div>Bio:</div>
       <TextField variant="outlined" type="caption" onChange={updateValue(setBio)} />
-      <Button color="primary" onClick={updateBio} >Update bio</Button>
+      <div>
+        <Button color="primary" onClick={updateBio} >Update bio</Button>
+      </div>
     </Container>
   )
 }

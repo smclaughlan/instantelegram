@@ -6,6 +6,11 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Avatar from '@material-ui/core/Avatar';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+// import Typography from '@material-ui/core/Typography';
+// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { getUserProfileReq } from '../redux/user';
 import EditProfile from './EditProfile';
 
@@ -41,6 +46,9 @@ function Profile(props) {
     props.getUserProfileReq(id);
   }, []);
 
+
+
+  let userId = window.localStorage.getItem("currentUserId");
   return (props.profileId ?
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -64,12 +72,26 @@ function Profile(props) {
             </Grid>
           </Grid>
           <Grid>
-            <FollowBtn></FollowBtn>
+            {props.profileId !== userId ?
+              <FollowBtn></FollowBtn>
+              :
+              <div></div>
+            }
           </Grid>
         </Grid>
       </Paper>
-      <EditProfile></EditProfile>
-
+      {props.profileId === userId ?
+        <ExpansionPanel>
+          <ExpansionPanelSummary>
+            Edit Profile
+        </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <EditProfile></EditProfile>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+        :
+        <div></div>
+      }
     </div>
     :
     <div>Loading</div>

@@ -36,7 +36,7 @@ const FollowBtn = (props) => {
       </Button>
     </div>
     :
-    <div>
+    <div className={classes.root}>
       <Button variant="contained" color="primary" onClick={handleUnfollow}>
         Unfollow
       </Button>

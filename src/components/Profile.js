@@ -2,6 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
@@ -20,11 +24,16 @@ import MessageBtn from './MessageBtn';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    justifyContent: 'space-around',
   },
   paper: {
     padding: theme.spacing(2),
-    margin: 'auto',
-    maxWidth: 500,
+    // margin: 'auto',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 20,
+    marginBottom: 20,
+    maxWidth: 800,
   },
   image: {
     width: 128,
@@ -35,6 +44,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'block',
     maxWidth: '100%',
     maxHeight: '100%',
+  },
+  gridList: {
+    justifyContent: 'space-around',
+    maxWidth: 500,
+    height: 450,
   },
 }));
 
@@ -85,17 +99,29 @@ function Profile(props) {
         </Grid>
       </Paper>
       {props.profileId === userId ?
-        <ExpansionPanel>
-          <ExpansionPanelSummary>
-            Edit Profile
+        <Paper className={classes.paper}>
+          <ExpansionPanel>
+            <ExpansionPanelSummary>
+              Edit Profile
         </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <EditProfile></EditProfile>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+            <ExpansionPanelDetails>
+              <EditProfile></EditProfile>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+        </Paper>
         :
         <div></div>
       }
+      <Paper className={classes.paper}>
+        <GridList className={classes.paper} >
+          {props.posts.map(post => {
+            //post component
+            return (
+              <p>{post.caption}</p> //replace with image component later, send props to add data
+            )
+          })}
+        </GridList>
+      </Paper>
     </div>
     :
     <div>Loading</div>
@@ -111,6 +137,7 @@ const mapStateToProps = state => {
       profileUsername: state.user.profile.username,
       profileBio: state.user.profile.bio,
       profileImage: state.user.profile.avatarUrl,
+      posts: state.user.posts,
     };
   } else {
     return {

@@ -17,7 +17,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 // import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { getUserProfileReq } from '../redux/user';
 import EditProfile from './EditProfile';
-
+// import Image from './Image';
 import FollowBtn from './FollowBtn';
 import MessageBtn from './MessageBtn';
 
@@ -117,7 +117,8 @@ function Profile(props) {
           {props.posts.map(post => {
             //post component
             return (
-              <p>{post.caption}</p> //replace with image component later, send props to add data
+              <p>hi</p>
+              // <Image /> //replace with image component later, send props to add data
             )
           })}
         </GridList>

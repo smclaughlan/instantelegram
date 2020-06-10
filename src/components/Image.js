@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from "@material-ui/core/styles";
 import {
-    TextField, Card, CardHeader,
-    CardMedia, CardContent, CardActions,
-    Collapse, Menu, MenuItem,
-    Avatar, IconButton, Typography,
-    Button
+  TextField, Card, CardHeader,
+  CardMedia, CardContent, CardActions,
+  Collapse, Menu, MenuItem,
+  Avatar, IconButton, Typography,
+  Button
 } from '@material-ui/core';
-import {updateCapt, deletePost} from '../redux/image'
+import { updateCapt, deletePost } from '../redux/image'
 import clsx from "clsx";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -33,13 +33,13 @@ const useStyles = makeStyles(theme => ({
     transform: "rotate(180deg)"
   },
   aviImage: {
-      maxHeight: "100%",
+    maxHeight: "100%",
   },
   captionUpdate: {
-      width: "100%",
+    width: "100%",
   },
   captButton: {
-      width: "50%"
+    width: "50%"
   }
 }));
 
@@ -61,8 +61,8 @@ const Image = (props) => {
   }
 
   const cancelEdit = () => {
-      setEditCaptionBool('none')
-      setEditTypographyBool('grid')
+    setEditCaptionBool('none')
+    setEditTypographyBool('grid')
   }
 
   const handleClick = (event) => {
@@ -78,10 +78,10 @@ const Image = (props) => {
   };
 
   const submitEdit = e => {
-      e.preventDefault()
-      const newCaption = e.target[0].value;
-      props.updateCapt(newCaption, props.imageId, props.token)
-      cancelEdit()
+    e.preventDefault()
+    const newCaption = e.target[0].value;
+    props.updateCapt(newCaption, props.imageId, props.token)
+    cancelEdit()
   }
 
   return (
@@ -89,7 +89,7 @@ const Image = (props) => {
       <CardHeader
         avatar={
           <Avatar aria-label="recipe">
-            <img className={classes.aviImage} src={props.imagePosterAviUrl} alt="avatarImg"/>
+            <img className={classes.aviImage} src={props.imagePosterAviUrl} alt="avatarImg" />
           </Avatar>
         }
         action={
@@ -98,11 +98,11 @@ const Image = (props) => {
               <MoreVertIcon />
             </IconButton>
             <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
             >
               <MenuItem onClick={handleEdit}>Edit</MenuItem>
               <MenuItem onClick={handleDelete}>Delete</MenuItem>
@@ -118,10 +118,10 @@ const Image = (props) => {
         title="image"
       />
       <CardContent>
-        <Typography style={{display: editTypographyBool}} variant="body2" color="textSecondary" component="p">
+        <Typography style={{ display: editTypographyBool }} variant="body2" color="textSecondary" component="p">
           {props.imageCapt}
         </Typography>
-        <form style={{display: editCaptionBool}} onSubmit={submitEdit}>
+        <form style={{ display: editCaptionBool }} onSubmit={submitEdit}>
           <TextField
             defaultValue={props.imageCapt}
             className={classes.captionUpdate}
@@ -176,19 +176,19 @@ const Image = (props) => {
 
 
 const mapStateToProps = state => {
-    return {
-        token: state.user.token,
-    };
+  return {
+    token: state.user.token,
+  };
 };
 
 const mapDispatchToProps = dispatch => {
-    return {
-        updateCapt: (...args) => dispatch(updateCapt(...args)),
-        deletePost: (...args) => dispatch(deletePost(...args)),
-    };
+  return {
+    updateCapt: (...args) => dispatch(updateCapt(...args)),
+    deletePost: (...args) => dispatch(deletePost(...args)),
+  };
 };
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-    )(Image);
+  mapStateToProps,
+  mapDispatchToProps
+)(Image);

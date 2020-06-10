@@ -13,8 +13,7 @@ import { sendLogoutReq } from '../redux/user';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    color: theme.primaryColor,
-    backgroundColor: theme.primaryColor,
+    backgroundImage: theme.gradientBackground,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -59,7 +58,7 @@ const NavBar = (props) => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.root}>
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
           </IconButton>

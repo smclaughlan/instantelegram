@@ -1,18 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from "@material-ui/core/styles";
+import {
+    TextField, Card, CardHeader,
+    CardMedia, CardContent, CardActions,
+    Collapse, Menu, MenuItem,
+    Avatar, IconButton, Typography,
+    Button
+} from '@material-ui/core';
+import {updateCapt, deletePost} from '../redux/image'
 import clsx from "clsx";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Collapse from "@material-ui/core/Collapse";
-import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,38 +34,109 @@ const useStyles = makeStyles(theme => ({
   },
   aviImage: {
       maxHeight: "100%",
+  },
+  captionUpdate: {
+      width: "100%",
+  },
+  captButton: {
+      width: "50%"
   }
 }));
 
 const Image = (props) => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [editCaptionBool, setEditCaptionBool] = React.useState('none');
+  const [editTypographyBool, setEditTypographyBool] = React.useState('grid');
+
+  const handleEdit = () => {
+    setEditCaptionBool('flex')
+    setEditTypographyBool('none')
+    handleClose()
+  }
+
+  const handleDelete = () => {
+    props.deletePost(props.imageId, props.token)
+  }
+
+  const cancelEdit = () => {
+      setEditCaptionBool('none')
+      setEditTypographyBool('grid')
+  }
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  console.log(props)
+
+  const submitEdit = e => {
+      e.preventDefault()
+      const newCaption = e.target[0].value;
+      props.updateCapt(newCaption, props.imageId, props.token)
+      cancelEdit()
+  }
 
   return (
     <Card className={classes.root}>
       <CardHeader
         avatar={
           <Avatar aria-label="recipe">
-            <img className={classes.aviImage} src="https://res.cloudinary.com/dgzcv1mcs/image/upload/v1589817904/bw2djxdddpa1mjpshity.jpg" alt="avatarImg"/>
+            <img className={classes.aviImage} src={props.imagePosterAviUrl} alt="avatarImg"/>
           </Avatar>
+        }
+        action={
+          <>
+            <IconButton aria-label="settings" onClick={handleClick}>
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+            >
+              <MenuItem onClick={handleEdit}>Edit</MenuItem>
+              <MenuItem onClick={handleDelete}>Delete</MenuItem>
+            </Menu>
+          </>
         }
         title={`${props.imagePosterUsername}`}
         subheader="September 14, 2016"
       />
       <CardMedia
         className={classes.media}
-        image="https://res.cloudinary.com/dgzcv1mcs/image/upload/v1591737637/bafisqqblpyxx5lx91fx.jpg"
+        image={props.imageUrl}
         title="image"
       />
       <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          CJ
+        <Typography style={{display: editTypographyBool}} variant="body2" color="textSecondary" component="p">
+          {props.imageCapt}
         </Typography>
+        <form style={{display: editCaptionBool}} onSubmit={submitEdit}>
+          <TextField
+            defaultValue={props.imageCapt}
+            className={classes.captionUpdate}
+            variant="outlined"
+            type="caption"
+          />
+          <Button className={classes.captButton} variant="outlined" color="primary" type="submit">
+            Submit
+          </Button>
+          <Button className={classes.captButton} variant="outlined" color="secondary" onClick={cancelEdit}>
+            Cancel
+          </Button>
+        </form>
+
+
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
@@ -112,7 +183,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        updateCapt: (...args) => dispatch(updateCapt(...args)),
+        deletePost: (...args) => dispatch(deletePost(...args)),
     };
 };
 

@@ -48,6 +48,45 @@ export const post = (caption, imgUrl, token) => async (dispatch) => {
     }
 };
 
+
+export const updateCapt = (caption, imageId, token) => async (dispatch) => {
+    try {
+        const body = JSON.stringify({ caption, token })
+        const res = await fetch(`${apiBaseUrl}/posts/${imageId}`, {
+            method: "PUT",
+            body,
+            headers: {
+                "x-access-token": `${token}`,
+                "Content-Type": "application/json"
+            },
+        });
+        if (!res.ok) throw res;
+        const postObj = await res.json()
+        console.log(postObj)
+        return
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+export const deletePost = (imageId, token) => async (dispatch) => {
+    try {
+        const res = await fetch(`${apiBaseUrl}/posts/${imageId}`, {
+            method: "DELETE",
+            headers: {
+                "x-access-token": `${token}`,
+                "Content-Type": "application/json"
+            },
+        });
+        if (!res.ok) throw res;
+        const message = await res.json()
+        console.log(message)
+        return
+    } catch (err) {
+        console.error(err)
+    }
+}
+
 // REDUCER
 export default function reducer(state = {}, action) {
     Object.freeze(state);

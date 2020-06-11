@@ -8,6 +8,7 @@ const UNFOLLOW = 'instantelegram/profile/UNFOLLOW';
 const UPDATE_CAPTION = 'instantelegram/image/UPDATE_CAPTION';
 const FEED_POSTS = 'instantelegram/feed/FEED_POSTS'
 const UPDATE_LIKE = 'instantelegram/like/UPDATE_LIKE';
+const UPDATE_COMMENT = 'instantelegram/comment/UPDATE_COMMENT';
 
 export const loginUser = (token, currentUserId) => ({ type: LOGIN_USER, token, currentUserId });
 export const logoutUser = () => ({ type: LOGOUT_USER });
@@ -17,6 +18,7 @@ export const sendUserUnfollowReq = (userId, followedId) => ({ type: UNFOLLOW, us
 export const getFeedPost = (followingsObj) => ({ type: FEED_POSTS, followingsObj })
 export const updateCaption = (postObj, imageId) => ({ type: UPDATE_CAPTION, postObj, imageId })
 export const updateLike = (imageId, likesArr) => ({ type: UPDATE_LIKE, imageId, likesArr })
+export const updateComment = (postId, commentObj) => ({ type: UPDATE_COMMENT, postId, commentObj })
 
 export const sendRegisterReq = (userInfo) => async dispatch => {
   const res = await fetch(`${apiBaseUrl}/api/session/register`, {
@@ -191,6 +193,30 @@ export const deleteLike = (imageId, token) => async (dispatch) => {
   }
 }
 
+export const createComment = (postId, commentBody, token) => async (dispatch) => {
+    try {
+        const body = JSON.stringify({ commentBody })
+        const res = await fetch(`${apiBaseUrl}/comments/${postId}`, {
+            method: "POST",
+            body,
+            headers: {
+            "x-access-token": `${token}`,
+            "Content-Type": "application/json"
+            },
+        });
+        if (!res.ok) throw res;
+        const commentObj = await res.json();
+        dispatch(updateComment(postId, commentObj))
+        return
+    } catch (err) {
+        console.error(err)
+    }
+  }
+
+// export const deleteComment() = (commentId, token) => async (dispatch) => {
+
+// }
+
 export default function reducer(state = {}, action) {
   switch (action.type) {
     case LOGIN_USER: {
@@ -280,6 +306,12 @@ export default function reducer(state = {}, action) {
       newState.likes[action.imageId] = action.likesArr
       return newState
     }
+
+    case UPDATE_COMMENT: {
+        const newState = Object.assign({}, state)
+        newState.comments[action.postId] = action.commentObj
+        return newState
+      }
 
     default: return state;
   }

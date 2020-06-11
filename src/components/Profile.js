@@ -51,7 +51,7 @@ function Profile(props) {
   React.useEffect(() => {
     let id = window.location.href.split("/")[4];
     props.getUserProfileReq(id);
-  }, [props]);
+  }, []);
 
 
 

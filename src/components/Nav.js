@@ -10,11 +10,11 @@ import IconButton from '@material-ui/core/IconButton';
 import { sendLogoutReq } from '../redux/user';
 import Grid from '@material-ui/core/Grid';
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     backgroundImage: theme.gradientBackground,
+    marginBottom: '5vmax'
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -37,12 +37,13 @@ const NavBar = (props) => {
   }
 
   const navigation = props.currentUserId ? (
+
     <Grid container spacing={3}>
       <Grid item xs={10}>
         <NavLink style={{ color: 'white' }} to="/">
           <Button color="inherit">Instantelegram</Button>
         </NavLink>
-        <NavLink style={{ color: 'white' }} to="/profile">
+        <NavLink style={{ color: 'white' }} to={`/profile/${props.currentUserId}`}>
           <Button color="inherit">Profile</Button>
         </NavLink>
         <NavLink style={{ color: 'white' }} to="/upload">
@@ -54,7 +55,7 @@ const NavBar = (props) => {
           <Button className={classes.logout} color="inherit" onClick={logOut}>Logout</Button>
         </NavLink>
       </Grid>
-    </Grid>
+    </Grid >
   ) : (
       <>
         <NavLink style={{ color: 'white' }} to="/register">
@@ -66,9 +67,10 @@ const NavBar = (props) => {
       </>
     )
 
+
   return (
     <div className={classes.root}>
-      <AppBar position="static" className={classes.root}>
+      <AppBar position="fixed" className={classes.root}>
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
           </IconButton>

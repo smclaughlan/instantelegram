@@ -118,7 +118,8 @@ function Profile(props) {
             //post component
             return (
               <Image imageId={post.id}
-                imageUrl={post.image}
+                postDate={post.timestamp}
+                imageUrl={post.imageUrl}
                 imageCapt={post.caption}
                 imagePosterUsername={props.profileUsername}
                 imagePosterAviUrl={props.profileImage} />

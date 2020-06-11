@@ -1,5 +1,3 @@
-import { updateCaption } from "./user";
-
 const { apiBaseUrl, cloudinaryUrl, cloudinaryPreset, } = require("../config");
 
 // ACTIONS
@@ -33,8 +31,7 @@ export const updateImg = (newImg) => async (dispatch) => {
 
 export const post = (caption, imgUrl, token) => async (dispatch) => {
     try {
-        const body = JSON.stringify({ caption, imgUrl, token})
-        console.log(token)
+        const body = JSON.stringify({ caption, imgUrl, token })
         const res = await fetch(`${apiBaseUrl}/posts/`, {
             method: "POST",
             body,
@@ -60,8 +57,7 @@ export const deletePost = (imageId, token) => async (dispatch) => {
             },
         });
         if (!res.ok) throw res;
-        const message = await res.json()
-        console.log(message)
+        // const message = await res.json()
         return
     } catch (err) {
         console.error(err)
@@ -74,13 +70,13 @@ export default function reducer(state = {}, action) {
     const newState = Object.assign({}, state);
 
     switch (action.type) {
-      case SET_IMG: {
-        return Object.assign(
-            newState,
-            {
-                previewImgUrl: action.previewImgUrl,
-            })
-    }
-      default: return state;
+        case SET_IMG: {
+            return Object.assign(
+                newState,
+                {
+                    previewImgUrl: action.previewImgUrl,
+                })
+        }
+        default: return state;
     }
 }

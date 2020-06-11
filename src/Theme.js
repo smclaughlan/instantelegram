@@ -10,7 +10,7 @@ const theme = createMuiTheme({
     fontFamily: "Verdana"
   }
 });
-console.log(theme);
+
 const Theme = props => {
   return (
     <ThemeProvider theme={theme}>

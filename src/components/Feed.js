@@ -66,17 +66,17 @@ function Feed(props) {
                             const avatarUrl = props.followings[following].avatarUrl;
 
                             if (postObj) {
-                                return Object.values(postObj).map((post) => {
+                                return Object.keys(props.posts).map(key => {
                                     return (
-                                        <Grid item className={classes.column1} key={post.id}>
+                                        <Grid item className={classes.column1}>
                                             <Image
-                                                key={post.id}
-                                                imageId={post.id}
-                                                postDate={post.timestamp}
-                                                imageUrl={post.imageUrl}
-                                                imageCapt={post.caption}
+                                                imageId={key}
+                                                postDate={props.posts[key].timestamp}
+                                                imageUrl={props.posts[key].imageUrl}
+                                                imageCapt={props.posts[key].caption}
                                                 imagePosterUsername={username}
                                                 imagePosterAviUrl={avatarUrl}
+                                            // imageLikes={props.likes[key]}
                                             />
                                         </Grid>
                                     )
@@ -85,17 +85,17 @@ function Feed(props) {
                             return <></>
                         })}
 
-                        {Object.values(props.posts).map(post => {
+                        {Object.keys(props.posts).map(key => {
                             return (
-                                <Grid item className={classes.column1} key={post.id}>
+                                <Grid item className={classes.column1}>
                                     <Image
-                                        key={post.id}
-                                        imageId={post.id}
-                                        postDate={post.timestamp}
-                                        imageUrl={post.imageUrl}
-                                        imageCapt={post.caption}
+                                        imageId={key}
+                                        postDate={props.posts[key].timestamp}
+                                        imageUrl={props.posts[key].imageUrl}
+                                        imageCapt={props.posts[key].caption}
                                         imagePosterUsername={props.user.username}
                                         imagePosterAviUrl={props.user.avatarUrl}
+                                    // imageLikes={props.likes[key]}
                                     />
                                 </Grid>
                             )

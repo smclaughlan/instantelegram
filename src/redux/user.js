@@ -10,7 +10,7 @@ const UPDATE_LIKE = 'instantelegram/like/UPDATE_LIKE';
 
 export const loginUser = (token, currentUserId) => ({ type: LOGIN_USER, token, currentUserId });
 export const logoutUser = () => ({ type: LOGOUT_USER });
-export const getUserProfile = (id, username, bio, avatarUrl, posts, likes) => ({ type: USER_PROFILE, id, username, bio, avatarUrl, posts, likes });
+export const getUserProfile = (id, username, bio, avatarUrl, posts, likes, comments) => ({ type: USER_PROFILE, id, username, bio, avatarUrl, posts, likes, comments });
 export const sendUserFollowReq = (userId, followedId) => ({ type: FOLLOW, userId, followedId });
 export const sendUserUnfollowReq = (userId, followedId) => ({ type: UNFOLLOW, userId, followedId });
 export const updateCaption = (postObj, imageId) => ({ type: UPDATE_CAPTION, postObj, imageId})
@@ -64,15 +64,17 @@ export const getUserProfileReq = (id) => async dispatch => {
   const res = await fetch(`${apiBaseUrl}/api/users/${id}`);
   const res2 = await fetch(`${apiBaseUrl}/posts/${id}`);
   const res3 = await fetch(`${apiBaseUrl}/likes/`);
-  if ((res.ok && res2.ok) && res3.ok) {
+  const res4 = await fetch(`${apiBaseUrl}/comments/`);
+  if ((res.ok && res2.ok) && (res3.ok && res4.ok)) {
     const resJson = await res.json();
     const posts = await res2.json();
     const likes = await res3.json();
+    const comments = await res4.json();
     const username = resJson.username;
     const bio = resJson.bio;
     const avatarUrl = resJson.avatarUrl;
     // console.log(posts);
-    dispatch(getUserProfile(id, username, bio, avatarUrl, posts, likes));
+    dispatch(getUserProfile(id, username, bio, avatarUrl, posts, likes, comments));
   }
 }
 
@@ -189,6 +191,7 @@ export default function reducer(state = {}, action) {
         },
         posts: action.posts,
         likes: action.likes,
+        comments: action.comments,
         ...state,
       }
     }

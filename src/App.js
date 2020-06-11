@@ -5,13 +5,14 @@ import Login from './components/Login';
 import Register from './components/Register'
 import Upload from './components/Upload'
 import NavBar from './components/Nav';
-import Image from './components/Image';
+import Feed from './components/Feed';
 import Profile from './components/Profile';
 import Theme from './Theme';
 
 import { ProtectedRoute, AuthRoute } from "./authRoutes";
 import { ThemeProvider } from '@material-ui/core';
 import { CssBaseline, } from "@material-ui/core";
+
 function App(props) {
   return (
     <>
@@ -38,6 +39,11 @@ function App(props) {
             <ProtectedRoute
               path="/upload"
               component={Upload}
+              currentUserId={props.currentUserId}
+            />
+            <ProtectedRoute
+              exact path="/"
+              component={Feed}
               currentUserId={props.currentUserId}
             />
             {/* <Route path="/register" component={Login} /> */}

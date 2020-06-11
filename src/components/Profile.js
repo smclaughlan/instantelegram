@@ -57,7 +57,6 @@ function Profile(props) {
 
   React.useEffect(() => {
     let id = window.location.href.split("/")[4];
-    console.log(id);
     props.getUserProfileReq(id);
   }, []);
 
@@ -113,23 +112,32 @@ function Profile(props) {
         <div></div>
       }
       <Paper className={classes.paper}>
-        <GridList className={classes.paper} >
+        <Grid
+          container
+          spacing={3}
+          direction="column"
+          justify="center"
+          alignContent="center"
+          alignItems="flex-start"
+        >
           {Object.values(props.posts).map(post => {
             //post component
             return (
-              <Image imageId={post.id}
-                postDate={post.timestamp}
-                imageUrl={post.imageUrl}
-                imageCapt={post.caption}
-                imagePosterUsername={props.profileUsername}
-                imagePosterAviUrl={props.profileImage} />
+              <Grid item className={classes.column1}>
+                <Image imageId={post.id}
+                  postDate={post.timestamp}
+                  imageUrl={post.imageUrl}
+                  imageCapt={post.caption}
+                  imagePosterUsername={props.profileUsername}
+                  imagePosterAviUrl={props.profileImage} />
+              </Grid>
             )
           })}
-        </GridList>
+        </Grid>
       </Paper>
     </div>
     :
-    <div>Loading</div>
+    <div>Loading Profile</div>
   );
 }
 

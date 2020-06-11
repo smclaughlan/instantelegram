@@ -2,14 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Avatar from '@material-ui/core/Avatar';
 import { getFeedPostReq, getUserProfileReq } from '../redux/user';
 
 import Image from './Image';
@@ -75,8 +68,10 @@ function Feed(props) {
                             if (postObj) {
                                 return Object.values(postObj).map((post) => {
                                     return (
-                                        <Grid item className={classes.column1}>
-                                            <Image imageId={post.id}
+                                        <Grid item className={classes.column1} key={post.id}>
+                                            <Image
+                                                key={post.id}
+                                                imageId={post.id}
                                                 postDate={post.timestamp}
                                                 imageUrl={post.imageUrl}
                                                 imageCapt={post.caption}
@@ -87,13 +82,15 @@ function Feed(props) {
                                     )
                                 })
                             }
-                            return;
+                            return <></>
                         })}
 
                         {Object.values(props.posts).map(post => {
                             return (
-                                <Grid item className={classes.column1}>
-                                    <Image imageId={post.id}
+                                <Grid item className={classes.column1} key={post.id}>
+                                    <Image
+                                        key={post.id}
+                                        imageId={post.id}
                                         postDate={post.timestamp}
                                         imageUrl={post.imageUrl}
                                         imageCapt={post.caption}
@@ -103,6 +100,8 @@ function Feed(props) {
                                 </Grid>
                             )
                         })}
+
+
                     </Grid>
 
                 </Paper>

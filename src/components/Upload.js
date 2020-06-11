@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, Container, TextField, Input, InputLabel } from '@material-ui/core';
-import Image from './Image';
+// import Image from './Image';
 
 import { updateImg, post } from '../redux/image'
 
@@ -30,15 +30,6 @@ const Upload = (props) => {
       <div>Caption:</div>
       <TextField variant="outlined" type="caption" onChange={updateValue(setCaption)} />
       <Button color="primary" onClick={postImg} >Post</Button>
-      <Image
-        currentUserId={props.currentUserId}
-        imageId={"3"}
-        imageUrl={"https://res.cloudinary.com/dgzcv1mcs/image/upload/v1591737637/bafisqqblpyxx5lx91fx.jpg"}
-        imageCapt={"CJ"}
-        imagePosterId={"3"}
-        imagePosterAviUrl={"https://res.cloudinary.com/dgzcv1mcs/image/upload/v1589817904/bw2djxdddpa1mjpshity.jpg"}
-        imagePosterUsername={"Username"}
-      />
     </Container>
   )
 }

@@ -7,14 +7,16 @@ const FOLLOW = 'instantelegram/profile/FOLLOW';
 const UNFOLLOW = 'instantelegram/profile/UNFOLLOW';
 const UPDATE_CAPTION = 'instantelegram/image/UPDATE_CAPTION';
 const FEED_POSTS = 'instantelegram/feed/FEED_POSTS'
+const UPDATE_LIKE = 'instantelegram/like/UPDATE_LIKE';
 
 export const loginUser = (token, currentUserId) => ({ type: LOGIN_USER, token, currentUserId });
 export const logoutUser = () => ({ type: LOGOUT_USER });
-export const getUserProfile = (id, username, bio, avatarUrl, posts) => ({ type: USER_PROFILE, id, username, bio, avatarUrl, posts });
+export const getUserProfile = (id, username, bio, avatarUrl, posts, likes) => ({ type: USER_PROFILE, id, username, bio, avatarUrl, posts, likes });
 export const sendUserFollowReq = (userId, followedId) => ({ type: FOLLOW, userId, followedId });
 export const sendUserUnfollowReq = (userId, followedId) => ({ type: UNFOLLOW, userId, followedId });
-export const updateCaption = (postObj, imageId) => ({ type: UPDATE_CAPTION, postObj, imageId })
 export const getFeedPost = (followingsObj) => ({ type: FEED_POSTS, followingsObj })
+export const updateCaption = (postObj, imageId) => ({ type: UPDATE_CAPTION, postObj, imageId })
+export const updateLike = (imageId, likesArr) => ({ type: UPDATE_LIKE, imageId, likesArr })
 
 export const sendRegisterReq = (userInfo) => async dispatch => {
   const res = await fetch(`${apiBaseUrl}/api/session/register`, {
@@ -63,14 +65,16 @@ export const sendLogoutReq = () => async dispatch => {
 export const getUserProfileReq = (id) => async dispatch => {
   const res = await fetch(`${apiBaseUrl}/api/users/${id}`);
   const res2 = await fetch(`${apiBaseUrl}/posts/${id}`);
-  if (res.ok && res2.ok) {
+  const res3 = await fetch(`${apiBaseUrl}/likes/`);
+  if ((res.ok && res2.ok) && res3.ok) {
     const resJson = await res.json();
     const posts = await res2.json();
+    const likes = await res3.json();
     const username = resJson.username;
     const bio = resJson.bio;
     const avatarUrl = resJson.avatarUrl;
-
-    dispatch(getUserProfile(id, username, bio, avatarUrl, posts));
+    // console.log(posts);
+    dispatch(getUserProfile(id, username, bio, avatarUrl, posts, likes));
   }
 }
 
@@ -147,6 +151,43 @@ export const updateCapt = (caption, imageId, token) => async (dispatch) => {
   }
 };
 
+export const createLike = (imageId, token) => async (dispatch) => {
+  try {
+    const res = await fetch(`${apiBaseUrl}/posts/${imageId}/likes`, {
+      method: "POST",
+      headers: {
+        "x-access-token": `${token}`,
+        "Content-Type": "application/json"
+      },
+    });
+    if (!res.ok) throw res;
+    const data = await res.json();
+    const likesArr = data.data
+    dispatch(updateLike(imageId, likesArr))
+    return
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const deleteLike = (imageId, token) => async (dispatch) => {
+  try {
+    const res = await fetch(`${apiBaseUrl}/posts/${imageId}/likes`, {
+      method: "DELETE",
+      headers: {
+        "x-access-token": `${token}`,
+        "Content-Type": "application/json"
+      },
+    });
+    if (!res.ok) throw res;
+    const data = await res.json();
+    const likesArr = data.data
+    dispatch(updateLike(imageId, likesArr))
+    return
+  } catch (err) {
+    console.error(err)
+  }
+}
 
 export default function reducer(state = {}, action) {
   switch (action.type) {
@@ -173,6 +214,7 @@ export default function reducer(state = {}, action) {
           avatarUrl: action.avatarUrl,
         },
         posts: action.posts,
+        likes: action.likes,
         ...state,
       }
     }
@@ -230,6 +272,11 @@ export default function reducer(state = {}, action) {
       return newState;
     }
 
+    case UPDATE_LIKE: {
+      const newState = Object.assign({}, state)
+      newState.likes[action.imageId] = action.likesArr
+      return newState
+    }
 
     default: return state;
   }

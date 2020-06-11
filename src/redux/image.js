@@ -1,5 +1,3 @@
-import { updateCaption } from "./user";
-
 const { apiBaseUrl, cloudinaryUrl, cloudinaryPreset, } = require("../config");
 
 // ACTIONS
@@ -59,7 +57,7 @@ export const deletePost = (imageId, token) => async (dispatch) => {
             },
         });
         if (!res.ok) throw res;
-        const message = await res.json()
+        // const message = await res.json()
         return
     } catch (err) {
         console.error(err)

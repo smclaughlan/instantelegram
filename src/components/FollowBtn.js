@@ -17,18 +17,16 @@ const FollowBtn = (props) => {
   const classes = useStyles();
   // const [followed, setFollowed] = React.useState("not following");
   let followedId = window.location.href.split("/")[4];
-  let testFollow = false
   React.useEffect(() => {
     let userId = parseInt(window.localStorage.getItem("currentUserId"));
     props.getFeedPostReq(userId);
-  }, []);
+  }, [props]);
 
   const handleFollow = async () => {
     // let followedId = window.location.href.split("/")[4];
     let userId = window.localStorage.getItem("currentUserId");
     props.sendFollowReq(userId, followedId);
     // setFollowed("following");
-    testFollow = true
   }
 
   const handleUnfollow = async () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Route, BrowserRouter, Switch } from 'react-router-dom';
+import { BrowserRouter, Switch } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register'
 import Upload from './components/Upload'
@@ -10,7 +10,6 @@ import Profile from './components/Profile';
 import Theme from './Theme';
 
 import { ProtectedRoute, AuthRoute } from "./authRoutes";
-import { ThemeProvider } from '@material-ui/core';
 import { CssBaseline, } from "@material-ui/core";
 
 function App(props) {

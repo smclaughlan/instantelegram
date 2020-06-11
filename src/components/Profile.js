@@ -114,15 +114,20 @@ function Profile(props) {
       }
       <Paper className={classes.paper}>
         <GridList className={classes.paper} >
-          {Object.values(props.posts).map(post => {
+          {Object.keys(props.posts).map(key => {
             //post component
+            // console.log(props.likes[key])
+            // console.log(props.posts[key].likes[key])
             return (
-              <Image imageId={post.id}
-                postDate={post.timestamp}
-                imageUrl={post.imageUrl}
-                imageCapt={post.caption}
+              <Image
+                imageId={key}
+                postDate={props.posts[key].timestamp}
+                imageUrl={props.posts[key].imageUrl}
+                imageCapt={props.posts[key].caption}
                 imagePosterUsername={props.profileUsername}
-                imagePosterAviUrl={props.profileImage} />
+                imagePosterAviUrl={props.profileImage}
+                // imageLikes={props.likes[key]}
+              />
             )
           })}
         </GridList>
@@ -143,6 +148,7 @@ const mapStateToProps = state => {
       profileBio: state.user.profile.bio,
       profileImage: state.user.profile.avatarUrl,
       posts: state.user.posts,
+      likes: state.user.likes
     };
   } else {
     return {

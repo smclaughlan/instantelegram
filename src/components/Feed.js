@@ -60,7 +60,6 @@ function Feed(props) {
                         alignItems="flex-start"
                     >
                         {props.feedPosts.map((post) => {
-                            console.log(post)
                             return (
                                 <Grid item className={classes.column1}>
                                     <Image

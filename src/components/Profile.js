@@ -123,6 +123,7 @@ function Profile(props) {
                   imageCapt={props.posts[key].caption}
                   imagePosterUsername={props.profileUsername}
                   imagePosterAviUrl={props.profileImage}
+                  imagePosterId={props.posts[key].user_id}
                 // imageLikes={props.likes[key]}
                 />
               </Grid>

@@ -74,6 +74,7 @@ function Feed(props) {
                                         imageCapt={post.caption}
                                         imagePosterUsername={post.username}
                                         imagePosterAviUrl={post.avatarUrl}
+                                        imagePosterId={post.userId}
                                     />
                                 </Grid>
                             )

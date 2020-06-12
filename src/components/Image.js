@@ -132,6 +132,27 @@ const Image = (props) => {
       window.location.href = window.location.href;
   }
 
+  const editButton = (parseInt(props.currentUserId) == props.imagePosterId
+        ?
+            <>
+                <IconButton aria-label="settings" onClick={handleClick}>
+                <MoreVertIcon />
+                </IconButton>
+                <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                >
+                <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                <MenuItem onClick={handleDelete}>Delete</MenuItem>
+                </Menu>
+            </>
+        :
+            <></>
+    )
+
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -140,23 +161,7 @@ const Image = (props) => {
             <img className={classes.aviImage} src={props.imagePosterAviUrl} alt="avatarImg" />
           </Avatar>
         }
-        action={
-          <>
-            <IconButton aria-label="settings" onClick={handleClick}>
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={handleEdit}>Edit</MenuItem>
-              <MenuItem onClick={handleDelete}>Delete</MenuItem>
-            </Menu>
-          </>
-        }
+        action={editButton}
         title={`${props.imagePosterUsername}`}
         subheader={`${props.postDate}`}
       />
@@ -198,7 +203,6 @@ const Image = (props) => {
         }
         <div>
           {numOfLikes}
-          {/* {props.imageLikes[props.imageId] ? `${props.imageLikes[props.imageId].length}` : "" } */}
         </div>
         <IconButton
           className={clsx(classes.expand, {

@@ -103,6 +103,7 @@ export const getFeedPostReq = (currentUserId) => async dispatch => {
         postData.avatarUrl = avatarUrl;
         postData.username = username;
         postData.postId = postId;
+        postData.userId = user_id
       }
       postsArr.push(postData)
     }

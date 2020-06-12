@@ -255,7 +255,8 @@ export const deleteComment = (commentId, postId, token) => async (dispatch) => {
     });
     if (!res.ok) throw res;
     const commentObj = await res.json();
-    dispatch(updateComment(postId, commentObj))
+    dispatch(updateComment(postId, commentObj));
+    window.location.href = window.location.href;
     return
   } catch (err) {
     console.error(err)

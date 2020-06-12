@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -60,22 +60,22 @@ const Image = (props) => {
   useEffect(() => {
 
     if (props.imageLikes[props.imageId]) {
-        setNumOfLikes(props.imageLikes[props.imageId].length);
-        if (props.imageLikes[props.imageId].includes(parseInt(props.currentUserId))) {
+      setNumOfLikes(props.imageLikes[props.imageId].length);
+      if (props.imageLikes[props.imageId].includes(parseInt(props.currentUserId))) {
         setLikeState(true);
-        }
+      }
     }
 
   }, [])
 
-//   useEffect(() => {
-//     if (props.imageLikes[props.imageId]) {
-//         console.log('PRINT STATEMENT')
-//         setNumOfLikes(props.imageLikes[props.imageId].length)
-//     } else {
-//         setNumOfLikes(0)
-//     }
-//   }, [props.imageLikes])
+  //   useEffect(() => {
+  //     if (props.imageLikes[props.imageId]) {
+  //         console.log('PRINT STATEMENT')
+  //         setNumOfLikes(props.imageLikes[props.imageId].length)
+  //     } else {
+  //         setNumOfLikes(0)
+  //     }
+  //   }, [props.imageLikes])
 
   const handleEdit = () => {
     setEditCaptionBool('flex')
@@ -89,15 +89,15 @@ const Image = (props) => {
   }
 
   const handleLike = () => {
-      if (likeState) {
-        props.deleteLike(props.imageId, props.token);
-        setLikeState(false)
-        setNumOfLikes(numOfLikes - 1)
-      } else {
-        props.createLike(props.imageId, props.token);
-        setLikeState(true);
-        setNumOfLikes(numOfLikes + 1)
-      }
+    if (likeState) {
+      props.deleteLike(props.imageId, props.token);
+      setLikeState(false)
+      setNumOfLikes(numOfLikes - 1)
+    } else {
+      props.createLike(props.imageId, props.token);
+      setLikeState(true);
+      setNumOfLikes(numOfLikes + 1)
+    }
   }
 
   const cancelEdit = () => {
@@ -189,7 +189,7 @@ const Image = (props) => {
       <CardActions disableSpacing>
         {likeState ?
           <IconButton aria-label="add to favorites" onClick={handleLike}>
-            <FavoriteIcon color='secondary'/>
+            <FavoriteIcon color='secondary' />
           </IconButton>
           :
           <IconButton aria-label="add to favorites" onClick={handleLike}>
@@ -197,8 +197,8 @@ const Image = (props) => {
           </IconButton>
         }
         <div>
-            {numOfLikes}
-        {/* {props.imageLikes[props.imageId] ? `${props.imageLikes[props.imageId].length}` : "" } */}
+          {numOfLikes}
+          {/* {props.imageLikes[props.imageId] ? `${props.imageLikes[props.imageId].length}` : "" } */}
         </div>
         <IconButton
           className={clsx(classes.expand, {

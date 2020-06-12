@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, Container, TextField, Input, InputLabel } from '@material-ui/core';
+import { makeStyles } from "@material-ui/core/styles";
 
 import { updateAvatar, updateBioReq } from '../redux/editProfile';
 
+const useStyles = makeStyles(theme => ({
+  bioUpdate: {
+    width: "100%",
+  },
+}));
+
 const EditProfile = (props) => {
   const [bio, setBio] = useState('')
+  const classes = useStyles();
 
   const updateValue = cb => e => cb(e.target.value);
 
@@ -29,15 +37,25 @@ const EditProfile = (props) => {
   }
 
   return (
-    <Container>
-      <div>Image Preview:</div>
-      <img src={props.avatarUrl} alt='preview' width="400" />
-      <InputLabel htmlFor="image-upload" >Select Image</InputLabel>
-      <Input id="image-upload" type="file" label="Image" style={{ display: 'none' }} onChange={handleNewImage} />
-      <div>Bio:</div>
-      <TextField variant="outlined" type="caption" onChange={updateValue(setBio)} />
+    <Container style={{ display: 'grid', gridGap: '32px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ alignSelf: 'center' }}>Image Preview:</div>
+        <img src={props.avatarUrl} alt='preview' width="400" style={{ alignSelf: 'center' }} />
+        <InputLabel style={{ alignSelf: 'center' }} htmlFor="image-upload" >Select Image</InputLabel>
+        <Input id="image-upload" type="file" label="Image" style={{ display: 'none' }} onChange={handleNewImage} />
+      </div>
       <div>
-        <Button color="primary" onClick={updateBio} >Update bio</Button>
+        <div>Bio:</div>
+        <TextField
+          variant="outlined"
+          type="caption"
+          onChange={updateValue(setBio)}
+          className={classes.bioUpdate}
+          defaultValue={props.profileBio}
+        />
+        <div>
+          <Button color="primary" onClick={updateBio} >Update bio</Button>
+        </div>
       </div>
     </Container>
   )

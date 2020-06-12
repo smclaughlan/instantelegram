@@ -15,7 +15,7 @@ export const logoutUser = () => ({ type: LOGOUT_USER });
 export const getUserProfile = (id, username, bio, avatarUrl, posts, likes, comments) => ({ type: USER_PROFILE, id, username, bio, avatarUrl, posts, likes, comments });
 export const sendUserFollowReq = (userId, followedId) => ({ type: FOLLOW, userId, followedId });
 export const sendUserUnfollowReq = (userId, followedId) => ({ type: UNFOLLOW, userId, followedId });
-export const getFeedPost = (followingsObj) => ({ type: FEED_POSTS, followingsObj })
+export const getFeedPost = (postsArr) => ({ type: FEED_POSTS, postsArr })
 export const updateCaption = (postObj, imageId) => ({ type: UPDATE_CAPTION, postObj, imageId })
 export const updateLike = (imageId, likesArr) => ({ type: UPDATE_LIKE, imageId, likesArr })
 export const updateComment = (postId, commentObj) => ({ type: UPDATE_COMMENT, postId, commentObj })
@@ -83,26 +83,33 @@ export const getUserProfileReq = (id) => async dispatch => {
 }
 
 export const getFeedPostReq = (currentUserId) => async dispatch => {
-  const followingListRes = await fetch(`${apiBaseUrl}/api/users/${currentUserId}/followings`);
-  if (followingListRes.ok) {
-    const followingList = await followingListRes.json();
-    let followings = {};
+  const postsRes = await fetch(`${apiBaseUrl}/api/users/${currentUserId}/posts`);
 
-    for (const id in followingList) {
-      const followingId = followingList[id].followingId;
-      const res = await fetch(`${apiBaseUrl}/api/users/${followingId}`);
-      const res2 = await fetch(`${apiBaseUrl}/posts/${followingId}`);
+  if (postsRes.ok) {
+    const posts = await postsRes.json();
+    let postsArr = [];
 
-      if (res.ok && res2.ok) {
-        const resJson = await res.json();
-        const posts = await res2.json();
-        const username = resJson.username;
-        const avatarUrl = resJson.avatarUrl;
+    for (const post in posts) {
+      const postObj = posts[post];
+      const postId = post;
+      const { user_id, ...postData } = postObj;
 
-        followings[followingId] = { posts, username, avatarUrl }
+      const postUserRes = await fetch(`${apiBaseUrl}/api/users/${user_id}`);
+
+      if (postUserRes.ok) {
+        const postUserData = await postUserRes.json();
+        const { avatarUrl, username } = postUserData;
+
+        postData.avatarUrl = avatarUrl;
+        postData.username = username;
+        postData.postId = postId;
       }
+      postsArr.push(postData)
     }
-    dispatch(getFeedPost(followings));
+    postsArr.sort((a, b) => {
+      return a.timestamp < b.timestamp
+    })
+    dispatch(getFeedPost(postsArr))
   }
 }
 
@@ -264,15 +271,10 @@ export default function reducer(state = {}, action) {
       }
     }
     case FEED_POSTS: {
-      // return {
-      //   followings: action.followingsObj,
-      //   ...state,
-      // }
-
-
-      const newState = Object.assign({}, state);
-      newState.followings = action.followingsObj;
-      return newState;
+      return {
+        feedPosts: action.postsArr,
+        ...state,
+      }
     }
     case FOLLOW: {
       // if (state.follows) {

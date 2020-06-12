@@ -51,9 +51,9 @@ const NavBar = (props) => {
         </NavLink>
       </Grid>
       <Grid item xs={2}>
-        <NavLink className={classes.logout} style={{ color: 'white' }} to="/login">
+        <div className={classes.logout} style={{ color: 'white' }}>
           <Button className={classes.logout} color="inherit" onClick={logOut}>Logout</Button>
-        </NavLink>
+        </div>
       </Grid>
     </Grid >
   ) : (

@@ -3,3 +3,28 @@ body, html {
   margin: 0;
   padding: 0;
 }
+
+/* Page Transitions */
+.fade-enter {
+    opacity: 0;
+    transition: opacity 300ms ease-in;
+}
+.fade-enter.fade-enter-active {
+    opacity: 1;
+    z-index: 3;
+}
+.fade-exit {
+    opacity: 1;
+    transition: opacity 300ms ease-in;
+}
+.fade-exit.fade-exit-active {
+    opacity: 0;
+}
+
+.wrapper {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    transition: all .5s;
+    will-change: opacity, right;
+}

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { sendFollowReq, sendUnfollowReq } from '../redux/user';
-import { getFeedPostReq } from '../redux/user';
+import { getFollowings } from '../redux/user';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,7 +19,7 @@ const FollowBtn = (props) => {
   let followedId = window.location.href.split("/")[4];
   React.useEffect(() => {
     let userId = parseInt(window.localStorage.getItem("currentUserId"));
-    props.getFeedPostReq(userId);
+    props.getFollowings(userId);
   }, []);
 
   const handleFollow = async () => {
@@ -63,7 +63,7 @@ const FollowBtn = (props) => {
 const mapStateToProps = state => {
   return {
     token: state.user.token,
-    followings: state.user.followings,
+    followings: state.user.profile.followings,
   };
 };
 
@@ -71,7 +71,7 @@ const mapDispatchToProps = dispatch => {
   return {
     sendFollowReq: (...args) => dispatch(sendFollowReq(...args)),
     sendUnfollowReq: (...args) => dispatch(sendUnfollowReq(...args)),
-    getFeedPostReq: (...args) => dispatch(getFeedPostReq(...args)),
+    getFollowings: (...args) => dispatch(getFollowings(...args)),
   };
 };
 

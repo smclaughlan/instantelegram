@@ -50,7 +50,7 @@ const Upload = (props) => {
   const postImg = e => {
     e.preventDefault();
     props.post(caption, props.previewImgUrl, props.token)
-    props.history.push('/profile')
+    props.history.push('/')
   }
 
   return (
@@ -85,7 +85,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    // TODO: update this with token to lock it down
     post: (...args) => dispatch(post(...args)),
     updateImg: (newImg) => dispatch(updateImg(newImg)),
   };

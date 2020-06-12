@@ -14,14 +14,13 @@ export const ProtectedRoute = ({ component: Component, path, currentUserId, exac
 };
 
 export const AuthRoute = ({ component: Component, path, currentUserId, exact }) => {
-  return (
-    <Route
-      path={path}
-      exact={exact}
-      render={(props) =>
-        // we can change this to redirect to feed as well
-        currentUserId ? <Redirect to={`/profile/${currentUserId}`} /> : <Component {...props} />
-      }
-    />
-  );
+    return (
+      <Route
+        path={path}
+        exact={exact}
+        render={(props) =>
+          currentUserId ? <Redirect to='/' /> : <Component {...props} />
+        }
+      />
+    );
 };

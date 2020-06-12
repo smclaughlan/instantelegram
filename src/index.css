@@ -3,3 +3,9 @@ body, html {
   margin: 0;
   padding: 0;
 }
+
+.imgUpload {
+  width: 500px;
+  height: 500px;
+  margin: auto,
+}

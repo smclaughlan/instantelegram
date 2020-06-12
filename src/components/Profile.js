@@ -13,6 +13,7 @@ import EditProfile from './EditProfile';
 import Image from './Image';
 import FollowBtn from './FollowBtn';
 import MessageBtn from './MessageBtn';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -131,7 +132,7 @@ function Profile(props) {
       </Paper>
     </div>
     :
-    <div>Loading Profile</div>
+    <CircularProgress />
   );
 }
 

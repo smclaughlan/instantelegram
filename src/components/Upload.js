@@ -5,33 +5,49 @@ import { Button, Container, TextField, Input, InputLabel } from '@material-ui/co
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import { updateImg, post } from '../redux/image'
-
+import '../index.css';
 const useStyles = makeStyles((theme) => ({
-  img: {
-    maxWidth: 500,
-    maxHeight: 500,
-  },
+  // container: {
+  //   margin: 'auto',
+  //   maxWidth: 500,
+  //   maxHeight: 500,
+  // },
+  // img: {
+  //   maxWidth: 500,
+  //   maxHeight: 500,
+  // },
   post: {
     margin: 'auto',
     maxWidth: 500,
     maxHeight: 500,
   },
   caption: {
-    margin: 'auto',
+    marginTop: 20,
+    marginLeft: 'auto',
+    marginRight: 'auto',
     width: 500,
-    height: 500,
+    // height: 500,
 
   },
   paper: {
-    maxWidth: 500,
-    maxHeight: 500,
+    width: 500,
+    height: 500,
     margin: 'auto',
     justifyContent: 'space-around',
 
   },
+  captionBtn: {
+    margin: 'auto',
+    width: 100,
+    // height: 500,
 
+  },
+  captionText: {
+    margin: 'auto',
+    width: 400,
+    // height: 500,
 
-
+  },
 
 
 }));
@@ -57,19 +73,19 @@ const Upload = (props) => {
     <Container className={classes.container}>
       <div className={classes.post} >
         <InputLabel htmlFor="image-upload"  >Select Image</InputLabel>
-        <Input id="image-upload" type="file" label="Image" style={{ display: 'none' }} onChange={handleNewImage} className={classes.img} />
+        <Input id="image-upload" type="file" label="Image" style={{ display: 'none', width: '500px' }} onChange={handleNewImage} className={classes.img} />
       </div>
       <Paper elevation={3} className={classes.paper} >
         {/* <div>Image Preview:</div> */}
-        <img src={props.previewImgUrl} alt='preview' />
+        <img src={props.previewImgUrl} alt='preview' className={"imgUpload"} />
       </Paper>
       {/* <div className={classes.post} > */}
       {/* <InputLabel htmlFor="image-upload"  >Select Image</InputLabel>
         <Input id="image-upload" type="file" label="Image" style={{ display: 'none' }} onChange={handleNewImage} /> */}
       {/* <div >Caption:</div> */}
       <div className={classes.caption}>
-        <TextField variant="outlined" type="caption" onChange={updateValue(setCaption)} />
-        <Button color="primary" onClick={postImg}  >Post</Button>
+        <TextField variant="outlined" type="caption" onChange={updateValue(setCaption)} className={classes.captionText} />
+        <Button color="primary" onClick={postImg} className={classes.captionBtn} >Post</Button>
       </div>
       {/* </div> */}
     </Container>

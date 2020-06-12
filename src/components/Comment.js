@@ -29,7 +29,6 @@ const Comment = (props) => {
 
     const handleDelete = e => {
         props.deleteComment(props.commentId, props.imageId, props.token)
-        window.location.href = window.location.href
     }
 
     return (
@@ -38,13 +37,13 @@ const Comment = (props) => {
                 <Avatar aria-label="commentavi" onClick={routeToProfile}>
                     <img className={classes.aviImage} src={props.commenterAvi}></img>
                 </Avatar>
-                { props.commenterId == props.currentUserId
-                ?
-                <IconButton aria-label="delete" onClick={handleDelete}>
-                    <DeleteIcon />
-                </IconButton>
-                :
-                <div/>}
+                {props.commenterId == props.currentUserId
+                    ?
+                    <IconButton aria-label="delete" onClick={handleDelete}>
+                        <DeleteIcon />
+                    </IconButton>
+                    :
+                    <div />}
             </div>
             <div className="commentContainer">
                 <Typography>
@@ -61,18 +60,18 @@ const Comment = (props) => {
 
 const mapStateToProps = state => {
     return {
-      token: state.user.token,
-      currentUserId: state.user.currentUserId,
+        token: state.user.token,
+        currentUserId: state.user.currentUserId,
     };
-  };
+};
 
-  const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = dispatch => {
     return {
-      deleteComment: (...args) => dispatch(deleteComment(...args)),
+        deleteComment: (...args) => dispatch(deleteComment(...args)),
     };
-  };
+};
 
-  export default connect(
+export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(Comment);
+)(Comment);

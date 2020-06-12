@@ -54,6 +54,7 @@ export const updateBioReq = (userId, bio, token) => async (dispatch) => {
       },
     });
     if (!res.ok) throw res;
+    window.location.href = window.location.href;
     return
   } catch (err) {
     console.error(err);

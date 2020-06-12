@@ -39,6 +39,11 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: 500,
         height: 450,
     },
+    topLogo: {
+        justifyContent: 'space-around',
+        margin: '0 auto',
+        maxWidth: 1000,
+    },
 }));
 
 function Feed(props) {
@@ -52,9 +57,11 @@ function Feed(props) {
     return (
         (props.feedPosts && props.user) ?
             <div className={classes.root}>
-                <Container>
-                    <img alt="Instantelegram logo" src="public/images/logoIG.png"></img>
-                </Container>
+                <Paper className={classes.topLogo}>
+                    <Container>
+                        <img alt={"Instantelegram logo"} src={"images/logoIG.png"} style={{ margin: '20 auto', borderRadius: '5px', maxWidth: '950px' }}></img>
+                    </Container>
+                </Paper>
                 <Paper className={classes.paper}>
                     <Grid
                         container

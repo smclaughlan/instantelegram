@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter, Switch } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register'
 import Upload from './components/Upload'
@@ -8,7 +8,7 @@ import NavBar from './components/Nav';
 import Feed from './components/Feed';
 import Profile from './components/Profile';
 import Theme from './Theme';
-
+import Splash from './components/Splash'
 import { ProtectedRoute, AuthRoute } from "./authRoutes";
 import { CssBaseline, } from "@material-ui/core";
 
@@ -19,7 +19,10 @@ function App(props) {
       <Theme>
         <BrowserRouter>
           <NavBar />
+
           <Switch>
+            <Route path="/splash"
+              component={Splash} />
             <ProtectedRoute
               path="/profile/:userid"
               component={Profile}

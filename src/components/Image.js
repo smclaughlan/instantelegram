@@ -18,7 +18,8 @@ import Comment from './Comment';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    maxWidth: 345
+    maxWidth: 345,
+    width: 345
   },
   media: {
     height: 0,
@@ -153,6 +154,8 @@ const Image = (props) => {
             <></>
     )
 
+    const timestampDate = new Date(props.postDate)
+
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -163,7 +166,7 @@ const Image = (props) => {
         }
         action={editButton}
         title={`${props.imagePosterUsername}`}
-        subheader={`${props.postDate}`}
+        subheader={`${timestampDate.toDateString()}`}
       />
       <CardMedia
         className={classes.media}

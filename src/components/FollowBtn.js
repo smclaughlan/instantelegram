@@ -40,7 +40,7 @@ const FollowBtn = (props) => {
   // return (followed === "not following" ?
   return (
     props.followings ?
-      (props.followings[parseInt(window.location.href.split("/")[4])] ?
+      (props.followings.includes(parseInt(window.location.href.split("/")[4])) ?
         // (followedId ?
         // (testFollow ?
         <div className={classes.root}>

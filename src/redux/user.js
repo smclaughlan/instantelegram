@@ -80,6 +80,7 @@ export const getUserProfileReq = (id) => async dispatch => {
     const bio = resJson.bio;
     const avatarUrl = resJson.avatarUrl;
     // console.log(posts);
+    console.log('hi')
     dispatch(getUserProfile(id, username, bio, avatarUrl, posts, likes, comments));
   }
 }

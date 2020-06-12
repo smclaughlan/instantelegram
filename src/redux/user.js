@@ -8,11 +8,8 @@ const UNFOLLOW = 'instantelegram/profile/UNFOLLOW';
 const UPDATE_CAPTION = 'instantelegram/image/UPDATE_CAPTION';
 const FEED_POSTS = 'instantelegram/feed/FEED_POSTS'
 const UPDATE_LIKE = 'instantelegram/like/UPDATE_LIKE';
-<<<<<<< HEAD
 const GET_FOLLOWINGS = 'instantelegram/profile/GET_FOLLOWINGS'
-=======
 const UPDATE_COMMENT = 'instantelegram/comment/UPDATE_COMMENT';
->>>>>>> e9ceebad9093115dbbac3536cb39e7a1592f6267
 
 export const loginUser = (token, currentUserId) => ({ type: LOGIN_USER, token, currentUserId });
 export const logoutUser = () => ({ type: LOGOUT_USER });

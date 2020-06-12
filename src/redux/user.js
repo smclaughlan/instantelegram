@@ -213,9 +213,25 @@ export const createComment = (postId, commentBody, token) => async (dispatch) =>
     }
   }
 
-// export const deleteComment() = (commentId, token) => async (dispatch) => {
-
-// }
+export const deleteComment = (commentId, postId, token) => async (dispatch) => {
+    try {
+        const body = JSON.stringify({ postId })
+        const res = await fetch(`${apiBaseUrl}/comments/${commentId}`, {
+            method: "DELETE",
+            body,
+            headers: {
+            "x-access-token": `${token}`,
+            "Content-Type": "application/json"
+            },
+        });
+        if (!res.ok) throw res;
+        const commentObj = await res.json();
+        dispatch(updateComment(postId, commentObj))
+        return
+    } catch (err) {
+        console.error(err)
+    }
+}
 
 export default function reducer(state = {}, action) {
   switch (action.type) {

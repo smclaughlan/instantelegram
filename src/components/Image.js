@@ -85,6 +85,7 @@ const Image = (props) => {
 
   const handleDelete = () => {
     props.deletePost(props.imageId, props.token)
+    window.location.href = window.location.href
   }
 
   const handleLike = () => {
@@ -121,6 +122,7 @@ const Image = (props) => {
     const newCaption = e.target[0].value;
     props.updateCapt(newCaption, props.imageId, props.token)
     cancelEdit()
+    window.location.href = window.location.href
   }
 
   const submitComment = e => {
@@ -223,12 +225,15 @@ const Image = (props) => {
             </Button>
           </form>
           {props.comments[props.imageId] ?
-            Object.values(props.comments[props.imageId]).map(comment => {
+            Object.keys(props.comments[props.imageId]).map(key => {
                 return (
                     <Comment
-                        commenterAvi={comment.commenterAvi}
-                        commenter={comment.commenter}
-                        comment={comment.body}
+                        commentId={key}
+                        imageId={props.imageId}
+                        commenterId={props.comments[props.imageId][key].commenterId}
+                        commenterAvi={props.comments[props.imageId][key].commenterAvi}
+                        commenter={props.comments[props.imageId][key].commenter}
+                        comment={props.comments[props.imageId][key].body}
                     />
                 )
             })

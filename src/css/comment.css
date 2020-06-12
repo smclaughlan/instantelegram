@@ -1,0 +1,9 @@
+.commentContainer {
+    display: flex;
+}
+
+.commentDetail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

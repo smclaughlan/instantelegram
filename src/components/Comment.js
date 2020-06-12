@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography, Avatar, Paper} from '@material-ui/core';
-
+import { Typography, Avatar, Paper, IconButton } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
+import "../css/comment.css";
+import { deleteComment } from '../redux/user'
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -19,20 +21,40 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Comment = (props) => {
-  const classes = useStyles();
+    const classes = useStyles();
+
+    const routeToProfile = () => {
+        window.location.href = `/profile/${props.commenterId}`
+    }
+
+    const handleDelete = e => {
+        props.deleteComment(props.commentId, props.imageId, props.token)
+        window.location.href = window.location.href
+    }
 
     return (
         <Paper className={classes.paper}>
-            <Avatar aria-label="commentavi">
-                <img className={classes.aviImage} src={props.commenterAvi}></img>
-            </Avatar>
+            <div className="commentDetail">
+                <Avatar aria-label="commentavi" onClick={routeToProfile}>
+                    <img className={classes.aviImage} src={props.commenterAvi}></img>
+                </Avatar>
+                { props.commenterId == props.currentUserId
+                ?
+                <IconButton aria-label="delete" onClick={handleDelete}>
+                    <DeleteIcon />
+                </IconButton>
+                :
+                <div/>}
+            </div>
+            <div className="commentContainer">
+                <Typography>
+                    {props.commenter}
+                </Typography>
+                <Typography>
+                    {`:  ${props.comment}`}
+                </Typography>
+            </div>
 
-            <Typography>
-                {props.commenter} :
-            </Typography>
-            <Typography>
-                {props.comment}
-            </Typography>
         </Paper>
     )
 }
@@ -40,12 +62,13 @@ const Comment = (props) => {
 const mapStateToProps = state => {
     return {
       token: state.user.token,
+      currentUserId: state.user.currentUserId,
     };
   };
 
   const mapDispatchToProps = dispatch => {
     return {
-    //   post: (...args) => dispatch(post(...args)),
+      deleteComment: (...args) => dispatch(deleteComment(...args)),
     };
   };
 

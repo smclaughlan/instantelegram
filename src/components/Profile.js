@@ -147,7 +147,7 @@ const mapStateToProps = state => {
       profileBio: state.user.profile.bio,
       profileImage: state.user.profile.avatarUrl,
       posts: state.user.posts,
-      likes: state.user.likes
+      likes: state.user.likes,
     };
   } else {
     return {

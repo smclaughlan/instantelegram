@@ -8,7 +8,11 @@ const UNFOLLOW = 'instantelegram/profile/UNFOLLOW';
 const UPDATE_CAPTION = 'instantelegram/image/UPDATE_CAPTION';
 const FEED_POSTS = 'instantelegram/feed/FEED_POSTS'
 const UPDATE_LIKE = 'instantelegram/like/UPDATE_LIKE';
+<<<<<<< HEAD
+const GET_FOLLOWINGS = 'instantelegram/profile/GET_FOLLOWINGS'
+=======
 const UPDATE_COMMENT = 'instantelegram/comment/UPDATE_COMMENT';
+>>>>>>> e9ceebad9093115dbbac3536cb39e7a1592f6267
 
 export const loginUser = (token, currentUserId) => ({ type: LOGIN_USER, token, currentUserId });
 export const logoutUser = () => ({ type: LOGOUT_USER });
@@ -16,6 +20,7 @@ export const getUserProfile = (id, username, bio, avatarUrl, posts, likes, comme
 export const sendUserFollowReq = (userId, followedId) => ({ type: FOLLOW, userId, followedId });
 export const sendUserUnfollowReq = (userId, followedId) => ({ type: UNFOLLOW, userId, followedId });
 export const getFeedPost = (postsArr) => ({ type: FEED_POSTS, postsArr })
+export const setFollowings = (followingsArr) => ({ type: GET_FOLLOWINGS, followingsArr })
 export const updateCaption = (postObj, imageId) => ({ type: UPDATE_CAPTION, postObj, imageId })
 export const updateLike = (imageId, likesArr) => ({ type: UPDATE_LIKE, imageId, likesArr })
 export const updateComment = (postId, commentObj) => ({ type: UPDATE_COMMENT, postId, commentObj })
@@ -111,6 +116,23 @@ export const getFeedPostReq = (currentUserId) => async dispatch => {
       return a.timestamp < b.timestamp
     })
     dispatch(getFeedPost(postsArr))
+  }
+}
+
+export const getFollowings = (currentUserId) => async dispatch => {
+  const followingsRes = await fetch(`${apiBaseUrl}/api/users/${currentUserId}/followings`)
+
+  if (followingsRes.ok) {
+    const followings = await followingsRes.json();
+    console.log(followings)
+    let followingsArr = [];
+
+    for (const key in followings) {
+      const followingId = followings[key].followingId;
+      followingsArr.push(followingId)
+    }
+
+    dispatch(setFollowings(followingsArr))
   }
 }
 
@@ -277,41 +299,32 @@ export default function reducer(state = {}, action) {
         ...state,
       }
     }
-    case FOLLOW: {
-      // if (state.follows) {
-      //   state.follows.push(action.followedId);
-      // } else {
-      //   state.follows = [action.followedId];
-      // }
+    case GET_FOLLOWINGS: {
       return {
         ...state,
-        followings: {
-          ...state.followings,
-          [action.followedId]: {}
-        },
+        profile: {
+          ...state.profile,
+          followings: action.followingsArr,
+        }
+      }
+    }
+    case FOLLOW: {
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          followings: [...state.profile.followings, parseInt(action.followedId)]
+        }
       };
-
     }
     case UNFOLLOW: {
-      // if (state.follows) {
-      //   let idx = state.follows.indexOf(action.followedId);
-      //   let arr1 = state.follows.slice(0, idx);
-      //   let arr2 = state.follows.slice(idx + 1);
-      //   state.follows = arr1.concat(arr2);
-      // }
-      // return {
-      //   ...state,
-
-      //   followings: {
-      //     ...state.Object.keys(followings).filter()
-      //   }
-      // }
-
-      const newState = Object.assign({}, state);
-      const { [action.followedId]: id, ...notFollowed } = state.followings;
-      newState.followings = notFollowed;
-      return newState;
-
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          followings: state.profile.followings.filter(followingId => followingId != action.followedId)
+        }
+      };
     }
 
     case UPDATE_CAPTION: {

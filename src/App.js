@@ -21,8 +21,10 @@ function App(props) {
           <NavBar />
 
           <Switch>
-            <Route path="/splash"
-              component={Splash} />
+            <AuthRoute exact path="/"
+              component={Splash}
+              currentUserId={props.currentUserId}
+            />
             <ProtectedRoute
               path="/profile/:userid"
               component={Profile}
@@ -44,9 +46,10 @@ function App(props) {
               currentUserId={props.currentUserId}
             />
             <ProtectedRoute
-              exact path="/"
+              exact path="/home"
               component={Feed}
               currentUserId={props.currentUserId}
+
             />
           </Switch>
         </BrowserRouter>

@@ -2,6 +2,7 @@ const { apiBaseUrl, cloudinaryUrl, cloudinaryPreset, } = require("../config");
 
 // ACTIONS
 const SET_IMG = 'instantelegram/upload/SET_IMG';
+const DEL_POST = 'instantelegram/image/DEL_POST'
 
 const setImgUrl = (previewImgUrl) => (
     {

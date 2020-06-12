@@ -20,7 +20,7 @@ const FollowBtn = (props) => {
   React.useEffect(() => {
     let userId = parseInt(window.localStorage.getItem("currentUserId"));
     props.getFeedPostReq(userId);
-  }, [props]);
+  }, []);
 
   const handleFollow = async () => {
     // let followedId = window.location.href.split("/")[4];

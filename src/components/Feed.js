@@ -48,7 +48,7 @@ function Feed(props) {
 
     const classes = useStyles();
     return (
-        (props.followings && props.user) ?
+        (props.feedPosts && props.user) ?
             <div className={classes.root}>
                 <Paper className={classes.paper}>
                     <Grid
@@ -59,51 +59,22 @@ function Feed(props) {
                         alignContent="center"
                         alignItems="flex-start"
                     >
-
-                        {Object.keys(props.followings).map(following => {
-                            const postObj = props.followings[following].posts;
-                            const username = props.followings[following].username;
-                            const avatarUrl = props.followings[following].avatarUrl;
-
-                            if (postObj) {
-                                return Object.keys(props.posts).map(key => {
-                                    return (
-                                        <Grid item className={classes.column1}>
-                                            <Image
-                                                imageId={key}
-                                                postDate={props.posts[key].timestamp}
-                                                imageUrl={props.posts[key].imageUrl}
-                                                imageCapt={props.posts[key].caption}
-                                                imagePosterUsername={username}
-                                                imagePosterAviUrl={avatarUrl}
-                                            // imageLikes={props.likes[key]}
-                                            />
-                                        </Grid>
-                                    )
-                                })
-                            }
-                            return <></>
-                        })}
-
-                        {Object.keys(props.posts).map(key => {
+                        {props.feedPosts.map((post) => {
+                            console.log(post)
                             return (
                                 <Grid item className={classes.column1}>
                                     <Image
-                                        imageId={key}
-                                        postDate={props.posts[key].timestamp}
-                                        imageUrl={props.posts[key].imageUrl}
-                                        imageCapt={props.posts[key].caption}
-                                        imagePosterUsername={props.user.username}
-                                        imagePosterAviUrl={props.user.avatarUrl}
-                                    // imageLikes={props.likes[key]}
+                                        imageId={post.postId}
+                                        postDate={post.timestamp}
+                                        imageUrl={post.imageUrl}
+                                        imageCapt={post.caption}
+                                        imagePosterUsername={post.username}
+                                        imagePosterAviUrl={post.avatarUrl}
                                     />
                                 </Grid>
                             )
                         })}
-
-
                     </Grid>
-
                 </Paper>
             </div >
             :
@@ -113,8 +84,7 @@ function Feed(props) {
 
 const mapStateToProps = state => {
     return {
-        followings: state.user.followings,
-        posts: state.user.posts,
+        feedPosts: state.user.feedPosts,
         user: state.user.profile,
     }
 };

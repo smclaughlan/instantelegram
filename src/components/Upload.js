@@ -72,8 +72,8 @@ const Upload = (props) => {
   return (
     <Container className={classes.container}>
       <div className={classes.post} >
-        <InputLabel htmlFor="image-upload"  >Select Image</InputLabel>
-        <Input id="image-upload" type="file" label="Image" style={{ display: 'none', width: '500px' }} onChange={handleNewImage} className={classes.img} />
+        <InputLabel htmlFor="image-upload" style={{ margin: '20px', marginTop: '100px' }} >Select Image</InputLabel>
+        <Input id="image-upload" type="file" label="Image" style={{ display: 'none', width: '500px', margin: '20px' }} onChange={handleNewImage} className={classes.img} />
       </div>
       <Paper elevation={3} className={classes.paper} >
         {/* <div>Image Preview:</div> */}
@@ -84,8 +84,8 @@ const Upload = (props) => {
         <Input id="image-upload" type="file" label="Image" style={{ display: 'none' }} onChange={handleNewImage} /> */}
       {/* <div >Caption:</div> */}
       <div className={classes.caption}>
-        <TextField variant="outlined" type="caption" onChange={updateValue(setCaption)} className={classes.captionText} />
-        <Button color="primary" onClick={postImg} className={classes.captionBtn} >Post</Button>
+        <TextField variant="outlined" type="caption" onChange={updateValue(setCaption)} className={classes.captionText} placeholder='Enter caption' />
+        <Button color="primary" onClick={postImg} className={classes.captionBtn} style={{ margin: '20px' }}>Post</Button>
       </div>
       {/* </div> */}
     </Container>

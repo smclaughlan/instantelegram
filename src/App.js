@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
 import Login from './components/Login';
 import Register from './components/Register'
 import Upload from './components/Upload'
@@ -8,6 +9,7 @@ import NavBar from './components/Nav';
 import Feed from './components/Feed';
 import Profile from './components/Profile';
 import Theme from './Theme';
+import Splash from './components/Splash'
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 import { ProtectedRoute, AuthRoute } from "./authRoutes";
@@ -29,6 +31,8 @@ function App(props) {
                 classNames='fade'
               >
                 <Switch>
+                  <Route path="/splash"
+                    component={Splash} />
                   <ProtectedRoute
                     path="/profile/:userid"
                     component={Profile}
@@ -54,7 +58,6 @@ function App(props) {
                     component={Feed}
                     currentUserId={props.currentUserId}
                   />
-                  {/* <Route path="/register" component={Login} /> */}
                 </Switch>
               </CSSTransition>
             </TransitionGroup>

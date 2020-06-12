@@ -19,7 +19,6 @@ function App(props) {
       <CssBaseline />
       <Theme>
         <BrowserRouter>
-<<<<<<< HEAD
           <NavBar location={props.location} />
 
           <Route render={({ location }) => (
@@ -60,36 +59,6 @@ function App(props) {
               </CSSTransition>
             </TransitionGroup>
           )} />
-=======
-          <NavBar />
-          <Switch>
-            <ProtectedRoute
-              path="/profile/:userid"
-              component={Profile}
-              currentUserId={props.currentUserId}
-            />
-            <AuthRoute
-              path="/login"
-              component={Login}
-              currentUserId={props.currentUserId}
-            />
-            <AuthRoute
-              path="/register"
-              component={Register}
-              currentUserId={props.currentUserId}
-            />
-            <ProtectedRoute
-              path="/upload"
-              component={Upload}
-              currentUserId={props.currentUserId}
-            />
-            <ProtectedRoute
-              exact path="/"
-              component={Feed}
-              currentUserId={props.currentUserId}
-            />
-          </Switch>
->>>>>>> e9ceebad9093115dbbac3536cb39e7a1592f6267
         </BrowserRouter>
       </Theme>
     </>

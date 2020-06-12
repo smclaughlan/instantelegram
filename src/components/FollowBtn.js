@@ -3,12 +3,8 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { sendFollowReq, sendUnfollowReq } from '../redux/user';
-<<<<<<< HEAD
 import { getFollowings } from '../redux/user';
-=======
-import { getFeedPostReq } from '../redux/user';
 import CircularProgress from '@material-ui/core/CircularProgress';
->>>>>>> e9ceebad9093115dbbac3536cb39e7a1592f6267
 
 const useStyles = makeStyles((theme) => ({
   root: {

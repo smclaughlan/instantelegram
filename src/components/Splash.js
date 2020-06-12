@@ -36,7 +36,7 @@ export default function Splash() {
     <>
       <Grid container spacing={2} className={classes.root}>
         <Grid item>
-          <img className={classes.img} alt="complex" src="../splash.png" />
+          <img className={classes.img} alt="complex" src="" />
         </Grid>
         <Grid item xs={12} sm container className={classes.form}>
           <RegisterForm />

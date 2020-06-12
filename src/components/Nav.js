@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     backgroundImage: theme.gradientBackground,
-    marginBottom: '5vmax'
+    marginBottom: 64
   },
   menuButton: {
     marginRight: theme.spacing(2),

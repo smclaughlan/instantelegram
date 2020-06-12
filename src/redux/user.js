@@ -8,6 +8,7 @@ const UNFOLLOW = 'instantelegram/profile/UNFOLLOW';
 const UPDATE_CAPTION = 'instantelegram/image/UPDATE_CAPTION';
 const FEED_POSTS = 'instantelegram/feed/FEED_POSTS'
 const UPDATE_LIKE = 'instantelegram/like/UPDATE_LIKE';
+const GET_FOLLOWINGS = 'instantelegram/profile/GET_FOLLOWINGS'
 const UPDATE_COMMENT = 'instantelegram/comment/UPDATE_COMMENT';
 
 export const loginUser = (token, currentUserId) => ({ type: LOGIN_USER, token, currentUserId });
@@ -16,6 +17,7 @@ export const getUserProfile = (id, username, bio, avatarUrl, posts, likes, comme
 export const sendUserFollowReq = (userId, followedId) => ({ type: FOLLOW, userId, followedId });
 export const sendUserUnfollowReq = (userId, followedId) => ({ type: UNFOLLOW, userId, followedId });
 export const getFeedPost = (postsArr) => ({ type: FEED_POSTS, postsArr })
+export const setFollowings = (followingsArr) => ({ type: GET_FOLLOWINGS, followingsArr })
 export const updateCaption = (postObj, imageId) => ({ type: UPDATE_CAPTION, postObj, imageId })
 export const updateLike = (imageId, likesArr) => ({ type: UPDATE_LIKE, imageId, likesArr })
 export const updateComment = (postId, commentObj) => ({ type: UPDATE_COMMENT, postId, commentObj })
@@ -78,6 +80,7 @@ export const getUserProfileReq = (id) => async dispatch => {
     const bio = resJson.bio;
     const avatarUrl = resJson.avatarUrl;
     // console.log(posts);
+    console.log('hi')
     dispatch(getUserProfile(id, username, bio, avatarUrl, posts, likes, comments));
   }
 }
@@ -103,6 +106,7 @@ export const getFeedPostReq = (currentUserId) => async dispatch => {
         postData.avatarUrl = avatarUrl;
         postData.username = username;
         postData.postId = postId;
+        postData.userId = user_id
       }
       postsArr.push(postData)
     }
@@ -110,6 +114,23 @@ export const getFeedPostReq = (currentUserId) => async dispatch => {
       return a.timestamp < b.timestamp
     })
     dispatch(getFeedPost(postsArr))
+  }
+}
+
+export const getFollowings = (currentUserId) => async dispatch => {
+  const followingsRes = await fetch(`${apiBaseUrl}/api/users/${currentUserId}/followings`)
+
+  if (followingsRes.ok) {
+    const followings = await followingsRes.json();
+    console.log(followings)
+    let followingsArr = [];
+
+    for (const key in followings) {
+      const followingId = followings[key].followingId;
+      followingsArr.push(followingId)
+    }
+
+    dispatch(setFollowings(followingsArr))
   }
 }
 
@@ -201,43 +222,43 @@ export const deleteLike = (imageId, token) => async (dispatch) => {
 }
 
 export const createComment = (postId, commentBody, token) => async (dispatch) => {
-    try {
-        const body = JSON.stringify({ commentBody })
-        const res = await fetch(`${apiBaseUrl}/comments/${postId}`, {
-            method: "POST",
-            body,
-            headers: {
-            "x-access-token": `${token}`,
-            "Content-Type": "application/json"
-            },
-        });
-        if (!res.ok) throw res;
-        const commentObj = await res.json();
-        dispatch(updateComment(postId, commentObj))
-        return
-    } catch (err) {
-        console.error(err)
-    }
+  try {
+    const body = JSON.stringify({ commentBody })
+    const res = await fetch(`${apiBaseUrl}/comments/${postId}`, {
+      method: "POST",
+      body,
+      headers: {
+        "x-access-token": `${token}`,
+        "Content-Type": "application/json"
+      },
+    });
+    if (!res.ok) throw res;
+    const commentObj = await res.json();
+    dispatch(updateComment(postId, commentObj))
+    return
+  } catch (err) {
+    console.error(err)
   }
+}
 
 export const deleteComment = (commentId, postId, token) => async (dispatch) => {
-    try {
-        const body = JSON.stringify({ postId })
-        const res = await fetch(`${apiBaseUrl}/comments/${commentId}`, {
-            method: "DELETE",
-            body,
-            headers: {
-            "x-access-token": `${token}`,
-            "Content-Type": "application/json"
-            },
-        });
-        if (!res.ok) throw res;
-        const commentObj = await res.json();
-        dispatch(updateComment(postId, commentObj))
-        return
-    } catch (err) {
-        console.error(err)
-    }
+  try {
+    const body = JSON.stringify({ postId })
+    const res = await fetch(`${apiBaseUrl}/comments/${commentId}`, {
+      method: "DELETE",
+      body,
+      headers: {
+        "x-access-token": `${token}`,
+        "Content-Type": "application/json"
+      },
+    });
+    if (!res.ok) throw res;
+    const commentObj = await res.json();
+    dispatch(updateComment(postId, commentObj))
+    return
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 export default function reducer(state = {}, action) {
@@ -276,41 +297,32 @@ export default function reducer(state = {}, action) {
         ...state,
       }
     }
-    case FOLLOW: {
-      // if (state.follows) {
-      //   state.follows.push(action.followedId);
-      // } else {
-      //   state.follows = [action.followedId];
-      // }
+    case GET_FOLLOWINGS: {
       return {
         ...state,
-        followings: {
-          ...state.followings,
-          [action.followedId]: {}
-        },
+        profile: {
+          ...state.profile,
+          followings: action.followingsArr,
+        }
+      }
+    }
+    case FOLLOW: {
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          followings: [...state.profile.followings, parseInt(action.followedId)]
+        }
       };
-
     }
     case UNFOLLOW: {
-      // if (state.follows) {
-      //   let idx = state.follows.indexOf(action.followedId);
-      //   let arr1 = state.follows.slice(0, idx);
-      //   let arr2 = state.follows.slice(idx + 1);
-      //   state.follows = arr1.concat(arr2);
-      // }
-      // return {
-      //   ...state,
-
-      //   followings: {
-      //     ...state.Object.keys(followings).filter()
-      //   }
-      // }
-
-      const newState = Object.assign({}, state);
-      const { [action.followedId]: id, ...notFollowed } = state.followings;
-      newState.followings = notFollowed;
-      return newState;
-
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          followings: state.profile.followings.filter(followingId => followingId != action.followedId)
+        }
+      };
     }
 
     case UPDATE_CAPTION: {
@@ -326,10 +338,10 @@ export default function reducer(state = {}, action) {
     }
 
     case UPDATE_COMMENT: {
-        const newState = Object.assign({}, state)
-        newState.comments[action.postId] = action.commentObj
-        return newState
-      }
+      const newState = Object.assign({}, state)
+      newState.comments[action.postId] = action.commentObj
+      return newState
+    }
 
     default: return state;
   }

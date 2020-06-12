@@ -123,6 +123,7 @@ function Profile(props) {
                   imageCapt={props.posts[key].caption}
                   imagePosterUsername={props.profileUsername}
                   imagePosterAviUrl={props.profileImage}
+                  imagePosterId={props.posts[key].user_id}
                 // imageLikes={props.likes[key]}
                 />
               </Grid>
@@ -146,7 +147,7 @@ const mapStateToProps = state => {
       profileBio: state.user.profile.bio,
       profileImage: state.user.profile.avatarUrl,
       posts: state.user.posts,
-      likes: state.user.likes
+      likes: state.user.likes,
     };
   } else {
     return {

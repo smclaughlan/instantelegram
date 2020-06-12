@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
 import Login from './components/Login';
 import Register from './components/Register'
 import Upload from './components/Upload'
@@ -9,6 +10,8 @@ import Feed from './components/Feed';
 import Profile from './components/Profile';
 import Theme from './Theme';
 import Splash from './components/Splash'
+import { TransitionGroup, CSSTransition } from "react-transition-group";
+
 import { ProtectedRoute, AuthRoute } from "./authRoutes";
 import { CssBaseline, } from "@material-ui/core";
 
@@ -18,37 +21,47 @@ function App(props) {
       <CssBaseline />
       <Theme>
         <BrowserRouter>
-          <NavBar />
+          <NavBar location={props.location} />
 
-          <Switch>
-            <Route path="/splash"
-              component={Splash} />
-            <ProtectedRoute
-              path="/profile/:userid"
-              component={Profile}
-              currentUserId={props.currentUserId}
-            />
-            <AuthRoute
-              path="/login"
-              component={Login}
-              currentUserId={props.currentUserId}
-            />
-            <AuthRoute
-              path="/register"
-              component={Register}
-              currentUserId={props.currentUserId}
-            />
-            <ProtectedRoute
-              path="/upload"
-              component={Upload}
-              currentUserId={props.currentUserId}
-            />
-            <ProtectedRoute
-              exact path="/"
-              component={Feed}
-              currentUserId={props.currentUserId}
-            />
-          </Switch>
+          <Route render={({ location }) => (
+            <TransitionGroup>
+              <CSSTransition
+                key={location.key}
+                timeout={300}
+                classNames='fade'
+              >
+                <Switch>
+                  <Route path="/splash"
+                    component={Splash} />
+                  <ProtectedRoute
+                    path="/profile/:userid"
+                    component={Profile}
+                    currentUserId={props.currentUserId}
+                  />
+                  <AuthRoute
+                    path="/login"
+                    component={Login}
+                    currentUserId={props.currentUserId}
+                  />
+                  <AuthRoute
+                    path="/register"
+                    component={Register}
+                    currentUserId={props.currentUserId}
+                  />
+                  <ProtectedRoute
+                    path="/upload"
+                    component={Upload}
+                    currentUserId={props.currentUserId}
+                  />
+                  <ProtectedRoute
+                    exact path="/"
+                    component={Feed}
+                    currentUserId={props.currentUserId}
+                  />
+                </Switch>
+              </CSSTransition>
+            </TransitionGroup>
+          )} />
         </BrowserRouter>
       </Theme>
     </>

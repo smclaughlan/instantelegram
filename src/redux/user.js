@@ -55,8 +55,8 @@ export const sendLoginReq = (userInfo) => async dispatch => {
   if (res.ok) {
     const { token, currentUserId } = await res.json()
     window.localStorage.setItem("x-access-token", token);
-    window.localStorage.setItem("currentUserId", currentUserId);
-    dispatch(loginUser(token, currentUserId))
+    window.localStorage.setItem("currentUserId", currentUserId.toString());
+    dispatch(loginUser(token, currentUserId.toString()))
   }
 }
 
@@ -80,7 +80,7 @@ export const getUserProfileReq = (id) => async dispatch => {
     const bio = resJson.bio;
     const avatarUrl = resJson.avatarUrl;
     // console.log(posts);
-    console.log('hi')
+    // console.log('hi')
     dispatch(getUserProfile(id, username, bio, avatarUrl, posts, likes, comments));
   }
 }
@@ -122,7 +122,7 @@ export const getFollowings = (currentUserId) => async dispatch => {
 
   if (followingsRes.ok) {
     const followings = await followingsRes.json();
-    console.log(followings)
+    // console.log(followings)
     let followingsArr = [];
 
     for (const key in followings) {
@@ -235,6 +235,7 @@ export const createComment = (postId, commentBody, token) => async (dispatch) =>
     if (!res.ok) throw res;
     const commentObj = await res.json();
     dispatch(updateComment(postId, commentObj))
+    window.location.href = window.location.href;
     return
   } catch (err) {
     console.error(err)
@@ -273,23 +274,27 @@ export default function reducer(state = {}, action) {
     case LOGOUT_USER: {
       delete state.token;
       delete state.currentUserId;
+      delete state.feedPosts;
+      delete state.profile;
+      delete state.posts;
+      delete state.likes;
+      delete state.comments;
       return {
         ...state,
       }
     }
     case USER_PROFILE: {
-      return {
-        profile: {
-          id: action.id,
-          username: action.username,
-          bio: action.bio,
-          avatarUrl: action.avatarUrl,
-        },
-        posts: action.posts,
-        likes: action.likes,
-        comments: action.comments,
-        ...state,
-      }
+      const newState = Object.assign({}, state)
+      newState.profile = {
+        id: action.id,
+        username: action.username,
+        bio: action.bio,
+        avatarUrl: action.avatarUrl,
+      };
+      newState.posts = action.posts;
+      newState.likes = action.likes;
+      newState.comments = action.comments;
+      return newState
     }
     case FEED_POSTS: {
       return {

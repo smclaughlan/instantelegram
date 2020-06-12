@@ -50,13 +50,18 @@ function Profile(props) {
   const classes = useStyles();
 
   React.useEffect(() => {
+    console.log('You triggered the Use Effect Hook')
     let id = window.location.href.split("/")[4];
+    console.log(id)
     props.getUserProfileReq(id);
+
+
   }, []);
 
 
 
-  let userId = window.localStorage.getItem("currentUserId");
+//   let userId = parseInt(window.localStorage.getItem("currentUserId"));
+  const userId = props.currentUserId
   return (props.profileId ?
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -142,6 +147,7 @@ const mapStateToProps = state => {
   if (state && state.user && state.user.profile) {
     return {
       token: state.user.token,
+      currentUserId: state.user.currentUserId,
       profileId: state.user.profile.id,
       profileUsername: state.user.profile.username,
       profileBio: state.user.profile.bio,

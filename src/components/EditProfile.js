@@ -25,7 +25,7 @@ const EditProfile = (props) => {
     const newImg = e.target.files[0];
     let userId = window.location.href.split("/")[4]; //refactor with redux later
     props.updateAvatar(userId, newImg, props.token);
-    redirectTo(window.location.href);
+    // redirectTo(window.location.href);
   }
 
   const updateBio = e => {

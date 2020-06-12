@@ -130,7 +130,6 @@ const Image = (props) => {
       e.preventDefault()
       const newComment = e.target[0].value;
       props.createComment(props.imageId, newComment, props.token);
-      window.location.href = window.location.href;
   }
 
   const editButton = (parseInt(props.currentUserId) == props.imagePosterId

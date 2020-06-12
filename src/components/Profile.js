@@ -93,9 +93,9 @@ function Profile(props) {
           <ExpansionPanel>
             <ExpansionPanelSummary>
               Edit Profile
-        </ExpansionPanelSummary>
+            </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-              <EditProfile></EditProfile>
+              <EditProfile profileBio={props.profileBio}></EditProfile>
             </ExpansionPanelDetails>
           </ExpansionPanel>
         </Paper>

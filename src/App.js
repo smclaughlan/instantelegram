@@ -45,7 +45,6 @@ function App(props) {
               component={Feed}
               currentUserId={props.currentUserId}
             />
-            {/* <Route path="/register" component={Login} /> */}
           </Switch>
         </BrowserRouter>
       </Theme>

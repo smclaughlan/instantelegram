@@ -4,6 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { getFeedPostReq, getUserProfileReq } from '../redux/user';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { Container } from '@material-ui/core'
 
 import Image from './Image';
 
@@ -50,6 +52,9 @@ function Feed(props) {
     return (
         (props.feedPosts && props.user) ?
             <div className={classes.root}>
+                <Container>
+                    <img alt="Instantelegram logo" src="public/images/logoIG.png"></img>
+                </Container>
                 <Paper className={classes.paper}>
                     <Grid
                         container
@@ -77,7 +82,7 @@ function Feed(props) {
                 </Paper>
             </div >
             :
-            <div>Loading</div>
+            <CircularProgress />
     )
 }
 

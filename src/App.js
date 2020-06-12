@@ -22,7 +22,6 @@ function App(props) {
       <Theme>
         <BrowserRouter>
           <NavBar location={props.location} />
-
           <Route render={({ location }) => (
             <TransitionGroup>
               <CSSTransition
@@ -31,8 +30,10 @@ function App(props) {
                 classNames='fade'
               >
                 <Switch>
-                  <Route path="/splash"
-                    component={Splash} />
+                  <AuthRoute exact path="/"
+                    component={Splash}
+                    currentUserId={props.currentUserId}
+                  />
                   <ProtectedRoute
                     path="/profile/:userid"
                     component={Profile}
@@ -54,7 +55,7 @@ function App(props) {
                     currentUserId={props.currentUserId}
                   />
                   <ProtectedRoute
-                    exact path="/"
+                    exact path="/home"
                     component={Feed}
                     currentUserId={props.currentUserId}
                   />

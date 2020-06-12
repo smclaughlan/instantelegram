@@ -28,3 +28,9 @@ body, html {
     transition: all .5s;
     will-change: opacity, right;
 }
+
+.imgUpload {
+  width: 500px;
+  height: 500px;
+  margin: auto,
+}

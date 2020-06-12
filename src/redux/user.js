@@ -80,6 +80,7 @@ export const getUserProfileReq = (id) => async dispatch => {
     const bio = resJson.bio;
     const avatarUrl = resJson.avatarUrl;
     // console.log(posts);
+    console.log('hi')
     dispatch(getUserProfile(id, username, bio, avatarUrl, posts, likes, comments));
   }
 }
@@ -221,43 +222,43 @@ export const deleteLike = (imageId, token) => async (dispatch) => {
 }
 
 export const createComment = (postId, commentBody, token) => async (dispatch) => {
-    try {
-        const body = JSON.stringify({ commentBody })
-        const res = await fetch(`${apiBaseUrl}/comments/${postId}`, {
-            method: "POST",
-            body,
-            headers: {
-            "x-access-token": `${token}`,
-            "Content-Type": "application/json"
-            },
-        });
-        if (!res.ok) throw res;
-        const commentObj = await res.json();
-        dispatch(updateComment(postId, commentObj))
-        return
-    } catch (err) {
-        console.error(err)
-    }
+  try {
+    const body = JSON.stringify({ commentBody })
+    const res = await fetch(`${apiBaseUrl}/comments/${postId}`, {
+      method: "POST",
+      body,
+      headers: {
+        "x-access-token": `${token}`,
+        "Content-Type": "application/json"
+      },
+    });
+    if (!res.ok) throw res;
+    const commentObj = await res.json();
+    dispatch(updateComment(postId, commentObj))
+    return
+  } catch (err) {
+    console.error(err)
   }
+}
 
 export const deleteComment = (commentId, postId, token) => async (dispatch) => {
-    try {
-        const body = JSON.stringify({ postId })
-        const res = await fetch(`${apiBaseUrl}/comments/${commentId}`, {
-            method: "DELETE",
-            body,
-            headers: {
-            "x-access-token": `${token}`,
-            "Content-Type": "application/json"
-            },
-        });
-        if (!res.ok) throw res;
-        const commentObj = await res.json();
-        dispatch(updateComment(postId, commentObj))
-        return
-    } catch (err) {
-        console.error(err)
-    }
+  try {
+    const body = JSON.stringify({ postId })
+    const res = await fetch(`${apiBaseUrl}/comments/${commentId}`, {
+      method: "DELETE",
+      body,
+      headers: {
+        "x-access-token": `${token}`,
+        "Content-Type": "application/json"
+      },
+    });
+    if (!res.ok) throw res;
+    const commentObj = await res.json();
+    dispatch(updateComment(postId, commentObj))
+    return
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 export default function reducer(state = {}, action) {
@@ -337,10 +338,10 @@ export default function reducer(state = {}, action) {
     }
 
     case UPDATE_COMMENT: {
-        const newState = Object.assign({}, state)
-        newState.comments[action.postId] = action.commentObj
-        return newState
-      }
+      const newState = Object.assign({}, state)
+      newState.comments[action.postId] = action.commentObj
+      return newState
+    }
 
     default: return state;
   }

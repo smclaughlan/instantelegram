@@ -8,17 +8,22 @@ const UNFOLLOW = 'instantelegram/profile/UNFOLLOW';
 const UPDATE_CAPTION = 'instantelegram/image/UPDATE_CAPTION';
 const FEED_POSTS = 'instantelegram/feed/FEED_POSTS'
 const UPDATE_LIKE = 'instantelegram/like/UPDATE_LIKE';
+<<<<<<< HEAD
 const GET_FOLLOWINGS = 'instantelegram/profile/GET_FOLLOWINGS'
+=======
+const UPDATE_COMMENT = 'instantelegram/comment/UPDATE_COMMENT';
+>>>>>>> e9ceebad9093115dbbac3536cb39e7a1592f6267
 
 export const loginUser = (token, currentUserId) => ({ type: LOGIN_USER, token, currentUserId });
 export const logoutUser = () => ({ type: LOGOUT_USER });
-export const getUserProfile = (id, username, bio, avatarUrl, posts, likes) => ({ type: USER_PROFILE, id, username, bio, avatarUrl, posts, likes });
+export const getUserProfile = (id, username, bio, avatarUrl, posts, likes, comments) => ({ type: USER_PROFILE, id, username, bio, avatarUrl, posts, likes, comments });
 export const sendUserFollowReq = (userId, followedId) => ({ type: FOLLOW, userId, followedId });
 export const sendUserUnfollowReq = (userId, followedId) => ({ type: UNFOLLOW, userId, followedId });
 export const getFeedPost = (postsArr) => ({ type: FEED_POSTS, postsArr })
 export const setFollowings = (followingsArr) => ({ type: GET_FOLLOWINGS, followingsArr })
 export const updateCaption = (postObj, imageId) => ({ type: UPDATE_CAPTION, postObj, imageId })
 export const updateLike = (imageId, likesArr) => ({ type: UPDATE_LIKE, imageId, likesArr })
+export const updateComment = (postId, commentObj) => ({ type: UPDATE_COMMENT, postId, commentObj })
 
 export const sendRegisterReq = (userInfo) => async dispatch => {
   const res = await fetch(`${apiBaseUrl}/api/session/register`, {
@@ -68,15 +73,17 @@ export const getUserProfileReq = (id) => async dispatch => {
   const res = await fetch(`${apiBaseUrl}/api/users/${id}`);
   const res2 = await fetch(`${apiBaseUrl}/posts/${id}`);
   const res3 = await fetch(`${apiBaseUrl}/likes/`);
-  if ((res.ok && res2.ok) && res3.ok) {
+  const res4 = await fetch(`${apiBaseUrl}/comments/`);
+  if ((res.ok && res2.ok) && (res3.ok && res4.ok)) {
     const resJson = await res.json();
     const posts = await res2.json();
     const likes = await res3.json();
+    const comments = await res4.json();
     const username = resJson.username;
     const bio = resJson.bio;
     const avatarUrl = resJson.avatarUrl;
     // console.log(posts);
-    dispatch(getUserProfile(id, username, bio, avatarUrl, posts, likes));
+    dispatch(getUserProfile(id, username, bio, avatarUrl, posts, likes, comments));
   }
 }
 
@@ -101,6 +108,7 @@ export const getFeedPostReq = (currentUserId) => async dispatch => {
         postData.avatarUrl = avatarUrl;
         postData.username = username;
         postData.postId = postId;
+        postData.userId = user_id
       }
       postsArr.push(postData)
     }
@@ -215,6 +223,46 @@ export const deleteLike = (imageId, token) => async (dispatch) => {
   }
 }
 
+export const createComment = (postId, commentBody, token) => async (dispatch) => {
+    try {
+        const body = JSON.stringify({ commentBody })
+        const res = await fetch(`${apiBaseUrl}/comments/${postId}`, {
+            method: "POST",
+            body,
+            headers: {
+            "x-access-token": `${token}`,
+            "Content-Type": "application/json"
+            },
+        });
+        if (!res.ok) throw res;
+        const commentObj = await res.json();
+        dispatch(updateComment(postId, commentObj))
+        return
+    } catch (err) {
+        console.error(err)
+    }
+  }
+
+export const deleteComment = (commentId, postId, token) => async (dispatch) => {
+    try {
+        const body = JSON.stringify({ postId })
+        const res = await fetch(`${apiBaseUrl}/comments/${commentId}`, {
+            method: "DELETE",
+            body,
+            headers: {
+            "x-access-token": `${token}`,
+            "Content-Type": "application/json"
+            },
+        });
+        if (!res.ok) throw res;
+        const commentObj = await res.json();
+        dispatch(updateComment(postId, commentObj))
+        return
+    } catch (err) {
+        console.error(err)
+    }
+}
+
 export default function reducer(state = {}, action) {
   switch (action.type) {
     case LOGIN_USER: {
@@ -241,6 +289,7 @@ export default function reducer(state = {}, action) {
         },
         posts: action.posts,
         likes: action.likes,
+        comments: action.comments,
         ...state,
       }
     }
@@ -289,6 +338,12 @@ export default function reducer(state = {}, action) {
       newState.likes[action.imageId] = action.likesArr
       return newState
     }
+
+    case UPDATE_COMMENT: {
+        const newState = Object.assign({}, state)
+        newState.comments[action.postId] = action.commentObj
+        return newState
+      }
 
     default: return state;
   }

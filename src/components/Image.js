@@ -9,11 +9,12 @@ import {
   Button
 } from '@material-ui/core';
 import { deletePost } from '../redux/image'
-import { updateCapt, createLike, deleteLike } from '../redux/user'
+import { updateCapt, createLike, deleteLike, createComment } from '../redux/user'
 import clsx from "clsx";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Comment from './Comment';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,6 +42,9 @@ const useStyles = makeStyles(theme => ({
   },
   captButton: {
     width: "50%"
+  },
+  commentButton: {
+    width: "100%"
   }
 }));
 
@@ -81,6 +85,7 @@ const Image = (props) => {
 
   const handleDelete = () => {
     props.deletePost(props.imageId, props.token)
+    window.location.href = window.location.href
   }
 
   const handleLike = () => {
@@ -117,7 +122,36 @@ const Image = (props) => {
     const newCaption = e.target[0].value;
     props.updateCapt(newCaption, props.imageId, props.token)
     cancelEdit()
+    window.location.href = window.location.href
   }
+
+  const submitComment = e => {
+      e.preventDefault()
+      const newComment = e.target[0].value;
+      props.createComment(props.imageId, newComment, props.token);
+      window.location.href = window.location.href;
+  }
+
+  const editButton = (parseInt(props.currentUserId) == props.imagePosterId
+        ?
+            <>
+                <IconButton aria-label="settings" onClick={handleClick}>
+                <MoreVertIcon />
+                </IconButton>
+                <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                >
+                <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                <MenuItem onClick={handleDelete}>Delete</MenuItem>
+                </Menu>
+            </>
+        :
+            <></>
+    )
 
   return (
     <Card className={classes.root}>
@@ -127,23 +161,7 @@ const Image = (props) => {
             <img className={classes.aviImage} src={props.imagePosterAviUrl} alt="avatarImg" />
           </Avatar>
         }
-        action={
-          <>
-            <IconButton aria-label="settings" onClick={handleClick}>
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={handleEdit}>Edit</MenuItem>
-              <MenuItem onClick={handleDelete}>Delete</MenuItem>
-            </Menu>
-          </>
-        }
+        action={editButton}
         title={`${props.imagePosterUsername}`}
         subheader={`${props.postDate}`}
       />
@@ -185,7 +203,6 @@ const Image = (props) => {
         }
         <div>
           {numOfLikes}
-          {/* {props.imageLikes[props.imageId] ? `${props.imageLikes[props.imageId].length}` : "" } */}
         </div>
         <IconButton
           className={clsx(classes.expand, {
@@ -200,18 +217,33 @@ const Image = (props) => {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>
-            Comment 1
-          </Typography>
-          <Typography paragraph>
-            Comment 2
-          </Typography>
-          <Typography paragraph>
-            Comment 3
-          </Typography>
-          <Typography>
-            Comment 4
-          </Typography>
+          <form onSubmit={submitComment}>
+            <TextField
+                placeholder='leave a comment'
+                className={classes.captionUpdate}
+                variant="outlined"
+                type="caption"
+            />
+            <Button className={classes.commentButton} variant="outlined" color="primary" type="submit">
+                Submit
+            </Button>
+          </form>
+          {props.comments[props.imageId] ?
+            Object.keys(props.comments[props.imageId]).map(key => {
+                return (
+                    <Comment
+                        commentId={key}
+                        imageId={props.imageId}
+                        commenterId={props.comments[props.imageId][key].commenterId}
+                        commenterAvi={props.comments[props.imageId][key].commenterAvi}
+                        commenter={props.comments[props.imageId][key].commenter}
+                        comment={props.comments[props.imageId][key].body}
+                    />
+                )
+            })
+          :
+          <div></div>
+          }
         </CardContent>
       </Collapse>
     </Card>
@@ -225,6 +257,7 @@ const mapStateToProps = state => {
     token: state.user.token,
     currentUserId: state.user.currentUserId,
     imageLikes: state.user.likes,
+    comments: state.user.comments,
   };
 };
 
@@ -234,6 +267,7 @@ const mapDispatchToProps = dispatch => {
     deletePost: (...args) => dispatch(deletePost(...args)),
     createLike: (...args) => dispatch(createLike(...args)),
     deleteLike: (...args) => dispatch(deleteLike(...args)),
+    createComment: (...args) => dispatch(createComment(...args)),
   };
 };
 

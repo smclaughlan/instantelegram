@@ -4,6 +4,7 @@ body, html {
   padding: 0;
 }
 
+<<<<<<< HEAD
 /* Page Transitions */
 .fade-enter {
     opacity: 0;
@@ -28,3 +29,10 @@ body, html {
     transition: all .5s;
     will-change: opacity, right;
 }
+=======
+.imgUpload {
+  width: 500px;
+  height: 500px;
+  margin: auto,
+}
+>>>>>>> e9ceebad9093115dbbac3536cb39e7a1592f6267

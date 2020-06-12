@@ -13,6 +13,7 @@ import EditProfile from './EditProfile';
 import Image from './Image';
 import FollowBtn from './FollowBtn';
 import MessageBtn from './MessageBtn';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -122,6 +123,7 @@ function Profile(props) {
                   imageCapt={props.posts[key].caption}
                   imagePosterUsername={props.profileUsername}
                   imagePosterAviUrl={props.profileImage}
+                  imagePosterId={props.posts[key].user_id}
                 // imageLikes={props.likes[key]}
                 />
               </Grid>
@@ -131,7 +133,7 @@ function Profile(props) {
       </Paper>
     </div>
     :
-    <div>Loading Profile</div>
+    <CircularProgress />
   );
 }
 

@@ -8,4 +8,4 @@ RUN npm install && npm run build
 
 FROM nginx:stable
 COPY --from=build-stage /app/build/ /usr/share/nginx/html
-COPY --from=build-stage /app/nginx.conf /etc/nginx/templates/default.conf
+COPY --from=build-stage /app/nginx.conf /etc/nginx/templates/default.conf.template

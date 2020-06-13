@@ -21,11 +21,11 @@ const useStyles = makeStyles({
     marginBottom: 0,
   },
   img: {
-    marginLeft: 400,
+    marginLeft: 100,
     marginRight: 100,
     marginTop: 100,
     display: "block",
-    width: 500,
+    width: 700,
     height: 500,
   },
   image: {
@@ -47,7 +47,7 @@ export default function Splash() {
             <container>
               <img
                 className={classes.img}
-                src={"images/splash2.jpg"}
+                src={"images/splash3.jpg"}
                 style={{
                   margin: "20 auto",
                   borderRadius: "5px",
@@ -56,19 +56,6 @@ export default function Splash() {
               />
             </container>
           </div>
-          {/* <Paper className={classes.topLogo}>
-            <Container>
-              <img
-                alt={"Instantelegram logo"}
-                src={"images/splash2.jpg"}
-                style={{
-                  margin: "20 auto",
-                  borderRadius: "5px",
-                  maxWidth: "950px",
-                }}
-              ></img>
-            </Container>
-          </Paper> */}
         </Grid>
         <Grid item xs={12} sm container className={classes.form}>
           <RegisterForm />

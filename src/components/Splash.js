@@ -7,11 +7,13 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import RegisterForm from "./RegisterForm";
 import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import { Container } from "@material-ui/core";
 
 const useStyles = makeStyles({
   form: {
     marginTop: 100,
-    justifySelf: 'right'
+    justifySelf: "right",
   },
   bottom: {
     width: "100%",
@@ -23,8 +25,13 @@ const useStyles = makeStyles({
     marginRight: 100,
     marginTop: 100,
     display: "block",
-    width: 200,
+    width: 500,
     height: 500,
+  },
+  image: {
+    justifyContent: "space-around",
+    margin: "0 auto",
+    maxWidth: 1000,
   },
 });
 
@@ -36,7 +43,32 @@ export default function Splash() {
     <>
       <Grid container spacing={2} className={classes.root}>
         <Grid item>
-          <img className={classes.img} alt="complex" src="" />
+          <div className={classes.image}>
+            <container>
+              <img
+                className={classes.img}
+                src={"images/splash2.jpg"}
+                style={{
+                  margin: "20 auto",
+                  borderRadius: "5px",
+                  maxWidth: "950px",
+                }}
+              />
+            </container>
+          </div>
+          {/* <Paper className={classes.topLogo}>
+            <Container>
+              <img
+                alt={"Instantelegram logo"}
+                src={"images/splash2.jpg"}
+                style={{
+                  margin: "20 auto",
+                  borderRadius: "5px",
+                  maxWidth: "950px",
+                }}
+              ></img>
+            </Container>
+          </Paper> */}
         </Grid>
         <Grid item xs={12} sm container className={classes.form}>
           <RegisterForm />

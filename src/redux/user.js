@@ -6,10 +6,11 @@ const USER_PROFILE = 'instantelegram/profile/USER_PROFILE';
 const FOLLOW = 'instantelegram/profile/FOLLOW';
 const UNFOLLOW = 'instantelegram/profile/UNFOLLOW';
 const UPDATE_CAPTION = 'instantelegram/image/UPDATE_CAPTION';
-const FEED_POSTS = 'instantelegram/feed/FEED_POSTS'
+const FEED_POSTS = 'instantelegram/feed/FEED_POSTS';
 const UPDATE_LIKE = 'instantelegram/like/UPDATE_LIKE';
-const GET_FOLLOWINGS = 'instantelegram/profile/GET_FOLLOWINGS'
+const GET_FOLLOWINGS = 'instantelegram/profile/GET_FOLLOWINGS';
 const UPDATE_COMMENT = 'instantelegram/comment/UPDATE_COMMENT';
+const DEL_POST = 'instantelegram/image/DEL_POST';
 
 export const loginUser = (token, currentUserId) => ({ type: LOGIN_USER, token, currentUserId });
 export const logoutUser = () => ({ type: LOGOUT_USER });
@@ -21,6 +22,7 @@ export const setFollowings = (followingsArr) => ({ type: GET_FOLLOWINGS, followi
 export const updateCaption = (postObj, imageId) => ({ type: UPDATE_CAPTION, postObj, imageId })
 export const updateLike = (imageId, likesArr) => ({ type: UPDATE_LIKE, imageId, likesArr })
 export const updateComment = (postId, commentObj) => ({ type: UPDATE_COMMENT, postId, commentObj })
+export const deletePost = (imageId) => ({ type: DEL_POST, imageId, });
 
 export const sendRegisterReq = (userInfo) => async dispatch => {
   const res = await fetch(`${apiBaseUrl}/api/session/register`, {
@@ -263,6 +265,24 @@ export const deleteComment = (commentId, postId, token) => async (dispatch) => {
   }
 }
 
+export const deletePostReq = (imageId, token) => async (dispatch) => {
+  try {
+    const res = await fetch(`${apiBaseUrl}/posts/${imageId}`, {
+      method: "DELETE",
+      headers: {
+        "x-access-token": `${token}`,
+        "Content-Type": "application/json"
+      },
+    });
+    if (!res.ok) throw res;
+    dispatch(deletePost(imageId));
+    window.location.href = window.location.href;
+    return
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 export default function reducer(state = {}, action) {
   switch (action.type) {
     case LOGIN_USER: {
@@ -347,6 +367,12 @@ export default function reducer(state = {}, action) {
       const newState = Object.assign({}, state)
       newState.comments[action.postId] = action.commentObj
       return newState
+    }
+    case DEL_POST: {
+      delete state.posts[action.imageId];
+      return {
+        ...state,
+      }
     }
 
     default: return state;

@@ -2,7 +2,7 @@ const { apiBaseUrl, cloudinaryUrl, cloudinaryPreset, } = require("../config");
 
 // ACTIONS
 const SET_IMG = 'instantelegram/upload/SET_IMG';
-const DEL_POST = 'instantelegram/image/DEL_POST'
+// const DEL_POST = 'instantelegram/image/DEL_POST'
 
 const setImgUrl = (previewImgUrl) => (
     {
@@ -10,6 +10,12 @@ const setImgUrl = (previewImgUrl) => (
         previewImgUrl,
     }
 );
+// const deletePost = (imageId) => (
+//     {
+//         type: DEL_POST,
+//         imageId,
+//     }
+// );
 
 // THUNKS
 export const updateImg = (newImg) => async (dispatch) => {
@@ -48,35 +54,35 @@ export const post = (caption, imgUrl, token) => async (dispatch) => {
     }
 };
 
-export const deletePost = (imageId, token) => async (dispatch) => {
-    try {
-        const res = await fetch(`${apiBaseUrl}/posts/${imageId}`, {
-            method: "DELETE",
-            headers: {
-                "x-access-token": `${token}`,
-                "Content-Type": "application/json"
-            },
-        });
-        if (!res.ok) throw res;
-        // const message = await res.json()
-        return
-    } catch (err) {
-        console.error(err)
-    }
-}
+// export const deletePostReq = (imageId, token) => async (dispatch) => {
+//     try {
+//         const res = await fetch(`${apiBaseUrl}/posts/${imageId}`, {
+//             method: "DELETE",
+//             headers: {
+//                 "x-access-token": `${token}`,
+//                 "Content-Type": "application/json"
+//             },
+//         });
+//         if (!res.ok) throw res;
+//         dispatch(deletePost(imageId));
+//         window.location.href = window.location.href;
+//         return
+//     } catch (err) {
+//         console.error(err)
+//     }
+// }
 
 // REDUCER
 export default function reducer(state = {}, action) {
-    Object.freeze(state);
-    const newState = Object.assign({}, state);
+    // Object.freeze(state);
+    // const newState = Object.assign({}, state);
 
     switch (action.type) {
         case SET_IMG: {
-            return Object.assign(
-                newState,
-                {
-                    previewImgUrl: action.previewImgUrl,
-                })
+            return {
+                ...state,
+                previewImgUrl: action.previewImgUrl,
+            }
         }
         default: return state;
     }

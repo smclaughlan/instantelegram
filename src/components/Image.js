@@ -8,8 +8,7 @@ import {
   Avatar, IconButton, Typography,
   Button
 } from '@material-ui/core';
-import { deletePost } from '../redux/image'
-import { updateCapt, createLike, deleteLike, createComment } from '../redux/user'
+import { updateCapt, createLike, deleteLike, createComment, deletePostReq } from '../redux/user'
 import clsx from "clsx";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -86,7 +85,6 @@ const Image = (props) => {
 
   const handleDelete = () => {
     props.deletePost(props.imageId, props.token)
-    window.location.href = window.location.href
   }
 
   const handleLike = () => {
@@ -127,33 +125,33 @@ const Image = (props) => {
   }
 
   const submitComment = e => {
-      e.preventDefault()
-      const newComment = e.target[0].value;
-      props.createComment(props.imageId, newComment, props.token);
+    e.preventDefault()
+    const newComment = e.target[0].value;
+    props.createComment(props.imageId, newComment, props.token);
   }
 
   const editButton = (parseInt(props.currentUserId) == props.imagePosterId
-        ?
-            <>
-                <IconButton aria-label="settings" onClick={handleClick}>
-                <MoreVertIcon />
-                </IconButton>
-                <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-                >
-                <MenuItem onClick={handleEdit}>Edit</MenuItem>
-                <MenuItem onClick={handleDelete}>Delete</MenuItem>
-                </Menu>
-            </>
-        :
-            <></>
-    )
+    ?
+    <>
+      <IconButton aria-label="settings" onClick={handleClick}>
+        <MoreVertIcon />
+      </IconButton>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleEdit}>Edit</MenuItem>
+        <MenuItem onClick={handleDelete}>Delete</MenuItem>
+      </Menu>
+    </>
+    :
+    <></>
+  )
 
-    const timestampDate = new Date(props.postDate)
+  const timestampDate = new Date(props.postDate)
 
   return (
     <Card className={classes.root}>
@@ -221,30 +219,30 @@ const Image = (props) => {
         <CardContent>
           <form onSubmit={submitComment}>
             <TextField
-                placeholder='leave a comment'
-                className={classes.captionUpdate}
-                variant="outlined"
-                type="caption"
+              placeholder='leave a comment'
+              className={classes.captionUpdate}
+              variant="outlined"
+              type="caption"
             />
             <Button className={classes.commentButton} variant="outlined" color="primary" type="submit">
-                Submit
+              Submit
             </Button>
           </form>
           {props.comments[props.imageId] ?
             Object.keys(props.comments[props.imageId]).map(key => {
-                return (
-                    <Comment
-                        commentId={key}
-                        imageId={props.imageId}
-                        commenterId={props.comments[props.imageId][key].commenterId}
-                        commenterAvi={props.comments[props.imageId][key].commenterAvi}
-                        commenter={props.comments[props.imageId][key].commenter}
-                        comment={props.comments[props.imageId][key].body}
-                    />
-                )
+              return (
+                <Comment
+                  commentId={key}
+                  imageId={props.imageId}
+                  commenterId={props.comments[props.imageId][key].commenterId}
+                  commenterAvi={props.comments[props.imageId][key].commenterAvi}
+                  commenter={props.comments[props.imageId][key].commenter}
+                  comment={props.comments[props.imageId][key].body}
+                />
+              )
             })
-          :
-          <div></div>
+            :
+            <div></div>
           }
         </CardContent>
       </Collapse>
@@ -266,7 +264,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     updateCapt: (...args) => dispatch(updateCapt(...args)),
-    deletePost: (...args) => dispatch(deletePost(...args)),
+    deletePost: (...args) => dispatch(deletePostReq(...args)),
     createLike: (...args) => dispatch(createLike(...args)),
     deleteLike: (...args) => dispatch(deleteLike(...args)),
     createComment: (...args) => dispatch(createComment(...args)),

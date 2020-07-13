@@ -56,16 +56,15 @@ const Image = (props) => {
   const [editTypographyBool, setEditTypographyBool] = useState('grid');
   const [likeState, setLikeState] = useState(false)
   const [numOfLikes, setNumOfLikes] = useState(0)
+  const [upd, setUpd] = useState(1);
 
   useEffect(() => {
-
     if (props.imageLikes[props.imageId]) {
       setNumOfLikes(props.imageLikes[props.imageId].length);
       if (props.imageLikes[props.imageId].includes(parseInt(props.currentUserId))) {
         setLikeState(true);
       }
     }
-
   }, [])
 
   //   useEffect(() => {
@@ -121,13 +120,19 @@ const Image = (props) => {
     const newCaption = e.target[0].value;
     props.updateCapt(newCaption, props.imageId, props.token)
     cancelEdit()
-    window.location.href = window.location.href
+
   }
 
   const submitComment = e => {
-    e.preventDefault()
+    e.preventDefault();
     const newComment = e.target[0].value;
-    props.createComment(props.imageId, newComment, props.token);
+    (async () => {
+      await props.createComment(props.imageId, newComment, props.token);
+      setUpd(upd + 1);
+      if (e.target && e.target[0] && e.target[0].value) {
+        e.target[0].value = '';
+      }
+    })();
   }
 
   const editButton = (parseInt(props.currentUserId) == props.imagePosterId

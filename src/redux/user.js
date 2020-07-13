@@ -236,9 +236,8 @@ export const createComment = (postId, commentBody, token) => async (dispatch) =>
     });
     if (!res.ok) throw res;
     const commentObj = await res.json();
-    dispatch(updateComment(postId, commentObj))
-    window.location.href = window.location.href;
-    return
+    dispatch(updateComment(postId, commentObj));
+    // window.location.href = window.location.href;
   } catch (err) {
     console.error(err)
   }
@@ -358,15 +357,15 @@ export default function reducer(state = {}, action) {
     }
 
     case UPDATE_LIKE: {
-      const newState = Object.assign({}, state)
-      newState.likes[action.imageId] = action.likesArr
-      return newState
+      const newState = Object.assign({}, state);
+      newState.likes[action.imageId] = action.likesArr;
+      return newState;
     }
 
     case UPDATE_COMMENT: {
-      const newState = Object.assign({}, state)
-      newState.comments[action.postId] = action.commentObj
-      return newState
+      const newState = Object.assign({}, state);
+      newState.comments[action.postId] = action.commentObj;
+      return newState;
     }
     case DEL_POST: {
       delete state.posts[action.imageId];

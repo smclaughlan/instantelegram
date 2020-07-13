@@ -4,9 +4,11 @@ A social image sharing website. View the [live version](https://instantelegram-a
 
 Backend for app here: [Instantelegram-App-Backend](https://github.com/smclaughlan/instantelegramback)
 
+![](/documentation/Images/instag1.png)
+
 ## Documentation links
 - [Feature List](https://github.com/smclaughlan/instantelegram/blob/master/documentation/feature-list/features.md)
-- [End Points](https://github.com/smclaughlan/instantelegram/blob/master/documentation/feature-packets/endpoints.md)
+- [EndPoints](https://github.com/smclaughlan/instantelegram/blob/master/documentation/feature-packets/endpoints.md)
 - [Schema](https://github.com/smclaughlan/instantelegram/blob/master/documentation/feature-packets/models.md)
 
 ## Technologies

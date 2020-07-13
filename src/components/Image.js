@@ -126,12 +126,10 @@ const Image = (props) => {
   const submitComment = e => {
     e.preventDefault();
     const newComment = e.target[0].value;
+    e.target[0].value = '';
     (async () => {
       await props.createComment(props.imageId, newComment, props.token);
       setUpd(upd + 1);
-      if (e.target && e.target[0] && e.target[0].value) {
-        e.target[0].value = '';
-      }
     })();
   }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Avatar, Paper, IconButton } from '@material-ui/core';
@@ -22,13 +22,17 @@ const useStyles = makeStyles(theme => ({
 
 const Comment = (props) => {
     const classes = useStyles();
+    const [upd, setUpd] = useState(1);
 
     const routeToProfile = () => {
         window.location.href = `/profile/${props.commenterId}`
     }
 
     const handleDelete = e => {
-        props.deleteComment(props.commentId, props.imageId, props.token)
+        (async () => {
+            await props.deleteComment(props.commentId, props.imageId, props.token);
+            setUpd(upd + 1);
+        })();
     }
 
     return (

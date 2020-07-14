@@ -29,6 +29,15 @@ const Login = (props) => {
     props.sendLoginReq(loginData);
   };
 
+  const loginDemo = (e) => {
+    e.preventDefault()
+    setLoginData({
+      username: 'Guest',
+      password: 'password'
+    })
+    props.sendLoginReq(loginData);
+  }
+
   return (
     <div className="wrapper">
       <div className="form-wrapper">
@@ -52,9 +61,10 @@ const Login = (props) => {
             />
           </div>
           <div className="logIn">
-            <Button color="primary" type="submit">
-              Submit
-            </Button>
+
+            <Button color="primary" onClick={loginDemo}>Demo Login</Button>
+            <Button color="primary" type='submit'>Submit</Button>
+
             <a href="/register">Create An Acount</a>
           </div>
         </form>

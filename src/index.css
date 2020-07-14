@@ -1,7 +1,10 @@
 /* TODO Add site wide styles */
-body, html {
+body, html, #root, .body-container {
   margin: 0;
   padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
 }
 
 /* Page Transitions */
@@ -21,12 +24,16 @@ body, html {
     opacity: 0;
 }
 
-.wrapper {
-    height: 100%;
+.body-wrapper {
     width: 100%;
     position: absolute;
     transition: all .5s;
     will-change: opacity, right;
+    margin-top: 64px;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    height: calc(100% - 64px);
 }
 
 .imgUpload {

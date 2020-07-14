@@ -13,6 +13,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import { updateImg, post } from "../redux/image";
 import "../index.css";
 const useStyles = makeStyles((theme) => ({
+
+  container: {
+    display: 'flex',
+    'flex-flow': 'column',
+  },
+
   post: {
     margin: "auto",
     maxWidth: 500,
@@ -33,6 +39,10 @@ const useStyles = makeStyles((theme) => ({
   captionBtn: {
     margin: "auto",
     width: 100,
+
+    height: '100%'
+
+
   },
   captionText: {
     margin: "auto",
@@ -59,42 +69,21 @@ const Upload = (props) => {
 
   return (
     <Container className={classes.container}>
-      <div className={classes.post}>
-        <InputLabel
-          htmlFor="image-upload"
-          style={{ margin: "20px", marginTop: "100px" }}
-        >
-          Select Image
-        </InputLabel>
-        <Input
-          id="image-upload"
-          type="file"
-          label="Image"
-          style={{ display: "none", width: "500px", margin: "20px" }}
-          onChange={handleNewImage}
-          className={classes.img}
-        />
+
+      <div className={classes.post} >
+        <InputLabel htmlFor="image-upload" style={{ margin: '20px' }} >Select Image</InputLabel>
+        <Input id="image-upload" type="file" label="Image" style={{ display: 'none', width: '500px', margin: '20px' }} onChange={handleNewImage} className={classes.img} />
+
       </div>
       <Paper elevation={3} className={classes.paper}>
         <img src={props.previewImgUrl} alt="preview" className={"imgUpload"} />
       </Paper>
 
       <div className={classes.caption}>
-        <TextField
-          variant="outlined"
-          type="caption"
-          onChange={updateValue(setCaption)}
-          className={classes.captionText}
-          placeholder="Enter caption"
-        />
-        <Button
-          color="primary"
-          onClick={postImg}
-          className={classes.captionBtn}
-          style={{ margin: "20px" }}
-        >
-          Post
-        </Button>
+
+        <TextField variant="outlined" type="caption" onChange={updateValue(setCaption)} className={classes.captionText} placeholder='Enter caption' />
+        <Button color="primary" onClick={postImg} className={classes.captionBtn}>Post</Button>
+
       </div>
     </Container>
   );

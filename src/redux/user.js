@@ -1,32 +1,80 @@
-import { apiBaseUrl } from '../config';
+import { apiBaseUrl } from "../config";
 
-const LOGIN_USER = 'instantelegram/login/LOGIN_USER';
-const LOGOUT_USER = 'instantelegram/logout/LOGOUT_USER';
-const USER_PROFILE = 'instantelegram/profile/USER_PROFILE';
-const FOLLOW = 'instantelegram/profile/FOLLOW';
-const UNFOLLOW = 'instantelegram/profile/UNFOLLOW';
-const UPDATE_CAPTION = 'instantelegram/image/UPDATE_CAPTION';
-const FEED_POSTS = 'instantelegram/feed/FEED_POSTS';
-const UPDATE_LIKE = 'instantelegram/like/UPDATE_LIKE';
-const GET_FOLLOWINGS = 'instantelegram/profile/GET_FOLLOWINGS';
-const UPDATE_COMMENT = 'instantelegram/comment/UPDATE_COMMENT';
-const DEL_POST = 'instantelegram/image/DEL_POST';
-const DELETE_COMMENT = 'instantelegram/image/DELETE_COMMENT';
+const LOGIN_USER = "instantelegram/login/LOGIN_USER";
+const LOGOUT_USER = "instantelegram/logout/LOGOUT_USER";
+const USER_PROFILE = "instantelegram/profile/USER_PROFILE";
+const FOLLOW = "instantelegram/profile/FOLLOW";
+const UNFOLLOW = "instantelegram/profile/UNFOLLOW";
+const UPDATE_CAPTION = "instantelegram/image/UPDATE_CAPTION";
+const FEED_POSTS = "instantelegram/feed/FEED_POSTS";
+const UPDATE_LIKE = "instantelegram/like/UPDATE_LIKE";
+const GET_FOLLOWINGS = "instantelegram/profile/GET_FOLLOWINGS";
+const UPDATE_COMMENT = "instantelegram/comment/UPDATE_COMMENT";
+const DEL_POST = "instantelegram/image/DEL_POST";
+const DELETE_COMMENT = "instantelegram/image/DELETE_COMMENT";
 
-export const loginUser = (token, currentUserId) => ({ type: LOGIN_USER, token, currentUserId });
+export const loginUser = (token, currentUserId) => ({
+  type: LOGIN_USER,
+  token,
+  currentUserId,
+});
 export const logoutUser = () => ({ type: LOGOUT_USER });
-export const getUserProfile = (id, username, bio, avatarUrl, posts, likes, comments) => ({ type: USER_PROFILE, id, username, bio, avatarUrl, posts, likes, comments });
-export const sendUserFollowReq = (userId, followedId) => ({ type: FOLLOW, userId, followedId });
-export const sendUserUnfollowReq = (userId, followedId) => ({ type: UNFOLLOW, userId, followedId });
-export const getFeedPost = (postsArr) => ({ type: FEED_POSTS, postsArr })
-export const setFollowings = (followingsArr) => ({ type: GET_FOLLOWINGS, followingsArr })
-export const updateCaption = (postObj, imageId) => ({ type: UPDATE_CAPTION, postObj, imageId })
-export const updateLike = (imageId, likesArr) => ({ type: UPDATE_LIKE, imageId, likesArr })
-export const updateComment = (postId, commentObj) => ({ type: UPDATE_COMMENT, postId, commentObj })
-export const deleteCommentDis = (postId, commentObj) => ({ type: DELETE_COMMENT, postId, commentObj })
-export const deletePost = (imageId) => ({ type: DEL_POST, imageId, });
+export const getUserProfile = (
+  id,
+  username,
+  bio,
+  avatarUrl,
+  posts,
+  likes,
+  comments
+) => ({
+  type: USER_PROFILE,
+  id,
+  username,
+  bio,
+  avatarUrl,
+  posts,
+  likes,
+  comments,
+});
+export const sendUserFollowReq = (userId, followedId) => ({
+  type: FOLLOW,
+  userId,
+  followedId,
+});
+export const sendUserUnfollowReq = (userId, followedId) => ({
+  type: UNFOLLOW,
+  userId,
+  followedId,
+});
+export const getFeedPost = (postsArr) => ({ type: FEED_POSTS, postsArr });
+export const setFollowings = (followingsArr) => ({
+  type: GET_FOLLOWINGS,
+  followingsArr,
+});
+export const updateCaption = (postObj, imageId) => ({
+  type: UPDATE_CAPTION,
+  postObj,
+  imageId,
+});
+export const updateLike = (imageId, likesArr) => ({
+  type: UPDATE_LIKE,
+  imageId,
+  likesArr,
+});
+export const updateComment = (postId, commentObj) => ({
+  type: UPDATE_COMMENT,
+  postId,
+  commentObj,
+});
+export const deleteCommentDis = (postId, commentObj) => ({
+  type: DELETE_COMMENT,
+  postId,
+  commentObj,
+});
+export const deletePost = (imageId) => ({ type: DEL_POST, imageId });
 
-export const sendRegisterReq = (userInfo) => async dispatch => {
+export const sendRegisterReq = (userInfo) => async (dispatch) => {
   const res = await fetch(`${apiBaseUrl}/api/session/register`, {
     method: "post",
     headers: { "Content-Type": "application/json" },
@@ -34,9 +82,9 @@ export const sendRegisterReq = (userInfo) => async dispatch => {
       username: userInfo.username,
       email: userInfo.email,
       bio: userInfo.bio,
-      hashed_password: userInfo.password
+      hashed_password: userInfo.password,
     }),
-  })
+  });
 
   if (res.ok) {
     const { token, currentUserId } = await res.json();
@@ -44,38 +92,38 @@ export const sendRegisterReq = (userInfo) => async dispatch => {
     window.localStorage.setItem("currentUserId", currentUserId);
     dispatch(loginUser(token, currentUserId));
   }
-}
+};
 
-export const sendLoginReq = (userInfo) => async dispatch => {
+export const sendLoginReq = (userInfo) => async (dispatch) => {
   const res = await fetch(`${apiBaseUrl}/api/session/login`, {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       username: userInfo.username,
-      password: userInfo.password
+      password: userInfo.password,
     }),
-  })
+  });
 
   if (res.ok) {
-    const { token, currentUserId } = await res.json()
+    const { token, currentUserId } = await res.json();
     window.localStorage.setItem("x-access-token", token);
     window.localStorage.setItem("currentUserId", currentUserId.toString());
-    dispatch(loginUser(token, currentUserId.toString()))
+    dispatch(loginUser(token, currentUserId.toString()));
   }
-}
+};
 
-export const sendLogoutReq = () => async dispatch => {
+export const sendLogoutReq = () => async (dispatch) => {
   window.localStorage.removeItem("x-access-token");
   window.localStorage.removeItem("currentUserId");
-  dispatch(logoutUser())
-}
+  dispatch(logoutUser());
+};
 
-export const getUserProfileReq = (id) => async dispatch => {
+export const getUserProfileReq = (id) => async (dispatch) => {
   const res = await fetch(`${apiBaseUrl}/api/users/${id}`);
   const res2 = await fetch(`${apiBaseUrl}/posts/${id}`);
   const res3 = await fetch(`${apiBaseUrl}/likes/`);
   const res4 = await fetch(`${apiBaseUrl}/comments/`);
-  if ((res.ok && res2.ok) && (res3.ok && res4.ok)) {
+  if (res.ok && res2.ok && res3.ok && res4.ok) {
     const resJson = await res.json();
     const posts = await res2.json();
     const likes = await res3.json();
@@ -83,14 +131,17 @@ export const getUserProfileReq = (id) => async dispatch => {
     const username = resJson.username;
     const bio = resJson.bio;
     const avatarUrl = resJson.avatarUrl;
-    // console.log(posts);
-    // console.log('hi')
-    dispatch(getUserProfile(id, username, bio, avatarUrl, posts, likes, comments));
-  }
-}
 
-export const getFeedPostReq = (currentUserId) => async dispatch => {
-  const postsRes = await fetch(`${apiBaseUrl}/api/users/${currentUserId}/posts`);
+    dispatch(
+      getUserProfile(id, username, bio, avatarUrl, posts, likes, comments)
+    );
+  }
+};
+
+export const getFeedPostReq = (currentUserId) => async (dispatch) => {
+  const postsRes = await fetch(
+    `${apiBaseUrl}/api/users/${currentUserId}/posts`
+  );
 
   if (postsRes.ok) {
     const posts = await postsRes.json();
@@ -110,78 +161,80 @@ export const getFeedPostReq = (currentUserId) => async dispatch => {
         postData.avatarUrl = avatarUrl;
         postData.username = username;
         postData.postId = postId;
-        postData.userId = user_id
+        postData.userId = user_id;
       }
-      postsArr.push(postData)
+      postsArr.push(postData);
     }
     postsArr.sort((a, b) => {
-      return a.timestamp < b.timestamp
-    })
-    dispatch(getFeedPost(postsArr))
+      return a.timestamp < b.timestamp;
+    });
+    dispatch(getFeedPost(postsArr));
   }
-}
+};
 
-export const getFollowings = (currentUserId) => async dispatch => {
-  const followingsRes = await fetch(`${apiBaseUrl}/api/users/${currentUserId}/followings`)
+export const getFollowings = (currentUserId) => async (dispatch) => {
+  const followingsRes = await fetch(
+    `${apiBaseUrl}/api/users/${currentUserId}/followings`
+  );
 
   if (followingsRes.ok) {
     const followings = await followingsRes.json();
-    // console.log(followings)
+
     let followingsArr = [];
 
     for (const key in followings) {
       const followingId = followings[key].followingId;
-      followingsArr.push(followingId)
+      followingsArr.push(followingId);
     }
 
-    dispatch(setFollowings(followingsArr))
+    dispatch(setFollowings(followingsArr));
   }
-}
+};
 
-export const sendFollowReq = (userId, followedId) => async dispatch => {
+export const sendFollowReq = (userId, followedId) => async (dispatch) => {
   const res = await fetch(`${apiBaseUrl}/api/users/${followedId}/follow`, {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       userId: userId,
-    })
+    }),
   });
   if (res.ok) {
     dispatch(sendUserFollowReq(userId, followedId));
   }
-}
-export const sendUnfollowReq = (userId, followedId) => async dispatch => {
+};
+export const sendUnfollowReq = (userId, followedId) => async (dispatch) => {
   const res = await fetch(`${apiBaseUrl}/api/users/${followedId}/follow`, {
     method: "delete",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       userId: userId,
-    })
+    }),
   });
   if (res.ok) {
     dispatch(sendUserUnfollowReq(userId, followedId));
   }
-}
+};
 
 export const updateCapt = (caption, imageId, token) => async (dispatch) => {
   try {
-    const body = JSON.stringify({ caption, token })
+    const body = JSON.stringify({ caption, token });
     const res = await fetch(`${apiBaseUrl}/posts/${imageId}`, {
       method: "PUT",
       body,
       headers: {
         "x-access-token": `${token}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
     });
     if (!res.ok) throw res;
     const postObj = await res.json();
     const imgId = postObj.id;
-    delete postObj['id'];
+    delete postObj["id"];
 
     dispatch(updateCaption(postObj, imgId));
 
-    return
+    return;
   } catch (err) {
     console.error(err);
   }
@@ -193,18 +246,18 @@ export const createLike = (imageId, token) => async (dispatch) => {
       method: "POST",
       headers: {
         "x-access-token": `${token}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
     });
     if (!res.ok) throw res;
     const data = await res.json();
-    const likesArr = data.data
-    dispatch(updateLike(imageId, likesArr))
-    return
+    const likesArr = data.data;
+    dispatch(updateLike(imageId, likesArr));
+    return;
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
 
 export const deleteLike = (imageId, token) => async (dispatch) => {
   try {
@@ -212,56 +265,58 @@ export const deleteLike = (imageId, token) => async (dispatch) => {
       method: "DELETE",
       headers: {
         "x-access-token": `${token}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
     });
     if (!res.ok) throw res;
     const data = await res.json();
-    const likesArr = data.data
-    dispatch(updateLike(imageId, likesArr))
-    return
+    const likesArr = data.data;
+    dispatch(updateLike(imageId, likesArr));
+    return;
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
 
-export const createComment = (postId, commentBody, token) => async (dispatch) => {
+export const createComment = (postId, commentBody, token) => async (
+  dispatch
+) => {
   try {
-    const body = JSON.stringify({ commentBody })
+    const body = JSON.stringify({ commentBody });
     const res = await fetch(`${apiBaseUrl}/comments/${postId}`, {
       method: "POST",
       body,
       headers: {
         "x-access-token": `${token}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
     });
     if (!res.ok) throw res;
     const commentObj = await res.json();
     dispatch(updateComment(postId, commentObj));
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
 
 export const deleteComment = (commentId, postId, token) => async (dispatch) => {
   try {
-    const body = JSON.stringify({ postId })
+    const body = JSON.stringify({ postId });
     const res = await fetch(`${apiBaseUrl}/comments/${commentId}`, {
       method: "DELETE",
       body,
       headers: {
         "x-access-token": `${token}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
     });
     if (!res.ok) throw res;
     const commentObj = await res.json();
     dispatch(deleteCommentDis(postId, commentObj));
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
 
 export const deletePostReq = (imageId, token) => async (dispatch) => {
   try {
@@ -269,17 +324,17 @@ export const deletePostReq = (imageId, token) => async (dispatch) => {
       method: "DELETE",
       headers: {
         "x-access-token": `${token}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
     });
     if (!res.ok) throw res;
     dispatch(deletePost(imageId));
     window.location.href = window.location.href;
-    return
+    return;
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
 
 export default function reducer(state = {}, action) {
   switch (action.type) {
@@ -288,7 +343,7 @@ export default function reducer(state = {}, action) {
         ...state,
         token: action.token,
         currentUserId: action.currentUserId,
-      }
+      };
     }
     case LOGOUT_USER: {
       delete state.token;
@@ -300,10 +355,10 @@ export default function reducer(state = {}, action) {
       delete state.comments;
       return {
         ...state,
-      }
+      };
     }
     case USER_PROFILE: {
-      const newState = Object.assign({}, state)
+      const newState = Object.assign({}, state);
       newState.profile = {
         id: action.id,
         username: action.username,
@@ -313,13 +368,13 @@ export default function reducer(state = {}, action) {
       newState.posts = action.posts;
       newState.likes = action.likes;
       newState.comments = action.comments;
-      return newState
+      return newState;
     }
     case FEED_POSTS: {
       return {
         feedPosts: action.postsArr,
         ...state,
-      }
+      };
     }
     case GET_FOLLOWINGS: {
       return {
@@ -327,16 +382,19 @@ export default function reducer(state = {}, action) {
         profile: {
           ...state.profile,
           followings: action.followingsArr,
-        }
-      }
+        },
+      };
     }
     case FOLLOW: {
       return {
         ...state,
         profile: {
           ...state.profile,
-          followings: [...state.profile.followings, parseInt(action.followedId)]
-        }
+          followings: [
+            ...state.profile.followings,
+            parseInt(action.followedId),
+          ],
+        },
       };
     }
     case UNFOLLOW: {
@@ -344,8 +402,10 @@ export default function reducer(state = {}, action) {
         ...state,
         profile: {
           ...state.profile,
-          followings: state.profile.followings.filter(followingId => followingId != action.followedId)
-        }
+          followings: state.profile.followings.filter(
+            (followingId) => followingId != action.followedId
+          ),
+        },
       };
     }
 
@@ -377,9 +437,10 @@ export default function reducer(state = {}, action) {
       delete state.posts[action.imageId];
       return {
         ...state,
-      }
+      };
     }
 
-    default: return state;
+    default:
+      return state;
   }
 }

@@ -71,6 +71,7 @@ const Image = (props) => {
   const [likeState, setLikeState] = useState(false);
   const [numOfLikes, setNumOfLikes] = useState(0);
   const [upd, setUpd] = useState(1);
+  const [submitEnabled, setSubmitEnabled] = useState(false);
 
   useEffect(() => {
     if (props.imageLikes[props.imageId]) {
@@ -129,6 +130,14 @@ const Image = (props) => {
     cancelEdit();
   };
 
+  const enableButtonCheck = (e) => {
+    if (e.target.value.length > 0) {
+      setSubmitEnabled(true);
+    } else {
+      setSubmitEnabled(false);
+    }
+  }
+
   const submitComment = (e) => {
     e.preventDefault();
     if (e.target[0].value) {
@@ -137,6 +146,7 @@ const Image = (props) => {
       (async () => {
         await props.createComment(props.imageId, newComment, props.token);
         setUpd(upd + 1);
+        setSubmitEnabled(false);
       })();
     }
   };
@@ -159,8 +169,8 @@ const Image = (props) => {
         </Menu>
       </>
     ) : (
-      <></>
-    );
+        <></>
+      );
 
   const timestampDate = new Date(props.postDate);
 
@@ -225,10 +235,10 @@ const Image = (props) => {
             <FavoriteIcon color="secondary" />
           </IconButton>
         ) : (
-          <IconButton aria-label="add to favorites" onClick={handleLike}>
-            <FavoriteIcon />
-          </IconButton>
-        )}
+            <IconButton aria-label="add to favorites" onClick={handleLike}>
+              <FavoriteIcon />
+            </IconButton>
+          )}
         <div>{numOfLikes}</div>
         <IconButton
           className={clsx(classes.expand, {
@@ -249,15 +259,28 @@ const Image = (props) => {
               className={classes.captionUpdate}
               variant="outlined"
               type="caption"
+              onChange={enableButtonCheck}
             />
-            <Button
-              className={classes.commentButton}
-              variant="outlined"
-              color="primary"
-              type="submit"
-            >
-              Submit
+            {submitEnabled ?
+              <Button
+                className={classes.commentButton}
+                variant="outlined"
+                color="primary"
+                type="submit"
+              >
+                Submit
             </Button>
+              :
+              <Button
+                className={classes.commentButton}
+                variant="outlined"
+                color="primary"
+                type="submit"
+                disabled
+              >
+                Submit
+            </Button>
+            }
           </form>
           {props.comments[props.imageId] ? (
             Object.keys(props.comments[props.imageId]).map((key) => {
@@ -273,8 +296,8 @@ const Image = (props) => {
               );
             })
           ) : (
-            <div></div>
-          )}
+              <div></div>
+            )}
         </CardContent>
       </Collapse>
     </Card>

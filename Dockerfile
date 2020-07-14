@@ -8,4 +8,7 @@ RUN npm install && npm run build
 
 FROM nginx:stable
 COPY --from=build-stage /app/build/ /usr/share/nginx/html
-COPY --from=build-stage /app/nginx.conf /etc/nginx/templates/default.conf.template
+COPY default.conf.template /etc/nginx/conf.d/default.conf.template
+COPY nginx.conf /etc/nginx/nginx.conf
+
+CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf" && nginx -g 'daemon off;'

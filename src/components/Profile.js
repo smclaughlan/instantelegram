@@ -50,9 +50,7 @@ function Profile(props) {
   const classes = useStyles();
 
   React.useEffect(() => {
-    console.log('You triggered the Use Effect Hook')
     let id = window.location.href.split("/")[4];
-    console.log(id)
     props.getUserProfileReq(id);
 
 
@@ -60,7 +58,7 @@ function Profile(props) {
 
 
 
-//   let userId = parseInt(window.localStorage.getItem("currentUserId"));
+  //   let userId = parseInt(window.localStorage.getItem("currentUserId"));
   const userId = props.currentUserId
   return (props.profileId ?
     <div className={classes.root}>

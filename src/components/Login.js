@@ -29,6 +29,15 @@ const Login = (props) => {
     props.sendLoginReq(loginData);
   }
 
+  const loginDemo = (e) => {
+    e.preventDefault()
+    setLoginData({
+      username: 'Guest',
+      password: 'password'
+    })
+    props.sendLoginReq(loginData);
+  }
+
   return (
     // <Container>
     <div className="wrapper">
@@ -53,6 +62,7 @@ const Login = (props) => {
             />
           </div>
           <div className="logIn">
+            <Button color="primary" onClick={loginDemo}>Demo Login</Button>
             <Button color="primary" type='submit'>Submit</Button>
             <a href="/register">Create An Acount</a>
           </div>

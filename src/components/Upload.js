@@ -7,15 +7,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { updateImg, post } from '../redux/image'
 import '../index.css';
 const useStyles = makeStyles((theme) => ({
-  // container: {
-  //   margin: 'auto',
-  //   maxWidth: 500,
-  //   maxHeight: 500,
-  // },
-  // img: {
-  //   maxWidth: 500,
-  //   maxHeight: 500,
-  // },
+  container: {
+    display: 'flex',
+    'flex-flow': 'column',
+  },
   post: {
     margin: 'auto',
     maxWidth: 500,
@@ -26,8 +21,6 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 'auto',
     marginRight: 'auto',
     width: 500,
-    // height: 500,
-
   },
   paper: {
     width: 500,
@@ -39,17 +32,13 @@ const useStyles = makeStyles((theme) => ({
   captionBtn: {
     margin: 'auto',
     width: 100,
-    // height: 500,
+    height: '100%'
 
   },
   captionText: {
     margin: 'auto',
     width: 400,
-    // height: 500,
-
   },
-
-
 }));
 
 const Upload = (props) => {
@@ -72,7 +61,7 @@ const Upload = (props) => {
   return (
     <Container className={classes.container}>
       <div className={classes.post} >
-        <InputLabel htmlFor="image-upload" style={{ margin: '20px', marginTop: '100px' }} >Select Image</InputLabel>
+        <InputLabel htmlFor="image-upload" style={{ margin: '20px' }} >Select Image</InputLabel>
         <Input id="image-upload" type="file" label="Image" style={{ display: 'none', width: '500px', margin: '20px' }} onChange={handleNewImage} className={classes.img} />
       </div>
       <Paper elevation={3} className={classes.paper} >
@@ -85,7 +74,7 @@ const Upload = (props) => {
       {/* <div >Caption:</div> */}
       <div className={classes.caption}>
         <TextField variant="outlined" type="caption" onChange={updateValue(setCaption)} className={classes.captionText} placeholder='Enter caption' />
-        <Button color="primary" onClick={postImg} className={classes.captionBtn} style={{ margin: '20px' }}>Post</Button>
+        <Button color="primary" onClick={postImg} className={classes.captionBtn}>Post</Button>
       </div>
       {/* </div> */}
     </Container>

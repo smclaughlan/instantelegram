@@ -1,0 +1,5 @@
+.splash-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 5% 10% 0 10%;
+}

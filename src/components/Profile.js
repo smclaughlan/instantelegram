@@ -50,18 +50,13 @@ function Profile(props) {
   const classes = useStyles();
 
   React.useEffect(() => {
-
     let id = window.location.href.split("/")[4];
 
     props.getUserProfileReq(id);
   }, []);
 
-
-
-
-  //   let userId = parseInt(window.localStorage.getItem("currentUserId"));
-  const userId = props.currentUserId
-  return (props.profileId ? (
+  const userId = props.currentUserId;
+  return props.profileId ? (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <Grid container spacing={2}>
@@ -91,8 +86,8 @@ function Profile(props) {
                 <MessageBtn></MessageBtn>
               </div>
             ) : (
-                <div></div>
-              )}
+              <div></div>
+            )}
           </Grid>
         </Grid>
       </Paper>
@@ -106,8 +101,8 @@ function Profile(props) {
           </ExpansionPanel>
         </Paper>
       ) : (
-          <div></div>
-        )}
+        <div></div>
+      )}
       <Paper className={classes.paper}>
         <Grid
           container
@@ -136,8 +131,8 @@ function Profile(props) {
       </Paper>
     </div>
   ) : (
-      <CircularProgress />
-    ));
+    <CircularProgress />
+  );
 }
 
 const mapStateToProps = (state) => {

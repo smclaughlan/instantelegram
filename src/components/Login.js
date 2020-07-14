@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField, Typography } from "@material-ui/core";
 import "../css/register.css";
 import { sendLoginReq } from "../redux/user";
 
@@ -11,6 +11,7 @@ const Login = (props) => {
   });
   const [loginButtonEnabled, setLoginButtonEnabled] = React.useState(false);
 
+  console.log(props.errorMessage);
   const checkLoginButton = () => {
     if (loginData.username.length > 0 && loginData.password.length > 0) {
       setLoginButtonEnabled(true);
@@ -79,6 +80,11 @@ const Login = (props) => {
               :
               <Button color="primary" type='submit' disabled>Submit</Button>
             }
+            {props.errorMessage ?
+              <h3>Error: Invalid login credentials</h3>
+              :
+              <></>
+            }
             <a href="/register">Create An Acount</a>
           </div>
         </form>
@@ -88,9 +94,16 @@ const Login = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return {
-    token: state.user.token,
-  };
+  if (state && state.user && state.user.error && state.user.error.login) {
+    return {
+      token: state.user.token,
+      errorMessage: state.user.error.login,
+    };
+  } else {
+    return {
+      token: state.user.token,
+    }
+  }
 };
 
 const mapDispatchToProps = (dispatch) => {

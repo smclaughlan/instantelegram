@@ -12,6 +12,7 @@ const GET_FOLLOWINGS = "instantelegram/profile/GET_FOLLOWINGS";
 const UPDATE_COMMENT = "instantelegram/comment/UPDATE_COMMENT";
 const DEL_POST = "instantelegram/image/DEL_POST";
 const DELETE_COMMENT = "instantelegram/image/DELETE_COMMENT";
+const ERROR_MESSAGE = "instantelegram/ERROR_MESSAGE";
 
 export const loginUser = (token, currentUserId) => ({
   type: LOGIN_USER,
@@ -72,7 +73,14 @@ export const deleteCommentDis = (postId, commentObj) => ({
   postId,
   commentObj,
 });
-export const deletePost = (imageId) => ({ type: DEL_POST, imageId });
+export const deletePost = (imageId) => ({
+  type: DEL_POST, imageId
+});
+export const errorMessage = (messageType, message) => ({
+  type: ERROR_MESSAGE,
+  messageType,
+  message,
+});
 
 export const sendRegisterReq = (userInfo) => async (dispatch) => {
   const res = await fetch(`${apiBaseUrl}/api/session/register`, {
@@ -95,20 +103,28 @@ export const sendRegisterReq = (userInfo) => async (dispatch) => {
 };
 
 export const sendLoginReq = (userInfo) => async (dispatch) => {
-  const res = await fetch(`${apiBaseUrl}/api/session/login`, {
-    method: "post",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      username: userInfo.username,
-      password: userInfo.password,
-    }),
-  });
-
-  if (res.ok) {
-    const { token, currentUserId } = await res.json();
-    window.localStorage.setItem("x-access-token", token);
-    window.localStorage.setItem("currentUserId", currentUserId.toString());
-    dispatch(loginUser(token, currentUserId.toString()));
+  try {
+    const res = await fetch(`${apiBaseUrl}/api/session/login`, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: userInfo.username,
+        password: userInfo.password,
+      }),
+    });
+    if (res.status === 401) {
+      const { message } = await res.json();
+      const messageType = "login";
+      dispatch(errorMessage(messageType, message));
+    }
+    if (res.ok) {
+      const { token, currentUserId } = await res.json();
+      window.localStorage.setItem("x-access-token", token);
+      window.localStorage.setItem("currentUserId", currentUserId.toString());
+      dispatch(loginUser(token, currentUserId.toString()));
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -339,6 +355,9 @@ export const deletePostReq = (imageId, token) => async (dispatch) => {
 export default function reducer(state = {}, action) {
   switch (action.type) {
     case LOGIN_USER: {
+      if (state) {
+        delete state.error;
+      }
       return {
         ...state,
         token: action.token,
@@ -357,6 +376,14 @@ export default function reducer(state = {}, action) {
         ...state,
       };
     }
+
+    case ERROR_MESSAGE: {
+      const newState = Object.assign({}, state);
+      const { messageType, message } = action;
+      newState["error"] = { [messageType]: message };
+      return newState;
+    }
+
     case USER_PROFILE: {
       const newState = Object.assign({}, state);
       newState.profile = {

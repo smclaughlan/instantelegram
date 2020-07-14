@@ -9,12 +9,23 @@ const Login = (props) => {
     username: "",
     password: "",
   });
+  const [loginButtonEnabled, setLoginButtonEnabled] = React.useState(false);
+
+  const checkLoginButton = () => {
+    console.log(loginData);
+    if (loginData.username.length > 0 && loginData.password.length > 0) {
+      setLoginButtonEnabled(true);
+    } else {
+      setLoginButtonEnabled(false);
+    }
+  }
 
   const userNameChange = (event) => {
     setLoginData({
       ...loginData,
       username: event.target.value,
     });
+    checkLoginButton();
   };
 
   const passwordChange = (event) => {
@@ -22,6 +33,7 @@ const Login = (props) => {
       ...loginData,
       password: event.target.value,
     });
+    checkLoginButton();
   };
 
   const loginUser = (e) => {
@@ -63,8 +75,11 @@ const Login = (props) => {
           <div className="logIn">
 
             <Button color="primary" onClick={loginDemo}>Demo Login</Button>
-            <Button color="primary" type='submit'>Submit</Button>
-
+            {loginButtonEnabled ?
+              <Button color="primary" type='submit'>Submit</Button>
+              :
+              <Button color="primary" type='submit' disabled>Submit</Button>
+            }
             <a href="/register">Create An Acount</a>
           </div>
         </form>

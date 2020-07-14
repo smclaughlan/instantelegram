@@ -75,7 +75,7 @@ export const deleteCommentDis = (postId, commentObj) => ({
 export const deletePost = (imageId) => ({ type: DEL_POST, imageId });
 
 export const sendRegisterReq = (userInfo) => async (dispatch) => {
-  const res = await fetch(`${apiBaseUrl}/api/session/register`, {
+  const res = await fetch(`${apiBaseUrl}/session/register`, {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -95,7 +95,7 @@ export const sendRegisterReq = (userInfo) => async (dispatch) => {
 };
 
 export const sendLoginReq = (userInfo) => async (dispatch) => {
-  const res = await fetch(`${apiBaseUrl}/api/session/login`, {
+  const res = await fetch(`${apiBaseUrl}/session/login`, {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -119,7 +119,7 @@ export const sendLogoutReq = () => async (dispatch) => {
 };
 
 export const getUserProfileReq = (id) => async (dispatch) => {
-  const res = await fetch(`${apiBaseUrl}/api/users/${id}`);
+  const res = await fetch(`${apiBaseUrl}/users/${id}`);
   const res2 = await fetch(`${apiBaseUrl}/posts/${id}`);
   const res3 = await fetch(`${apiBaseUrl}/likes/`);
   const res4 = await fetch(`${apiBaseUrl}/comments/`);
@@ -139,9 +139,7 @@ export const getUserProfileReq = (id) => async (dispatch) => {
 };
 
 export const getFeedPostReq = (currentUserId) => async (dispatch) => {
-  const postsRes = await fetch(
-    `${apiBaseUrl}/api/users/${currentUserId}/posts`
-  );
+  const postsRes = await fetch(`${apiBaseUrl}/users/${currentUserId}/posts`);
 
   if (postsRes.ok) {
     const posts = await postsRes.json();
@@ -152,7 +150,7 @@ export const getFeedPostReq = (currentUserId) => async (dispatch) => {
       const postId = post;
       const { user_id, ...postData } = postObj;
 
-      const postUserRes = await fetch(`${apiBaseUrl}/api/users/${user_id}`);
+      const postUserRes = await fetch(`${apiBaseUrl}/users/${user_id}`);
 
       if (postUserRes.ok) {
         const postUserData = await postUserRes.json();
@@ -174,7 +172,7 @@ export const getFeedPostReq = (currentUserId) => async (dispatch) => {
 
 export const getFollowings = (currentUserId) => async (dispatch) => {
   const followingsRes = await fetch(
-    `${apiBaseUrl}/api/users/${currentUserId}/followings`
+    `${apiBaseUrl}/users/${currentUserId}/followings`
   );
 
   if (followingsRes.ok) {
@@ -192,7 +190,7 @@ export const getFollowings = (currentUserId) => async (dispatch) => {
 };
 
 export const sendFollowReq = (userId, followedId) => async (dispatch) => {
-  const res = await fetch(`${apiBaseUrl}/api/users/${followedId}/follow`, {
+  const res = await fetch(`${apiBaseUrl}/users/${followedId}/follow`, {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -204,7 +202,7 @@ export const sendFollowReq = (userId, followedId) => async (dispatch) => {
   }
 };
 export const sendUnfollowReq = (userId, followedId) => async (dispatch) => {
-  const res = await fetch(`${apiBaseUrl}/api/users/${followedId}/follow`, {
+  const res = await fetch(`${apiBaseUrl}/users/${followedId}/follow`, {
     method: "delete",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

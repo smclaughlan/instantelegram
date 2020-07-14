@@ -66,10 +66,11 @@ const Image = (props) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [editCaptionBool, setEditCaptionBool] = useState("none");
-  const [editTypographyBool, setEditTypographyBool] = useState("grid");
-  const [likeState, setLikeState] = useState(false);
-  const [numOfLikes, setNumOfLikes] = useState(0);
+  const [editCaptionBool, setEditCaptionBool] = useState('none');
+  const [editTypographyBool, setEditTypographyBool] = useState('grid');
+  const [likeState, setLikeState] = useState(false)
+  const [numOfLikes, setNumOfLikes] = useState(0)
+  const [upd, setUpd] = useState(1);
 
   useEffect(() => {
     if (props.imageLikes[props.imageId]) {
@@ -133,16 +134,21 @@ const Image = (props) => {
   const submitEdit = (e) => {
     e.preventDefault();
     const newCaption = e.target[0].value;
-    props.updateCapt(newCaption, props.imageId, props.token);
+    props.updateCapt(newCaption, props.imageId, props.token)
     cancelEdit();
-    window.location.href = window.location.href;
-  };
+  }
 
-  const submitComment = (e) => {
+  const submitComment = e => {
     e.preventDefault();
-    const newComment = e.target[0].value;
-    props.createComment(props.imageId, newComment, props.token);
-  };
+    if (e.target[0].value) {
+      const newComment = e.target[0].value;
+      e.target[0].value = '';
+      (async () => {
+        await props.createComment(props.imageId, newComment, props.token);
+        setUpd(upd + 1);
+      })();
+    }
+  }
 
   const editButton =
     parseInt(props.currentUserId) == props.imagePosterId ? (
@@ -162,8 +168,8 @@ const Image = (props) => {
         </Menu>
       </>
     ) : (
-      <></>
-    );
+        <></>
+      );
 
   const timestampDate = new Date(props.postDate);
 
@@ -228,10 +234,10 @@ const Image = (props) => {
             <FavoriteIcon color="secondary" />
           </IconButton>
         ) : (
-          <IconButton aria-label="add to favorites" onClick={handleLike}>
-            <FavoriteIcon />
-          </IconButton>
-        )}
+            <IconButton aria-label="add to favorites" onClick={handleLike}>
+              <FavoriteIcon />
+            </IconButton>
+          )}
         <div>{numOfLikes}</div>
         <IconButton
           className={clsx(classes.expand, {
@@ -276,8 +282,8 @@ const Image = (props) => {
               );
             })
           ) : (
-            <div></div>
-          )}
+              <div></div>
+            )}
         </CardContent>
       </Collapse>
     </Card>

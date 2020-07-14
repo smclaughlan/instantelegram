@@ -46,7 +46,6 @@ const RegisterForm = (props) => {
   };
 
   return (
-    // <Container ">
     <>
       <div className="form-wrapper">
         <h1 className="header">Instantelegram</h1>
@@ -93,7 +92,6 @@ const RegisterForm = (props) => {
         </form>
       </div>
     </>
-    // </Container>
   );
 };
 

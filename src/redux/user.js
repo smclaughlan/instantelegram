@@ -11,6 +11,7 @@ const UPDATE_LIKE = 'instantelegram/like/UPDATE_LIKE';
 const GET_FOLLOWINGS = 'instantelegram/profile/GET_FOLLOWINGS';
 const UPDATE_COMMENT = 'instantelegram/comment/UPDATE_COMMENT';
 const DEL_POST = 'instantelegram/image/DEL_POST';
+const DELETE_COMMENT = 'instantelegram/image/DELETE_COMMENT';
 
 export const loginUser = (token, currentUserId) => ({ type: LOGIN_USER, token, currentUserId });
 export const logoutUser = () => ({ type: LOGOUT_USER });
@@ -22,6 +23,7 @@ export const setFollowings = (followingsArr) => ({ type: GET_FOLLOWINGS, followi
 export const updateCaption = (postObj, imageId) => ({ type: UPDATE_CAPTION, postObj, imageId })
 export const updateLike = (imageId, likesArr) => ({ type: UPDATE_LIKE, imageId, likesArr })
 export const updateComment = (postId, commentObj) => ({ type: UPDATE_COMMENT, postId, commentObj })
+export const deleteCommentDis = (postId, commentObj) => ({ type: DELETE_COMMENT, postId, commentObj })
 export const deletePost = (imageId) => ({ type: DEL_POST, imageId, });
 
 export const sendRegisterReq = (userInfo) => async dispatch => {
@@ -255,7 +257,7 @@ export const deleteComment = (commentId, postId, token) => async (dispatch) => {
     });
     if (!res.ok) throw res;
     const commentObj = await res.json();
-    dispatch(updateComment(postId, commentObj));
+    dispatch(deleteCommentDis(postId, commentObj));
   } catch (err) {
     console.error(err)
   }
@@ -364,6 +366,13 @@ export default function reducer(state = {}, action) {
       newState.comments[action.postId] = action.commentObj;
       return newState;
     }
+
+    case DELETE_COMMENT: {
+      const newState = Object.assign({}, state);
+      newState.comments[action.postId] = action.commentObj;
+      return newState;
+    }
+
     case DEL_POST: {
       delete state.posts[action.imageId];
       return {

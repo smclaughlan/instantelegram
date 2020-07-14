@@ -125,12 +125,14 @@ const Image = (props) => {
 
   const submitComment = e => {
     e.preventDefault();
-    const newComment = e.target[0].value;
-    e.target[0].value = '';
-    (async () => {
-      await props.createComment(props.imageId, newComment, props.token);
-      setUpd(upd + 1);
-    })();
+    if (e.target[0].value) {
+      const newComment = e.target[0].value;
+      e.target[0].value = '';
+      (async () => {
+        await props.createComment(props.imageId, newComment, props.token);
+        setUpd(upd + 1);
+      })();
+    }
   }
 
   const editButton = (parseInt(props.currentUserId) == props.imagePosterId

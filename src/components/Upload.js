@@ -53,12 +53,13 @@ const useStyles = makeStyles((theme) => ({
 const Upload = (props) => {
   const classes = useStyles();
   const [caption, setCaption] = useState("");
-
+  const [submitButtonEnabled, setSubmitButtonEnabled] = React.useState(false);
   const updateValue = (cb) => (e) => cb(e.target.value);
 
   const handleNewImage = (e) => {
     const newImg = e.target.files[0];
     props.updateImg(newImg);
+    setSubmitButtonEnabled(true);
   };
 
   const postImg = (e) => {
@@ -82,7 +83,11 @@ const Upload = (props) => {
       <div className={classes.caption}>
 
         <TextField variant="outlined" type="caption" onChange={updateValue(setCaption)} className={classes.captionText} placeholder='Enter caption' />
-        <Button color="primary" onClick={postImg} className={classes.captionBtn}>Post</Button>
+        {submitButtonEnabled ?
+          <Button color="primary" onClick={postImg} className={classes.captionBtn}>Post</Button>
+          :
+          <Button color="primary" onClick={postImg} className={classes.captionBtn} disabled>Post</Button>
+        }
 
       </div>
     </Container>

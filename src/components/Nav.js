@@ -37,7 +37,7 @@ const NavBar = (props) => {
 
   const navigation = props.currentUserId ? (
 
-    <Grid container spacing={3} style={{ 'justify-content': 'space-between' }}>
+    <Grid container spacing={3} style={{ 'justifyContent': 'space-between' }}>
       <Grid item xs={10}>
         <NavLink style={{ color: 'white' }} to="/">
           <Button color="inherit">Instantelegram</Button>

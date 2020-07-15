@@ -11,7 +11,6 @@ const Login = (props) => {
   });
   const [loginButtonEnabled, setLoginButtonEnabled] = React.useState(false);
 
-  console.log(props.errorMessage);
   const checkLoginButton = () => {
     if (loginData.username.length > 0 && loginData.password.length > 0) {
       setLoginButtonEnabled(true);

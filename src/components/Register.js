@@ -15,7 +15,8 @@ const Register = (props) => {
 
   const checkSubmitButton = () => {
     if (registerData.username.length > 0 && registerData.password.length > 0
-      && registerData.email.length > 0) {
+      && registerData.email.length > 0 && registerData.email.indexOf('@') !== -1
+      && registerData.email.indexOf('.') !== -1) {
       setSubmitButtonEnabled(true);
     } else {
       setSubmitButtonEnabled(false);

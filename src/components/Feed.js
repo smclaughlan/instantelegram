@@ -54,9 +54,9 @@ function Feed(props) {
   if (props.feedPosts) {
     props.feedPosts.sort((a, b) => {
       if (a.timestamp > b.timestamp) {
-        return 1;
-      } else {
         return -1;
+      } else {
+        return 1;
       }
     });
   }
@@ -79,7 +79,7 @@ function Feed(props) {
             alignContent="center"
             alignItems="flex-start"
           >
-            {props.feedPosts.reverse().map((post) => {
+            {props.feedPosts.map((post) => {
               return (
                 <Grid item className={classes.column1}>
                   <Image

@@ -11,12 +11,24 @@ const Register = (props) => {
     email: "",
     bio: "",
   });
+  const [submitButtonEnabled, setSubmitButtonEnabled] = React.useState(false);
+
+  const checkSubmitButton = () => {
+    if (registerData.username.length > 0 && registerData.password.length > 0
+      && registerData.email.length > 0 && registerData.email.indexOf('@') !== -1
+      && registerData.email.indexOf('.') !== -1) {
+      setSubmitButtonEnabled(true);
+    } else {
+      setSubmitButtonEnabled(false);
+    }
+  }
 
   const userNameChange = (event) => {
     setRegisterData({
       ...registerData,
       username: event.target.value,
     });
+    checkSubmitButton();
   };
 
   const passwordChange = (event) => {
@@ -24,6 +36,7 @@ const Register = (props) => {
       ...registerData,
       password: event.target.value,
     });
+    checkSubmitButton();
   };
 
   const emailChange = (event) => {
@@ -31,6 +44,7 @@ const Register = (props) => {
       ...registerData,
       email: event.target.value,
     });
+    checkSubmitButton();
   };
 
   const bioChange = (event) => {
@@ -84,9 +98,15 @@ const Register = (props) => {
             />
           </div>
           <div className="createAccount">
-            <Button color="primary" type="submit">
-              Submit
+            {submitButtonEnabled ?
+              <Button color="primary" type="submit">
+                Submit
             </Button>
+              :
+              <Button color="primary" type="submit" disabled>
+                Submit
+            </Button>
+            }
             <a href="/login">Already Have an Account?</a>
           </div>
         </form>

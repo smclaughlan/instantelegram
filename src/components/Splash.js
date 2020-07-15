@@ -9,17 +9,15 @@ export default function Splash() {
     <>
       <div className='splash-container'>
         <div className='splash-photos'>
-          <container>
-            <img
-              className='splash-image'
-              src={"images/splash3.jpg"}
-              style={{
-                margin: "20 auto",
-                borderRadius: "5px",
-                maxWidth: "100%",
-              }}
-            />
-          </container>
+          <img
+            className='splash-image'
+            src={"images/splash3.jpg"}
+            style={{
+              margin: "20 auto",
+              borderRadius: "5px",
+              maxWidth: "100%",
+            }}
+          />
         </div>
         <div className='splash-register-form'>
           <RegisterForm />

@@ -41,7 +41,6 @@ const NavBar = (props) => {
 
 
     <Grid container spacing={3} style={{ 'justify-content': 'space-between' }}>
-
       <Grid item xs={10}>
         <NavLink style={{ color: "white" }} to="/">
           <Button color="inherit">Instantelegram</Button>
@@ -65,15 +64,15 @@ const NavBar = (props) => {
       </Grid>
     </Grid>
   ) : (
-    <>
-      <NavLink style={{ color: "white" }} to="/register">
-        <Button color="inherit">Register</Button>
-      </NavLink>
-      <NavLink style={{ color: "white" }} to="/login">
-        <Button color="inherit">Login</Button>
-      </NavLink>
-    </>
-  );
+      <>
+        <NavLink style={{ color: "white" }} to="/register">
+          <Button color="inherit">Register</Button>
+        </NavLink>
+        <NavLink style={{ color: "white" }} to="/login">
+          <Button color="inherit">Login</Button>
+        </NavLink>
+      </>
+    );
 
   return (
 

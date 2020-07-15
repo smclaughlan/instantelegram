@@ -56,9 +56,12 @@ function Feed(props) {
     return (
         (props.feedPosts && props.user) ?
             <div className={classes.root}>
-                <Container className={classes.topLogo}>
-                    <img alt={"Instantelegram logo"} src={"images/logoIG.png"} style={{ margin: '32px auto', borderRadius: '5px', maxWidth: '950px' }}></img>
-                </Container>
+                {window.screen.width > 960 ? (
+                    <Container className={classes.topLogo}>
+                        <img alt={"Instantelegram logo"} src={"images/logoIG.png"} style={{ margin: '32px auto', borderRadius: '5px', maxWidth: '950px' }}></img>
+                    </Container>) : <></>
+                }
+
                 <Paper className={classes.paper}>
                     <Grid
                         container

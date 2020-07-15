@@ -50,16 +50,11 @@ function Profile(props) {
   const classes = useStyles();
 
   React.useEffect(() => {
-
     let id = window.location.href.split("/")[4];
 
     props.getUserProfileReq(id);
   }, []);
 
-
-
-
-  //   let userId = parseInt(window.localStorage.getItem("currentUserId"));
   const userId = props.currentUserId
   return (
     props.profileId ? (
@@ -82,7 +77,6 @@ function Profile(props) {
                   <Typography variant="body2" gutterBottom>
                     {props.profileBio}
                   </Typography>
-                </Grid>
               </Grid>
             </Grid>
             <Grid>

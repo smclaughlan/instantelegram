@@ -55,84 +55,84 @@ function Profile(props) {
     props.getUserProfileReq(id);
   }, []);
 
-  const userId = props.currentUserId
-  return (
-    props.profileId ? (
-      <div className={classes.root}>
-        <Paper className={classes.paper}>
-          <Grid container spacing={2}>
-            <Grid item>
-              <Avatar
-                alt="User avatar"
-                src={`${props.profileImage}`}
-                className={classes.large}
-              />
-            </Grid>
-            <Grid item xs={12} sm container>
-              <Grid item xs container direction="column" spacing={2}>
-                <Grid item xs>
-                  <Typography gutterBottom variant="subtitle1">
-                    {props.profileUsername}
-                  </Typography>
-                  <Typography variant="body2" gutterBottom>
-                    {props.profileBio}
-                  </Typography>
+  const userId = props.currentUserId;
+  return props.profileId ? (
+    <div className={classes.root}>
+      <Paper className={classes.paper}>
+        <Grid container spacing={2}>
+          <Grid item>
+            <Avatar
+              alt="User avatar"
+              src={`${props.profileImage}`}
+              className={classes.large}
+            />
+          </Grid>
+          <Grid item xs={12} sm container>
+            <Grid item xs container direction="column" spacing={2}>
+              <Grid item xs>
+                <Typography gutterBottom variant="subtitle1">
+                  {props.profileUsername}
+                </Typography>
+                <Typography variant="body2" gutterBottom>
+                  {props.profileBio}
+                </Typography>
               </Grid>
             </Grid>
-            <Grid>
-              {props.profileId !== userId ? (
-                <div>
-                  <FollowBtn></FollowBtn>
-                  <MessageBtn></MessageBtn>
-                </div>
-              ) : (
-                  <div></div>
-                )}
-            </Grid>
           </Grid>
-        </Paper>
-        {props.profileId === userId ? (
-          <Paper className={classes.paper}>
-            <ExpansionPanel>
-              <ExpansionPanelSummary>Edit Profile</ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <EditProfile profileBio={props.profileBio}></EditProfile>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-          </Paper>
-        ) : (
-            <div></div>
-          )}
+          <Grid>
+            {props.profileId !== userId ? (
+              <div>
+                <FollowBtn></FollowBtn>
+                <MessageBtn></MessageBtn>
+              </div>
+            ) : (
+                <div></div>
+              )}
+          </Grid>
+        </Grid>
+      </Paper>
+      {props.profileId === userId ? (
         <Paper className={classes.paper}>
-          <Grid
-            container
-            spacing={3}
-            direction="column"
-            justify="center"
-            alignContent="center"
-            alignItems="flex-start"
-          >
-            {Object.keys(props.posts).map((key) => {
-              return (
-                <Grid item className={classes.column1}>
-                  <Image
-                    imageId={key}
-                    postDate={props.posts[key].timestamp}
-                    imageUrl={props.posts[key].imageUrl}
-                    imageCapt={props.posts[key].caption}
-                    imagePosterUsername={props.profileUsername}
-                    imagePosterAviUrl={props.profileImage}
-                    imagePosterId={props.posts[key].user_id}
-                  />
-                </Grid>
-              );
-            })}
-          </Grid>
+          <ExpansionPanel>
+            <ExpansionPanelSummary>Edit Profile</ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <EditProfile profileBio={props.profileBio}></EditProfile>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
         </Paper>
-      </div>
-    ) : (
-        <CircularProgress />
-      ));
+      ) : (
+          <div></div>
+        )}
+      <Paper className={classes.paper}>
+        <Grid
+          container
+          spacing={3}
+          direction="column"
+          justify="center"
+          alignContent="center"
+          alignItems="flex-start"
+        >
+          {Object.keys(props.posts).map((key) => {
+            return (
+              <Grid item className={classes.column1}>
+                <Image
+                  imageId={key}
+                  postDate={props.posts[key].timestamp}
+                  imageUrl={props.posts[key].imageUrl}
+                  imageCapt={props.posts[key].caption}
+                  imagePosterUsername={props.profileUsername}
+                  imagePosterAviUrl={props.profileImage}
+                  imagePosterId={props.posts[key].user_id}
+                />
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Paper>
+    </div>
+  ) : (
+      <CircularProgress />
+    );
 }
 
 const mapStateToProps = (state) => {

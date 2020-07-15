@@ -112,7 +112,7 @@ function Profile(props) {
           alignContent="center"
           alignItems="flex-start"
         >
-          {Object.keys(props.posts).map((key) => {
+          {Object.keys(props.posts).reverse().map((key) => {
             return (
               <Grid item className={classes.column1}>
                 <Image

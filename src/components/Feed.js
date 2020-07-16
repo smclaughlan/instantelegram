@@ -52,7 +52,15 @@ function Feed(props) {
     props.getUserProfileReq(id);
   }, []);
 
-
+  if (props.feedPosts) {
+    props.feedPosts.sort((a, b) => {
+      if (a.timestamp > b.timestamp) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+  }
   const classes = useStyles();
   return (
     (props.feedPosts && props.user) ?

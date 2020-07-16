@@ -8,6 +8,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { Container } from "@material-ui/core";
 
 import Image from "./Image";
+import '../css/feed.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,46 +53,50 @@ function Feed(props) {
   }, []);
 
 
-    const classes = useStyles();
-    return (
-        (props.feedPosts && props.user) ?
-            <div className={classes.root}>
-                {window.screen.width > 960 ? (
-                    <Container className={classes.topLogo}>
-                        <img alt={"Instantelegram logo"} src={"images/logoIG.png"} style={{ margin: '32px auto', borderRadius: '5px', maxWidth: '950px' }}></img>
-                    </Container>) : <></>
-                }
-
-                <Paper className={classes.paper}>
-                    <Grid
-                        container
-                        spacing={3}
-                        direction="column"
-                        justify="center"
-                        alignContent="center"
-                        alignItems="flex-start"
-                    >
-                        {props.feedPosts.map((post) => {
-                            return (
-                                <Grid item className={classes.column1}>
-                                    <Image
-                                        imageId={post.postId}
-                                        postDate={post.timestamp}
-                                        imageUrl={post.imageUrl}
-                                        imageCapt={post.caption}
-                                        imagePosterUsername={post.username}
-                                        imagePosterAviUrl={post.avatarUrl}
-                                        imagePosterId={post.userId}
-                                    />
-                                </Grid>
-                            )
-                        })}
-                    </Grid>
-                </Paper>
-            </div >
-            :
-            <CircularProgress />
-    )
+  const classes = useStyles();
+  return (
+    (props.feedPosts && props.user) ?
+      <div className={classes.root}>
+        <Container className={classes.topLogo}>
+          <img alt={"Instantelegram logo"} id='instantelegram-logo' src={"images/logoIG.png"} style={{ margin: '32px auto', borderRadius: '5px', maxWidth: '950px' }}></img>
+        </Container>
+        <Paper className={classes.paper}>
+          <Grid
+            container
+            spacing={3}
+            direction="column"
+            justify="center"
+            alignContent="center"
+            alignItems="flex-start"
+          >
+            {props.feedPosts.map((post) => {
+              return (
+                <Grid item className={classes.column1}>
+                  <Image
+                    imageId={post.postId}
+                    postDate={post.timestamp}
+                    imageUrl={post.imageUrl}
+                    imageCapt={post.caption}
+                    imagePosterUsername={post.username}
+                    imagePosterAviUrl={post.avatarUrl}
+                    imagePosterId={post.userId}
+                  />
+                </Grid>
+              )
+            })}
+          </Grid>
+        </Paper>
+      </div >
+      :
+      <CircularProgress
+        size='100px'
+        style={{
+          alignSelf: 'center',
+          top: '40%',
+          position: 'relative',
+        }}
+      />
+  )
 
 }
 

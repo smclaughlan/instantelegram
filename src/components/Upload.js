@@ -39,10 +39,7 @@ const useStyles = makeStyles((theme) => ({
   captionBtn: {
     margin: "auto",
     width: 100,
-
     height: '100%'
-
-
   },
   captionText: {
     margin: "auto",

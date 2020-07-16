@@ -40,15 +40,22 @@ const FollowBtn = (props) => {
         </Button>
       </div>
     ) : (
-      <div className={classes.root}>
-        <Button variant="contained" color="primary" onClick={handleFollow}>
-          Follow
+        <div className={classes.root}>
+          <Button variant="contained" color="primary" onClick={handleFollow}>
+            Follow
         </Button>
-      </div>
-    )
+        </div>
+      )
   ) : (
-    <CircularProgress />
-  );
+      <CircularProgress
+        size='100px'
+        style={{
+          alignSelf: 'center',
+          top: '40%',
+          position: 'relative',
+        }}
+      />
+    );
 };
 
 const mapStateToProps = (state) => {

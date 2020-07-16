@@ -131,7 +131,14 @@ function Profile(props) {
       </Paper>
     </div>
   ) : (
-      <CircularProgress />
+      <CircularProgress
+        size='100px'
+        style={{
+          alignSelf: 'center',
+          top: '40%',
+          position: 'relative',
+        }}
+      />
     );
 }
 

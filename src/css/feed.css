@@ -1,0 +1,16 @@
+#instantelegram-logo {
+    display: none;
+}
+
+#mobile-menu-icon {
+    display: block;
+}
+
+@media only screen and (min-width: 961px) {
+    #instantelegram-logo {
+        display: block;
+    }
+    #mobile-menu-icon {
+        display: none;
+    }
+}

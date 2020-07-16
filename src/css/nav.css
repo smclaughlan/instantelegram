@@ -1,0 +1,30 @@
+#navbar-items {
+    display: none;
+}
+
+.mobile-nav-overlay {
+    align-items: center;
+    background-color: #8A64C7;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    margin-top: 48px;
+    position: fixed;
+    transition: all 0.1s ease-in;
+    width: 100%;
+    z-index: 1;
+}
+
+#mobile-menu-icon {
+    position: absolute;
+    left: 16px;
+}
+
+@media only screen and (min-width: 961px) {
+    #navbar-items {
+        display: flex;
+    }
+    .mobile-home-btn {
+        display: none;
+    }
+}

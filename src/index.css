@@ -5,6 +5,7 @@ body, html, #root, .body-container {
   height: 100%;
   width: 100%;
   overflow: auto;
+  overflow-x: hidden;
 }
 
 /* Page Transitions */

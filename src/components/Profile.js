@@ -15,6 +15,8 @@ import FollowBtn from "./FollowBtn";
 import MessageBtn from "./MessageBtn";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+import '../css/profile.css';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -22,12 +24,11 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(2),
-
     marginLeft: "auto",
     marginRight: "auto",
     marginTop: 20,
     marginBottom: 20,
-    maxWidth: 800,
+    maxWidth: '90%',
   },
   image: {
     width: 128,
@@ -59,7 +60,7 @@ function Profile(props) {
   return props.profileId ? (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <Grid container spacing={2}>
+        <Grid id='profile-user-grid' container spacing={2}>
           <Grid item>
             <Avatar
               alt="User avatar"
@@ -67,9 +68,9 @@ function Profile(props) {
               className={classes.large}
             />
           </Grid>
-          <Grid item xs={12} sm container>
+          <Grid id='profile-user-info' item xs={12} sm container>
             <Grid item xs container direction="column" spacing={2}>
-              <Grid item xs>
+              <Grid id='profile-user-info-items' item xs>
                 <Typography gutterBottom variant="subtitle1">
                   {props.profileUsername}
                 </Typography>

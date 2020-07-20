@@ -9,6 +9,7 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import { getUserProfileReq } from "../redux/user";
+import { getUserIds } from "../redux/search";
 import EditProfile from "./EditProfile";
 import Image from "./Image";
 import FollowBtn from "./FollowBtn";
@@ -54,6 +55,7 @@ function Profile(props) {
     let id = window.location.href.split("/")[4];
 
     props.getUserProfileReq(id);
+    props.getUserIds(props.token);
   }, []);
 
   const userId = props.currentUserId;
@@ -165,6 +167,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getUserProfileReq: (...args) => dispatch(getUserProfileReq(...args)),
+    getUserIds: (...args) => dispatch(getUserIds(...args)),
   };
 };
 

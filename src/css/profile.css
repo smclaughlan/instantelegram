@@ -1,0 +1,13 @@
+@media only screen and (max-width: 961px) {
+    #profile-user-grid, #profile-user-info {
+        display: flex;
+        justify-content: center;
+    }
+    
+    #profile-user-info-items {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+}

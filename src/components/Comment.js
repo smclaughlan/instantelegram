@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Avatar, Paper, IconButton } from '@material-ui/core';
@@ -22,16 +22,20 @@ const useStyles = makeStyles(theme => ({
 
 const Comment = (props) => {
     const classes = useStyles();
+    const [display, setDisplay] = useState(true);
 
     const routeToProfile = () => {
         window.location.href = `/profile/${props.commenterId}`
     }
 
     const handleDelete = e => {
-        props.deleteComment(props.commentId, props.imageId, props.token)
+        (async () => {
+            await props.deleteComment(props.commentId, props.imageId, props.token);
+            setDisplay(false);
+        })();
     }
 
-    return (
+    return (display ?
         <Paper className={classes.paper}>
             <div className="commentDetail">
                 <Avatar aria-label="commentavi" onClick={routeToProfile}>
@@ -55,6 +59,8 @@ const Comment = (props) => {
             </div>
 
         </Paper>
+        :
+        <></>
     )
 }
 

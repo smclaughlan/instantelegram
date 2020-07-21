@@ -1,46 +1,48 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import { getUserProfileReq } from '../redux/user';
-import EditProfile from './EditProfile';
-import Image from './Image';
-import FollowBtn from './FollowBtn';
-import MessageBtn from './MessageBtn';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import React from "react";
+import { connect } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import Avatar from "@material-ui/core/Avatar";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import { getUserProfileReq } from "../redux/user";
+import { getUserIds } from "../redux/search";
+import EditProfile from "./EditProfile";
+import Image from "./Image";
+import FollowBtn from "./FollowBtn";
+import MessageBtn from "./MessageBtn";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
+import '../css/profile.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    justifyContent: 'space-around',
+    justifyContent: "space-around",
   },
   paper: {
     padding: theme.spacing(2),
-    // margin: 'auto',
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    marginLeft: "auto",
+    marginRight: "auto",
     marginTop: 20,
     marginBottom: 20,
-    maxWidth: 800,
+    maxWidth: '90%',
   },
   image: {
     width: 128,
     height: 128,
   },
   img: {
-    margin: 'auto',
-    display: 'block',
-    maxWidth: '100%',
-    maxHeight: '100%',
+    margin: "auto",
+    display: "block",
+    maxWidth: "100%",
+    maxHeight: "100%",
   },
   gridList: {
-    justifyContent: 'space-around',
+    justifyContent: "space-around",
     maxWidth: 500,
     height: 450,
   },
@@ -50,29 +52,27 @@ function Profile(props) {
   const classes = useStyles();
 
   React.useEffect(() => {
-    console.log('You triggered the Use Effect Hook')
     let id = window.location.href.split("/")[4];
-    console.log(id)
+
     props.getUserProfileReq(id);
-
-
+    props.getUserIds(props.token);
   }, []);
 
-
-
-//   let userId = parseInt(window.localStorage.getItem("currentUserId"));
-  const userId = props.currentUserId
-  return (props.profileId ?
+  const userId = props.currentUserId;
+  return props.profileId ? (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <Grid container spacing={2}>
+        <Grid id='profile-user-grid' container spacing={2}>
           <Grid item>
-
-            <Avatar alt="User avatar" src={`${props.profileImage}`} className={classes.large} />
+            <Avatar
+              alt="User avatar"
+              src={`${props.profileImage}`}
+              className={classes.large}
+            />
           </Grid>
-          <Grid item xs={12} sm container>
+          <Grid id='profile-user-info' item xs={12} sm container>
             <Grid item xs container direction="column" spacing={2}>
-              <Grid item xs>
+              <Grid id='profile-user-info-items' item xs>
                 <Typography gutterBottom variant="subtitle1">
                   {props.profileUsername}
                 </Typography>
@@ -83,31 +83,29 @@ function Profile(props) {
             </Grid>
           </Grid>
           <Grid>
-            {props.profileId !== userId ?
+            {props.profileId !== userId ? (
               <div>
                 <FollowBtn></FollowBtn>
                 <MessageBtn></MessageBtn>
               </div>
-              :
-              <div></div>
-            }
+            ) : (
+                <div></div>
+              )}
           </Grid>
         </Grid>
       </Paper>
-      {props.profileId === userId ?
+      {props.profileId === userId ? (
         <Paper className={classes.paper}>
           <ExpansionPanel>
-            <ExpansionPanelSummary>
-              Edit Profile
-            </ExpansionPanelSummary>
+            <ExpansionPanelSummary>Edit Profile</ExpansionPanelSummary>
             <ExpansionPanelDetails>
               <EditProfile profileBio={props.profileBio}></EditProfile>
             </ExpansionPanelDetails>
           </ExpansionPanel>
         </Paper>
-        :
-        <div></div>
-      }
+      ) : (
+          <div></div>
+        )}
       <Paper className={classes.paper}>
         <Grid
           container
@@ -117,8 +115,7 @@ function Profile(props) {
           alignContent="center"
           alignItems="flex-start"
         >
-          {Object.keys(props.posts).map(key => {
-
+          {Object.keys(props.posts).reverse().map((key) => {
             return (
               <Grid item className={classes.column1}>
                 <Image
@@ -129,21 +126,26 @@ function Profile(props) {
                   imagePosterUsername={props.profileUsername}
                   imagePosterAviUrl={props.profileImage}
                   imagePosterId={props.posts[key].user_id}
-                // imageLikes={props.likes[key]}
                 />
               </Grid>
-            )
+            );
           })}
         </Grid>
       </Paper>
     </div>
-    :
-    <CircularProgress />
-  );
+  ) : (
+      <CircularProgress
+        size='100px'
+        style={{
+          alignSelf: 'center',
+          top: '40%',
+          position: 'relative',
+        }}
+      />
+    );
 }
 
-
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   if (state && state.user && state.user.profile) {
     return {
       token: state.user.token,
@@ -158,19 +160,15 @@ const mapStateToProps = state => {
   } else {
     return {
       token: state.user.token,
-    }
+    };
   }
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     getUserProfileReq: (...args) => dispatch(getUserProfileReq(...args)),
+    getUserIds: (...args) => dispatch(getUserIds(...args)),
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(
-  Profile
-);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

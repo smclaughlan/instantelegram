@@ -1,36 +1,55 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Button, TextField } from '@material-ui/core';
+import React from "react";
+import { connect } from "react-redux";
+import { Button, TextField, Typography } from "@material-ui/core";
 import "../css/register.css";
-import { sendLoginReq } from '../redux/user';
+import { sendLoginReq } from "../redux/user";
 
 const Login = (props) => {
   const [loginData, setLoginData] = React.useState({
-    username: '',
-    password: '',
-  })
+    username: "",
+    password: "",
+  });
+  const [loginButtonEnabled, setLoginButtonEnabled] = React.useState(false);
+
+  const checkLoginButton = () => {
+    if (loginData.username.length > 0 && loginData.password.length > 0) {
+      setLoginButtonEnabled(true);
+    } else {
+      setLoginButtonEnabled(false);
+    }
+  }
 
   const userNameChange = (event) => {
     setLoginData({
       ...loginData,
-      username: event.target.value
+      username: event.target.value,
     });
-  }
+    checkLoginButton();
+  };
 
   const passwordChange = (event) => {
     setLoginData({
       ...loginData,
-      password: event.target.value
+      password: event.target.value,
     });
-  }
+    checkLoginButton();
+  };
 
   const loginUser = (e) => {
+    e.preventDefault();
+    props.sendLoginReq(loginData);
+  };
+
+  const loginDemo = (e) => {
     e.preventDefault()
+    setLoginData({
+      username: 'Guest',
+      password: 'password'
+    })
     props.sendLoginReq(loginData);
   }
 
   return (
-    // <Container>
     <div className="wrapper">
       <div className="form-wrapper">
         <h1>Log In</h1>
@@ -53,31 +72,43 @@ const Login = (props) => {
             />
           </div>
           <div className="logIn">
-            <Button color="primary" type='submit'>Submit</Button>
+
+            <Button color="primary" onClick={loginDemo}>Demo Login</Button>
+            {loginButtonEnabled ?
+              <Button color="primary" type='submit'>Submit</Button>
+              :
+              <Button color="primary" type='submit' disabled>Submit</Button>
+            }
+            {props.errorMessage ?
+              <h3>Error: Invalid login credentials</h3>
+              :
+              <></>
+            }
             <a href="/register">Create An Acount</a>
           </div>
         </form>
       </div>
     </div>
-    // </Container>
-  )
-}
-
-const mapStateToProps = state => {
-  return {
-    token: state.user.token,
-  };
+  );
 };
 
-const mapDispatchToProps = dispatch => {
+const mapStateToProps = (state) => {
+  if (state && state.user && state.user.error && state.user.error.login) {
+    return {
+      token: state.user.token,
+      errorMessage: state.user.error.login,
+    };
+  } else {
+    return {
+      token: state.user.token,
+    }
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
   return {
     sendLoginReq: (...args) => dispatch(sendLoginReq(...args)),
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(
-  Login
-);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

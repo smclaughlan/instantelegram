@@ -32,6 +32,8 @@ const FollowBtn = (props) => {
     props.sendUnfollowReq(userId, followedId);
   };
 
+  //if the user is a following for the current user, displays Unfollow button
+  //if not display Follow button
   return props.followings ? (
     props.followings.includes(parseInt(window.location.href.split("/")[4])) ? (
       <div className={classes.root}>
@@ -40,22 +42,22 @@ const FollowBtn = (props) => {
         </Button>
       </div>
     ) : (
-        <div className={classes.root}>
-          <Button variant="contained" color="primary" onClick={handleFollow}>
-            Follow
+      <div className={classes.root}>
+        <Button variant="contained" color="primary" onClick={handleFollow}>
+          Follow
         </Button>
-        </div>
-      )
+      </div>
+    )
   ) : (
-      <CircularProgress
-        size='100px'
-        style={{
-          alignSelf: 'center',
-          top: '40%',
-          position: 'relative',
-        }}
-      />
-    );
+    <CircularProgress
+      size="100px"
+      style={{
+        alignSelf: "center",
+        top: "40%",
+        position: "relative",
+      }}
+    />
+  );
 };
 
 const mapStateToProps = (state) => {

@@ -16,7 +16,7 @@ import FollowBtn from "./FollowBtn";
 import MessageBtn from "./MessageBtn";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-import '../css/profile.css';
+import "../css/profile.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "auto",
     marginTop: 20,
     marginBottom: 20,
-    maxWidth: '90%',
+    maxWidth: "90%",
   },
   image: {
     width: 128,
@@ -62,7 +62,7 @@ function Profile(props) {
   return props.profileId ? (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <Grid id='profile-user-grid' container spacing={2}>
+        <Grid id="profile-user-grid" container spacing={2}>
           <Grid item>
             <Avatar
               alt="User avatar"
@@ -70,9 +70,9 @@ function Profile(props) {
               className={classes.large}
             />
           </Grid>
-          <Grid id='profile-user-info' item xs={12} sm container>
+          <Grid id="profile-user-info" item xs={12} sm container>
             <Grid item xs container direction="column" spacing={2}>
-              <Grid id='profile-user-info-items' item xs>
+              <Grid id="profile-user-info-items" item xs>
                 <Typography gutterBottom variant="subtitle1">
                   {props.profileUsername}
                 </Typography>
@@ -83,17 +83,19 @@ function Profile(props) {
             </Grid>
           </Grid>
           <Grid>
+            {/* displays follow and message buttons only if the current logged user doesn't matche the user */}
             {props.profileId !== userId ? (
               <div>
                 <FollowBtn></FollowBtn>
                 <MessageBtn></MessageBtn>
               </div>
             ) : (
-                <div></div>
-              )}
+              <div></div>
+            )}
           </Grid>
         </Grid>
       </Paper>
+      {/* displays the edit profile option only if the current logged user matches the user */}
       {props.profileId === userId ? (
         <Paper className={classes.paper}>
           <ExpansionPanel>
@@ -104,9 +106,10 @@ function Profile(props) {
           </ExpansionPanel>
         </Paper>
       ) : (
-          <div></div>
-        )}
+        <div></div>
+      )}
       <Paper className={classes.paper}>
+        {/* displays all the user posts */}
         <Grid
           container
           spacing={3}
@@ -115,34 +118,36 @@ function Profile(props) {
           alignContent="center"
           alignItems="flex-start"
         >
-          {Object.keys(props.posts).reverse().map((key) => {
-            return (
-              <Grid item className={classes.column1}>
-                <Image
-                  imageId={key}
-                  postDate={props.posts[key].timestamp}
-                  imageUrl={props.posts[key].imageUrl}
-                  imageCapt={props.posts[key].caption}
-                  imagePosterUsername={props.profileUsername}
-                  imagePosterAviUrl={props.profileImage}
-                  imagePosterId={props.posts[key].user_id}
-                />
-              </Grid>
-            );
-          })}
+          {Object.keys(props.posts)
+            .reverse()
+            .map((key) => {
+              return (
+                <Grid item className={classes.column1}>
+                  <Image
+                    imageId={key}
+                    postDate={props.posts[key].timestamp}
+                    imageUrl={props.posts[key].imageUrl}
+                    imageCapt={props.posts[key].caption}
+                    imagePosterUsername={props.profileUsername}
+                    imagePosterAviUrl={props.profileImage}
+                    imagePosterId={props.posts[key].user_id}
+                  />
+                </Grid>
+              );
+            })}
         </Grid>
       </Paper>
     </div>
   ) : (
-      <CircularProgress
-        size='100px'
-        style={{
-          alignSelf: 'center',
-          top: '40%',
-          position: 'relative',
-        }}
-      />
-    );
+    <CircularProgress
+      size="100px"
+      style={{
+        alignSelf: "center",
+        top: "40%",
+        position: "relative",
+      }}
+    />
+  );
 }
 
 const mapStateToProps = (state) => {

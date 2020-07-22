@@ -1,5 +1,6 @@
 import { apiBaseUrl } from "../config";
 
+// ACTIONS
 const LOGIN_USER = "instantelegram/login/LOGIN_USER";
 const LOGOUT_USER = "instantelegram/logout/LOGOUT_USER";
 const USER_PROFILE = "instantelegram/profile/USER_PROFILE";
@@ -74,7 +75,8 @@ export const deleteCommentDis = (postId, commentObj) => ({
   commentObj,
 });
 export const deletePost = (imageId) => ({
-  type: DEL_POST, imageId
+  type: DEL_POST,
+  imageId,
 });
 export const errorMessage = (messageType, message) => ({
   type: ERROR_MESSAGE,
@@ -82,7 +84,10 @@ export const errorMessage = (messageType, message) => ({
   message,
 });
 
+// THUNKS
+//sends register request to the backend with user info
 export const sendRegisterReq = (userInfo) => async (dispatch) => {
+  //makes a post request to create new user in the database
   const res = await fetch(`${apiBaseUrl}/session/register`, {
     method: "post",
     headers: { "Content-Type": "application/json" },
@@ -96,13 +101,16 @@ export const sendRegisterReq = (userInfo) => async (dispatch) => {
 
   if (res.ok) {
     const { token, currentUserId } = await res.json();
+    // Stores token, currentUserId in localStorage
     window.localStorage.setItem("x-access-token", token);
     window.localStorage.setItem("currentUserId", currentUserId);
     dispatch(loginUser(token, currentUserId));
   }
 };
 
+//sends login request to the backend with user info: username and password
 export const sendLoginReq = (userInfo) => async (dispatch) => {
+  //makes a post request with user's info
   try {
     const res = await fetch(`${apiBaseUrl}/session/login`, {
       method: "post",
@@ -119,6 +127,7 @@ export const sendLoginReq = (userInfo) => async (dispatch) => {
     }
     if (res.ok) {
       const { token, currentUserId } = await res.json();
+      // Stores token, currentUserId in localStorage
       window.localStorage.setItem("x-access-token", token);
       window.localStorage.setItem("currentUserId", currentUserId.toString());
       dispatch(loginUser(token, currentUserId.toString()));
@@ -128,12 +137,14 @@ export const sendLoginReq = (userInfo) => async (dispatch) => {
   }
 };
 
+//log out user by clearing the localStorage
 export const sendLogoutReq = () => async (dispatch) => {
   window.localStorage.removeItem("x-access-token");
   window.localStorage.removeItem("currentUserId");
   dispatch(logoutUser());
 };
 
+//sends GET requests to get a user posts(with comments and likes) for the profile page
 export const getUserProfileReq = (id) => async (dispatch) => {
   const res = await fetch(`${apiBaseUrl}/users/${id}`);
   const res2 = await fetch(`${apiBaseUrl}/posts/${id}`);
@@ -154,6 +165,8 @@ export const getUserProfileReq = (id) => async (dispatch) => {
   }
 };
 
+//sends GET request to get all posts for all the followings for the current user
+//and display it on the feed page, including the current user posts
 export const getFeedPostReq = (currentUserId) => async (dispatch) => {
   const postsRes = await fetch(`${apiBaseUrl}/users/${currentUserId}/posts`);
 
@@ -186,6 +199,7 @@ export const getFeedPostReq = (currentUserId) => async (dispatch) => {
   }
 };
 
+//sends Get request to get all followings for the current user
 export const getFollowings = (currentUserId) => async (dispatch) => {
   const followingsRes = await fetch(
     `${apiBaseUrl}/users/${currentUserId}/followings`
@@ -205,6 +219,7 @@ export const getFollowings = (currentUserId) => async (dispatch) => {
   }
 };
 
+//sends POST request to add a new following for the current user to the followedId
 export const sendFollowReq = (userId, followedId) => async (dispatch) => {
   const res = await fetch(`${apiBaseUrl}/users/${followedId}/follow`, {
     method: "post",
@@ -217,6 +232,8 @@ export const sendFollowReq = (userId, followedId) => async (dispatch) => {
     dispatch(sendUserFollowReq(userId, followedId));
   }
 };
+
+//sends POST request to delete an existan following for the current user to the followedId
 export const sendUnfollowReq = (userId, followedId) => async (dispatch) => {
   const res = await fetch(`${apiBaseUrl}/users/${followedId}/follow`, {
     method: "delete",
@@ -230,6 +247,8 @@ export const sendUnfollowReq = (userId, followedId) => async (dispatch) => {
   }
 };
 
+//sends a PUT request to update a post caption
+//checking the user authorization is done on the backend side
 export const updateCapt = (caption, imageId, token) => async (dispatch) => {
   try {
     const body = JSON.stringify({ caption, token });
@@ -254,6 +273,7 @@ export const updateCapt = (caption, imageId, token) => async (dispatch) => {
   }
 };
 
+//sends POST request to add a like to a particular post
 export const createLike = (imageId, token) => async (dispatch) => {
   try {
     const res = await fetch(`${apiBaseUrl}/posts/${imageId}/likes`, {
@@ -273,6 +293,7 @@ export const createLike = (imageId, token) => async (dispatch) => {
   }
 };
 
+//sends DELETE request to delete a like for a particular post
 export const deleteLike = (imageId, token) => async (dispatch) => {
   try {
     const res = await fetch(`${apiBaseUrl}/posts/${imageId}/likes`, {
@@ -292,6 +313,7 @@ export const deleteLike = (imageId, token) => async (dispatch) => {
   }
 };
 
+//sends POST request to create a new comment for a particular post
 export const createComment = (postId, commentBody, token) => async (
   dispatch
 ) => {
@@ -313,6 +335,7 @@ export const createComment = (postId, commentBody, token) => async (
   }
 };
 
+//sends a DELETE request to delete a comment for a particular post
 export const deleteComment = (commentId, postId, token) => async (dispatch) => {
   try {
     const body = JSON.stringify({ postId });
@@ -332,6 +355,8 @@ export const deleteComment = (commentId, postId, token) => async (dispatch) => {
   }
 };
 
+//sends DELETE request to delete a post
+//checking the user authorization is done on the backend side
 export const deletePostReq = (imageId, token) => async (dispatch) => {
   try {
     const res = await fetch(`${apiBaseUrl}/posts/${imageId}`, {
@@ -350,6 +375,7 @@ export const deletePostReq = (imageId, token) => async (dispatch) => {
   }
 };
 
+// REDUCER
 export default function reducer(state = {}, action) {
   switch (action.type) {
     case LOGIN_USER: {

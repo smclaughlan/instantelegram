@@ -26,6 +26,8 @@ export const updateImg = (newImg) => async (dispatch) => {
   }
 };
 
+//sends POST request to create a new post with image and caption
+//current user will be the owner/poster
 export const post = (caption, imgUrl, token) => async (dispatch) => {
   try {
     const body = JSON.stringify({ caption, imgUrl, token });

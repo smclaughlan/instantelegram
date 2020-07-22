@@ -10,6 +10,8 @@ const setImgUrl = (avatarUrl) => ({
 });
 
 // THUNKS
+
+//sends POST request so the current user updates his profile image
 export const updateAvatar = (userId, newImg, token) => async (dispatch) => {
   try {
     const data = new FormData();
@@ -37,6 +39,7 @@ export const updateAvatar = (userId, newImg, token) => async (dispatch) => {
   }
 };
 
+//sends PUT request so the current user updates his bio
 export const updateBioReq = (userId, bio, token) => async (dispatch) => {
   try {
     const body = JSON.stringify({ userId, bio, token });

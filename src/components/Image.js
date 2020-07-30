@@ -286,6 +286,7 @@ const Image = (props) => {
             Object.keys(props.comments[props.imageId]).map((key) => {
               return (
                 <Comment
+                  key={key}
                   commentId={key}
                   imageId={props.imageId}
                   commenterId={props.comments[props.imageId][key].commenterId}

@@ -6,11 +6,11 @@
     display: block;
 }
 
-@media only screen and (min-width: 961px) {
+/* @media only screen and (min-width: 961px) {
     #instantelegram-logo {
         display: block;
     }
     #mobile-menu-icon {
         display: none;
     }
-}
+} */

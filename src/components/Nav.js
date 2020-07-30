@@ -1,14 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
+import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
+import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import { sendLogoutReq } from "../redux/user";
 import Grid from "@material-ui/core/Grid";
-import MenuIcon from "@material-ui/icons/Menu";
+import MenuIcon from '@material-ui/icons/Menu';
+import SearchIcon from '@material-ui/icons/Search';
 
 import "../css/nav.css";
 
@@ -24,7 +26,48 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   logout: {
-    width: "min-content",
+
+    width: 'min-content',
+    // justifyItems: 'end',
+    // alignItems: 'end'
+  },
+  search: {
+    position: 'absolute',
+    left: '32px',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(3),
+      width: 'auto',
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch',
+    },
   },
 }));
 
@@ -43,6 +86,18 @@ const NavBar = (props) => {
     }
   };
 
+  const toggleSearch = () => {
+    const searchMenu = document.querySelector(".search-bar");
+
+    if (searchMenu.style.visibility === "hidden") {
+      searchMenu.style.visibility = "visible";
+      searchMenu.style.height = "20%";
+    } else {
+      searchMenu.style.visibility = "hidden";
+      searchMenu.style.height = 0;
+    }
+  };
+
   const logOut = () => {
     const navMenu = document.querySelector(".mobile-nav-overlay");
     if (navMenu.style.visibility === "visible") {
@@ -54,46 +109,59 @@ const NavBar = (props) => {
 
   //when the user is logged in, navBar will display: profile, upload and logOut options
   //if not navBar will display logIn and register options only
-  const navigation = props.currentUserId ? (
-    <Grid
-      container
-      spacing={3}
-      style={{ "justify-content": "space-between" }}
-      id="navbar-items"
-    >
-      <Grid item xs={10}>
-        <NavLink style={{ color: "white" }} to="/">
-          <Button color="inherit">Instantelegram</Button>
-        </NavLink>
-        <NavLink
-          style={{ color: "white" }}
-          to={`/profile/${props.currentUserId}`}
-        >
-          <Button color="inherit">Profile</Button>
-        </NavLink>
-        <NavLink style={{ color: "white" }} to="/upload">
-          <Button color="inherit">Upload</Button>
-        </NavLink>
-      </Grid>
-
-      <Grid item>
-        <div className={classes.logout} style={{ color: "white" }}>
-          <Button className={classes.logout} color="inherit" onClick={logOut}>
-            Logout
-          </Button>
-        </div>
-      </Grid>
-    </Grid>
-  ) : (
-    <div id="navbar-items">
-      <NavLink style={{ color: "white" }} to="/register">
-        <Button color="inherit">Register</Button>
-      </NavLink>
-      <NavLink style={{ color: "white" }} to="/login">
-        <Button color="inherit">Login</Button>
-      </NavLink>
-    </div>
-  );
+  // const navigation = props.currentUserId ? (
+  //   <Grid
+  //     container
+  //     spacing={4}
+  //     style={{ "justify-content": "space-between" }}
+  //     id="navbar-items"
+  //   >
+  //     <Grid className={classes.navContainer} item xs={10}>
+  //       <NavLink style={{ color: "white" }} to="/">
+  //         <Button color="inherit">Instantelegram</Button>
+  //       </NavLink>
+  //       <NavLink
+  //         style={{ color: "white" }}
+  //         to={`/profile/${props.currentUserId}`}
+  //       >
+  //         <Button color="inherit">Profile</Button>
+  //       </NavLink>
+  //       <NavLink style={{ color: "white" }} to="/upload">
+  //         <Button color="inherit">Upload</Button>
+  //       </NavLink>
+  //       <div className={classes.search}>
+  //         <div className={classes.searchIcon}>
+  //           <SearchIcon />
+  //         </div>
+  //         <InputBase
+  //           placeholder="Search…"
+  //           className={classes.inputContainer}
+  //           classes={{
+  //             root: classes.inputRoot,
+  //             input: classes.inputInput,
+  //           }}
+  //           inputProps={{ 'aria-label': 'search' }}
+  //         />
+  //       </div>
+  //     </Grid>
+  //     <Grid item>
+  //       <div className={classes.logout} style={{ color: "white" }}>
+  //         <Button className={classes.logout} color="inherit" onClick={logOut}>
+  //           Logout
+  //         </Button>
+  //       </div>
+  //     </Grid>
+  //   </Grid>
+  // ) : (
+  //   <div id="navbar-items">
+  //     <NavLink style={{ color: "white" }} to="/register">
+  //       <Button color="inherit">Register</Button>
+  //     </NavLink>
+  //     <NavLink style={{ color: "white" }} to="/login">
+  //       <Button color="inherit">Login</Button>
+  //     </NavLink>
+  //   </div>
+  // );
 
   const mobileNavigation = props.currentUserId ? (
     <div
@@ -130,6 +198,17 @@ const NavBar = (props) => {
     </div>
   );
 
+  const searchBar = props.currentUserId ? (
+    <div
+      className="search-bar"
+      style={{ height: "20%", visibility: "hidden" }}
+    >
+      <span>wow</span>
+    </div>
+  ) : (
+    ""
+  );
+
   return (
     <>
       <AppBar position="fixed" className={classes.root}>
@@ -140,9 +219,25 @@ const NavBar = (props) => {
             color="inherit"
             aria-label="menu"
             id="mobile-menu-icon"
+            onClick={toggleNav}
           >
-            <MenuIcon onClick={toggleNav} />
+            <MenuIcon />
           </IconButton>
+
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </div>
+
           <NavLink
             style={{ color: "white" }}
             to="/"
@@ -150,10 +245,11 @@ const NavBar = (props) => {
           >
             <Button color="inherit">Instantelegram</Button>
           </NavLink>
-          {navigation}
+          {/* {navigation} */}
         </Toolbar>
       </AppBar>
       {mobileNavigation}
+      {searchBar}
     </>
   );
 };

@@ -79,7 +79,7 @@ function Feed(props) {
           >
             {props.feedPosts.map((post) => {
               return (
-                <Grid item className={classes.column1}>
+                <Grid item className={classes.column1} key={post.postId}>
                   <Image
                     imageId={post.postId}
                     postDate={post.timestamp}

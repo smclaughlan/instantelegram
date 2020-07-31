@@ -122,7 +122,7 @@ function Profile(props) {
             .reverse()
             .map((key) => {
               return (
-                <Grid item className={classes.column1}>
+                <Grid item className={classes.column1} key={key}>
                   <Image
                     imageId={key}
                     postDate={props.posts[key].timestamp}

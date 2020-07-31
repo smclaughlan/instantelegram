@@ -6,6 +6,8 @@ import Paper from "@material-ui/core/Paper";
 import { getFeedPostReq, getUserProfileReq } from "../redux/user";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Container } from "@material-ui/core";
+import { getUserIds } from "../redux/search";
+
 
 import Image from "./Image";
 import '../css/feed.css';
@@ -50,6 +52,7 @@ function Feed(props) {
     let id = props.currentUserId;
     props.getFeedPostReq(id);
     props.getUserProfileReq(id);
+    props.getUserIds(props.token);
   }, []);
 
   if (props.feedPosts) {
@@ -110,6 +113,7 @@ function Feed(props) {
 
 const mapStateToProps = (state) => {
   return {
+    token: state.user.token,
     feedPosts: state.user.feedPosts,
     user: state.user.profile,
   };
@@ -119,6 +123,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getFeedPostReq: (...args) => dispatch(getFeedPostReq(...args)),
     getUserProfileReq: (...args) => dispatch(getUserProfileReq(...args)),
+    getUserIds: (...args) => dispatch(getUserIds(...args)),
   };
 };
 

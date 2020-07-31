@@ -81,26 +81,26 @@ const NavBar = (props) => {
     if (navMenu.style.visibility === "hidden") {
       navMenu.style.visibility = "visible";
       navMenu.style.height = "20%";
+      closeSearch()
     } else {
       navMenu.style.visibility = "hidden";
       navMenu.style.height = 0;
     }
   };
 
-  const toggleSearch = () => {
+  const openSearch = () => {
     const searchMenu = document.querySelector(".search-bar");
-
-    if (searchMenu.style.visibility === "hidden") {
-      searchMenu.style.visibility = "visible";
-      searchMenu.style.height = "20%";
-    } else {
-      searchMenu.style.visibility = "hidden";
-      searchMenu.style.height = 0;
-    }
+    searchMenu.style.visibility = "visible";
+    searchMenu.style.height = "20%";
   };
 
+  const closeSearch = () => {
+    const searchMenu = document.querySelector(".search-bar");
+    searchMenu.style.visibility = "hidden";
+    searchMenu.style.height = 0;
+  }
+
   const updateSearch = (e) => {
-    console.log(e.target.value)
     setSearchTerm(e.target.value);
   }
 
@@ -204,16 +204,52 @@ const NavBar = (props) => {
     </div>
   );
 
-  const searchBar = props.currentUserId ? (
+  const searchBar = props.userIds ? (
     <div
       className="search-bar"
       style={{ height: "20%", visibility: "hidden" }}
     >
-      <span>wow</span>
+      {Object.keys(props.userIds).map((key) => {
+        if (props.userIds[key].username.toLowerCase().includes(searchTerm) && searchTerm !== "") {
+          console.log(props.userIds[key].username)
+          return (
+            <NavLink key={key} style={{ color: "white" }} to={`/profile/${key}`} onClick={closeSearch}>
+              <Button color="inherit">{props.userIds[key].username}</Button>
+            </NavLink>
+          )
+        } else if ( searchTerm === "" ) {
+          return (
+            <NavLink key={key} style={{ color: "white" }} to={`/profile/${key}`} onClick={closeSearch}>
+              <Button color="inherit">{props.userIds[key].username}</Button>
+            </NavLink>
+          )
+        } else {
+          return ""
+        }
+      })}
     </div>
   ) : (
     ""
   );
+
+  const searchInput = props.currentUserId ? (
+    <div className={classes.search}>
+      <div className={classes.searchIcon}>
+        <SearchIcon />
+      </div>
+      <InputBase
+        placeholder="Search…"
+        classes={{
+          root: classes.inputRoot,
+          input: classes.inputInput,
+        }}
+        onChange={(event)=>{ updateSearch(event) }}
+        inputProps={{ 'aria-label': 'search', 'onFocus': openSearch, 'onBlur': closeSearch }}
+      />
+    </div>
+  ) : (
+    ""
+  )
 
   return (
     <>
@@ -230,20 +266,7 @@ const NavBar = (props) => {
             <MenuIcon />
           </IconButton>
 
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              onChange={(event)=>{ updateSearch(event) }}
-              inputProps={{ 'aria-label': 'search', 'onFocus': toggleSearch, 'onBlur': toggleSearch }}
-            />
-          </div>
+          {searchInput}
 
           <NavLink
             style={{ color: "white" }}
@@ -264,6 +287,7 @@ const NavBar = (props) => {
 const mapStateToProps = (state) => {
   return {
     currentUserId: state.user.currentUserId,
+    userIds: state.search.userIds,
   };
 };
 

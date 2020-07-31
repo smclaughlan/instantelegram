@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { fade, makeStyles } from "@material-ui/core/styles";
@@ -73,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar = (props) => {
   const classes = useStyles();
+  const [searchTerm, setSearchTerm] = useState('');
 
   const toggleNav = () => {
     const navMenu = document.querySelector(".mobile-nav-overlay");
@@ -97,6 +98,11 @@ const NavBar = (props) => {
       searchMenu.style.height = 0;
     }
   };
+
+  const updateSearch = (e) => {
+    console.log(e.target.value)
+    setSearchTerm(e.target.value);
+  }
 
   const logOut = () => {
     const navMenu = document.querySelector(".mobile-nav-overlay");
@@ -234,7 +240,8 @@ const NavBar = (props) => {
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
-              inputProps={{ 'aria-label': 'search' }}
+              onChange={(event)=>{ updateSearch(event) }}
+              inputProps={{ 'aria-label': 'search', 'onFocus': toggleSearch, 'onBlur': toggleSearch }}
             />
           </div>
 

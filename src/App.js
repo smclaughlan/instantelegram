@@ -57,7 +57,12 @@ function App(props) {
       <CssBaseline />
       <Theme>
         <BrowserRouter>
-          <NavBar location={props.location} />
+          <Route
+            path='/'
+            component={NavBar}
+            location={props.location}
+          />
+          {/* <NavBar location={props.location} /> */}
           <Route render={({ location }) => (
             <TransitionGroup className='body-container'>
               <CSSTransition
@@ -92,7 +97,7 @@ function App(props) {
                       currentUserId={props.currentUserId}
                     />
                     <ProtectedRoute
-                      exact path="/home"
+                      path="/home"
                       component={Feed}
                       currentUserId={props.currentUserId}
                     />

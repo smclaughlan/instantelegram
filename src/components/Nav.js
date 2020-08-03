@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import { sendLogoutReq } from "../redux/user";
-import Grid from "@material-ui/core/Grid";
+// import Grid from "@material-ui/core/Grid";
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 
@@ -39,13 +39,14 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
+    marginRight: theme.spacing(3),
+    marginLeft: theme.spacing(3),
+    // width: '100%',
+    // [theme.breakpoints.up('sm')]: {
+    //   marginLeft: theme.spacing(3),
+    //   marginRight: theme.spacing(3),
+      // width: 'auto',
+    // },
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -64,9 +65,9 @@ const useStyles = makeStyles((theme) => ({
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
-    width: '100%',
+    // width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: '20ch',
+      // width: '20ch',
     },
   },
 }));
@@ -80,7 +81,7 @@ const NavBar = (props) => {
 
     if (navMenu.style.visibility === "hidden") {
       navMenu.style.visibility = "visible";
-      navMenu.style.height = "20%";
+      navMenu.style.height = "180px";
       closeSearch()
     } else {
       navMenu.style.visibility = "hidden";
@@ -91,7 +92,7 @@ const NavBar = (props) => {
   const openSearch = () => {
     const searchMenu = document.querySelector(".search-bar");
     searchMenu.style.visibility = "visible";
-    searchMenu.style.height = "20%";
+    searchMenu.style.height = "180px";
   };
 
   const closeSearch = () => {
@@ -172,7 +173,7 @@ const NavBar = (props) => {
   const mobileNavigation = props.currentUserId ? (
     <div
       className="mobile-nav-overlay"
-      style={{ height: "20%", visibility: "hidden" }}
+      style={{ height: 0, visibility: "hidden" }}
     >
       <NavLink
         style={{ color: "white" }}
@@ -193,7 +194,7 @@ const NavBar = (props) => {
   ) : (
     <div
       className="mobile-nav-overlay"
-      style={{ height: "20%", visibility: "hidden" }}
+      style={{ height: 0, visibility: "hidden" }}
     >
       <NavLink style={{ color: "white" }} to="/register" onClick={toggleNav}>
         <Button color="inherit">Register</Button>
@@ -207,7 +208,7 @@ const NavBar = (props) => {
   const searchBar = props.userIds ? (
     <div
       className="search-bar"
-      style={{ height: "20%", visibility: "hidden" }}
+      style={{ height: 0, visibility: "hidden" }}
     >
       {Object.keys(props.userIds).map((key) => {
         if (props.userIds[key].username.toLowerCase().includes(searchTerm) && searchTerm !== "") {

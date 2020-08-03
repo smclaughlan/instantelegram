@@ -50,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
   },
   aviImage: {
     maxHeight: "100%",
+    '&:hover': {
+      cursor: 'pointer',
+    },
   },
   captionUpdate: {
     width: "100%",
@@ -151,6 +154,10 @@ const Image = (props) => {
     }
   };
 
+  const clickAvi = () => {
+    window.location.href = `/profile/${props.imagePosterId}`;
+  }
+
   const editButton =
     parseInt(props.currentUserId) == props.imagePosterId ? (
       <>
@@ -183,6 +190,7 @@ const Image = (props) => {
               className={classes.aviImage}
               src={props.imagePosterAviUrl}
               alt="avatarImg"
+              onClick={clickAvi}
             />
           </Avatar>
         }

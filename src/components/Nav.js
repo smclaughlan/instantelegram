@@ -211,7 +211,7 @@ const NavBar = (props) => {
     >
       {Object.keys(props.userIds).map((key) => {
         if (props.userIds[key].username.toLowerCase().includes(searchTerm) && searchTerm !== "") {
-          console.log(props.userIds[key].username)
+          // console.log(props.userIds[key].username)
           return (
             <NavLink key={key} style={{ color: "white" }} to={`/profile/${key}`} onClick={closeSearch}>
               <Button color="inherit">{props.userIds[key].username}</Button>

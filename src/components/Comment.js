@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
   },
   aviImage: {
     maxHeight: "100%",
+    '&:hover': {
+      cursor: 'pointer',
+    },
   },
 }));
 

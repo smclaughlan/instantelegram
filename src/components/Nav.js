@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     // [theme.breakpoints.up('sm')]: {
     //   marginLeft: theme.spacing(3),
     //   marginRight: theme.spacing(3),
-      // width: 'auto',
+    // width: 'auto',
     // },
   },
   searchIcon: {
@@ -97,8 +97,10 @@ const NavBar = (props) => {
 
   const closeSearch = () => {
     const searchMenu = document.querySelector(".search-bar");
-    searchMenu.style.visibility = "hidden";
-    searchMenu.style.height = 0;
+    if (searchMenu) {
+      searchMenu.style.visibility = "hidden";
+      searchMenu.style.height = 0;
+    }
   }
 
   const updateSearch = (e) => {
@@ -192,18 +194,18 @@ const NavBar = (props) => {
       </div>
     </div>
   ) : (
-    <div
-      className="mobile-nav-overlay"
-      style={{ height: 0, visibility: "hidden" }}
-    >
-      <NavLink style={{ color: "white" }} to="/register" onClick={toggleNav}>
-        <Button color="inherit">Register</Button>
-      </NavLink>
-      <NavLink style={{ color: "white" }} to="/login" onClick={toggleNav}>
-        <Button color="inherit">Login</Button>
-      </NavLink>
-    </div>
-  );
+      <div
+        className="mobile-nav-overlay"
+        style={{ height: 0, visibility: "hidden" }}
+      >
+        <NavLink style={{ color: "white" }} to="/register" onClick={toggleNav}>
+          <Button color="inherit">Register</Button>
+        </NavLink>
+        <NavLink style={{ color: "white" }} to="/login" onClick={toggleNav}>
+          <Button color="inherit">Login</Button>
+        </NavLink>
+      </div>
+    );
 
   const searchBar = props.userIds ? (
     <div
@@ -218,7 +220,7 @@ const NavBar = (props) => {
               <Button color="inherit">{props.userIds[key].username}</Button>
             </NavLink>
           )
-        } else if ( searchTerm === "" ) {
+        } else if (searchTerm === "") {
           return (
             <NavLink key={key} style={{ color: "white" }} to={`/profile/${key}`} onClick={closeSearch}>
               <Button color="inherit">{props.userIds[key].username}</Button>
@@ -230,8 +232,8 @@ const NavBar = (props) => {
       })}
     </div>
   ) : (
-    ""
-  );
+      ""
+    );
 
   const searchInput = props.currentUserId ? (
     <div className={classes.search}>
@@ -244,13 +246,13 @@ const NavBar = (props) => {
           root: classes.inputRoot,
           input: classes.inputInput,
         }}
-        onChange={(event)=>{ updateSearch(event) }}
+        onChange={(event) => { updateSearch(event) }}
         inputProps={{ 'aria-label': 'search', 'onFocus': openSearch, 'onBlur': closeSearch }}
       />
     </div>
   ) : (
-    ""
-  )
+      ""
+    )
 
   return (
     <>

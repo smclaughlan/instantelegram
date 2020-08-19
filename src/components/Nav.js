@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundImage: theme.gradientBackground,
     width: "100%",
+    height: '64px',
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -179,6 +180,13 @@ const NavBar = (props) => {
     >
       <NavLink
         style={{ color: "white" }}
+        to={`/`}
+        onClick={toggleNav}
+      >
+        <Button color="inherit">Home</Button>
+      </NavLink>
+      <NavLink
+        style={{ color: "white" }}
         to={`/profile/${props.currentUserId}`}
         onClick={toggleNav}
       >
@@ -257,7 +265,7 @@ const NavBar = (props) => {
   return (
     <>
       <AppBar position="fixed" className={classes.root}>
-        <Toolbar style={{ justifyContent: "center" }}>
+        <Toolbar className={classes.root} style={{ justifyContent: "center" }}>
           <IconButton
             edge="start"
             className={classes.menuButton}
@@ -270,15 +278,6 @@ const NavBar = (props) => {
           </IconButton>
 
           {searchInput}
-
-          <NavLink
-            style={{ color: "white" }}
-            to="/"
-            className="mobile-home-btn"
-          >
-            <Button color="inherit">Instantelegram</Button>
-          </NavLink>
-          {/* {navigation} */}
         </Toolbar>
       </AppBar>
       {mobileNavigation}

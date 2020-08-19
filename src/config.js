@@ -1,6 +1,6 @@
 
 const production = process.env.NODE_ENV === "production";
-const apiBaseUrl = production ? "https://instantelegramback.herokuapp.com" : process.env.REACT_APP_API_BASE_URL;
+const apiBaseUrl = production ? "https://instantelegram-back.herokuapp.com" : process.env.REACT_APP_API_BASE_URL;
 
 module.exports = {
     apiBaseUrl: apiBaseUrl,

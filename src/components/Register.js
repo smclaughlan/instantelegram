@@ -97,6 +97,11 @@ const Register = (props) => {
               onChange={passwordChange}
             />
           </div>
+          {props.errorMessage ?
+              <h3>{props.errorMessage}</h3>
+              :
+              <></>
+            }
           <div className="createAccount">
             {submitButtonEnabled ?
               <Button color="primary" type="submit">
@@ -116,9 +121,16 @@ const Register = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return {
-    token: state.user.token,
-  };
+  if (state && state.user && state.user.error && state.user.error.register) {
+    return {
+      token: state.user.token,
+      errorMessage: state.user.error.register,
+    }
+  } else {
+    return {
+      token: state.user.token,
+    }
+  }
 };
 
 const mapDispatchToProps = (dispatch) => {

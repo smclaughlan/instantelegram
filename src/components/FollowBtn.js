@@ -4,7 +4,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { sendFollowReq, sendUnfollowReq } from "../redux/user";
 import { getFollowings } from "../redux/user";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,8 +33,8 @@ const FollowBtn = (props) => {
 
   //if the user is a following for the current user, displays Unfollow button
   //if not display Follow button
-  return props.followings ? (
-    props.followings.includes(parseInt(window.location.href.split("/")[4])) ? (
+  return props.followings && !props.updateFollowing ? (
+    props.followings.includes(parseInt(window.location.href.split("/")[4])) && !props.updateFollowing ? (
       <div className={classes.root}>
         <Button variant="contained" color="primary" onClick={handleUnfollow}>
           UnFollow
@@ -49,14 +48,11 @@ const FollowBtn = (props) => {
       </div>
     )
   ) : (
-    <CircularProgress
-      size="100px"
-      style={{
-        alignSelf: "center",
-        top: "40%",
-        position: "relative",
-      }}
-    />
+    <div className={classes.root}>
+    <Button variant="contained" color="primary">
+      ...
+    </Button>
+  </div>
   );
 };
 
@@ -64,6 +60,7 @@ const mapStateToProps = (state) => {
   return {
     token: state.user.token,
     followings: state.user.profile.followings,
+    updateFollowing: state.user.profile.updateFollowing
   };
 };
 

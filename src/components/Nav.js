@@ -93,7 +93,7 @@ const NavBar = (props) => {
   const openSearch = () => {
     const searchMenu = document.querySelector(".search-bar");
     searchMenu.style.visibility = "visible";
-    searchMenu.style.height = "180px";
+    searchMenu.style.height = "max-content";
   };
 
   const closeSearch = () => {

@@ -6,6 +6,7 @@ const LOGOUT_USER = "instantelegram/logout/LOGOUT_USER";
 const USER_PROFILE = "instantelegram/profile/USER_PROFILE";
 const FOLLOW = "instantelegram/profile/FOLLOW";
 const UNFOLLOW = "instantelegram/profile/UNFOLLOW";
+const UPDATE_FOLLOW = "instantelegram/profile/UPDATE_FOLLOW";
 const UPDATE_CAPTION = "instantelegram/image/UPDATE_CAPTION";
 const FEED_POSTS = "instantelegram/feed/FEED_POSTS";
 const UPDATE_LIKE = "instantelegram/like/UPDATE_LIKE";
@@ -39,6 +40,11 @@ export const getUserProfile = (
   likes,
   comments,
 });
+export const awaitFollowUpdate = (val) => ({
+  type: UPDATE_FOLLOW,
+  val,
+})
+
 export const sendUserFollowReq = (userId, followedId) => ({
   type: FOLLOW,
   userId,
@@ -230,6 +236,7 @@ export const getFollowings = (currentUserId) => async (dispatch) => {
 
 //sends POST request to add a new following for the current user to the followedId
 export const sendFollowReq = (userId, followedId) => async (dispatch) => {
+  dispatch(awaitFollowUpdate(true))
   const res = await fetch(`${apiBaseUrl}/users/${followedId}/follow`, {
     method: "post",
     headers: { "Content-Type": "application/json" },
@@ -239,11 +246,13 @@ export const sendFollowReq = (userId, followedId) => async (dispatch) => {
   });
   if (res.ok) {
     dispatch(sendUserFollowReq(userId, followedId));
+    dispatch(awaitFollowUpdate(false))
   }
 };
 
 //sends POST request to delete an existan following for the current user to the followedId
 export const sendUnfollowReq = (userId, followedId) => async (dispatch) => {
+  dispatch(awaitFollowUpdate(true))
   const res = await fetch(`${apiBaseUrl}/users/${followedId}/follow`, {
     method: "delete",
     headers: { "Content-Type": "application/json" },
@@ -253,6 +262,7 @@ export const sendUnfollowReq = (userId, followedId) => async (dispatch) => {
   });
   if (res.ok) {
     dispatch(sendUserUnfollowReq(userId, followedId));
+    dispatch(awaitFollowUpdate(false))
   }
 };
 
@@ -468,7 +478,15 @@ export default function reducer(state = {}, action) {
         },
       };
     }
-
+    case UPDATE_FOLLOW: {
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          updateFollowing: action.val
+        }
+      }
+    }
     case UPDATE_CAPTION: {
       const newState = Object.assign({}, state);
       newState.posts[action.imageId] = action.postObj;

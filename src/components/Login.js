@@ -42,11 +42,10 @@ const Login = (props) => {
 
   const loginDemo = (e) => {
     e.preventDefault()
-    setLoginData({
+    props.sendLoginReq({
       username: 'Guest',
       password: 'password'
-    })
-    props.sendLoginReq(loginData);
+    });
   }
 
   return (

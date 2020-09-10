@@ -99,8 +99,17 @@ export const sendRegisterReq = (userInfo) => async (dispatch) => {
     }),
   });
 
+  if (res.status === 401) {
+    const { error } = await res.json();
+    const messageType = "register";
+    dispatch(errorMessage(messageType, error));
+  }
   if (res.ok) {
-    const { token, currentUserId } = await res.json();
+    // const { token, currentUserId } = await res.json();
+    
+    const test = await res.json();
+    const { token, currentUserId } = test;
+    console.log(test)
     // Stores token, currentUserId in localStorage
     window.localStorage.setItem("x-access-token", token);
     window.localStorage.setItem("currentUserId", currentUserId);

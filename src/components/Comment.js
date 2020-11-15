@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Avatar, Paper, IconButton } from "@material-ui/core";
@@ -43,10 +43,10 @@ const Comment = (props) => {
       <div className="commentDetail">
         {/* diplays the owner image of the comment */}
         <Avatar aria-label="commentavi" onClick={routeToProfile}>
-          <img className={classes.aviImage} src={props.commenterAvi}></img>
+          <img className={classes.aviImage} src={props.commenterAvi} alt='avatar'></img>
         </Avatar>
         {/* the DeleteIcon will be shown only if current user matches the owner/commenter */}
-        {props.commenterId == props.currentUserId ? (
+        {props.commenterId === props.currentUserId ? (
           <IconButton aria-label="delete" onClick={handleDelete}>
             <DeleteIcon />
           </IconButton>

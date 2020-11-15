@@ -159,7 +159,7 @@ const Image = (props) => {
   }
 
   const editButton =
-    parseInt(props.currentUserId) == props.imagePosterId ? (
+    parseInt(props.currentUserId) === props.imagePosterId ? (
       <>
         <IconButton aria-label="settings" onClick={handleClick}>
           <MoreVertIcon />

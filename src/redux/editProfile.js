@@ -34,6 +34,7 @@ export const updateAvatar = (userId, newImg, token) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     });
+    if (!resUrl.ok) throw resUrl;
   } catch (err) {
     console.error(err);
   }
@@ -52,6 +53,8 @@ export const updateBioReq = (userId, bio, token) => async (dispatch) => {
       },
     });
     if (!res.ok) throw res;
+
+    // todo: change to use dispatch to update bio
     window.location.href = window.location.href;
     return;
   } catch (err) {

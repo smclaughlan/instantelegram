@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -51,14 +51,16 @@ const useStyles = makeStyles((theme) => ({
 function Profile(props) {
   const classes = useStyles();
 
-  React.useEffect(() => {
+  // todo: destructure props instead of assigning this const
+  const userId = props.currentUserId;
+
+  useEffect(() => {
     let id = window.location.href.split("/")[4];
 
     props.getUserProfileReq(id);
     props.getUserIds(props.token);
   }, []);
 
-  const userId = props.currentUserId;
   return props.profileId ? (
     <div className={classes.root}>
       <Paper className={classes.paper}>

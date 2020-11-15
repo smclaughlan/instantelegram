@@ -112,7 +112,7 @@ export const sendRegisterReq = (userInfo) => async (dispatch) => {
   }
   if (res.ok) {
     // const { token, currentUserId } = await res.json();
-    
+
     const test = await res.json();
     const { token, currentUserId } = test;
     console.log(test)
@@ -387,6 +387,8 @@ export const deletePostReq = (imageId, token) => async (dispatch) => {
     });
     if (!res.ok) throw res;
     dispatch(deletePost(imageId));
+
+    // todo: update window.location.href to use react history object
     window.location.href = window.location.href;
     return;
   } catch (err) {
@@ -473,7 +475,7 @@ export default function reducer(state = {}, action) {
         profile: {
           ...state.profile,
           followings: state.profile.followings.filter(
-            (followingId) => followingId != action.followedId
+            (followingId) => followingId !== action.followedId
           ),
         },
       };

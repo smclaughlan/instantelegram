@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -48,7 +48,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Feed(props) {
-  React.useEffect(() => {
+  const classes = useStyles();
+
+  useEffect(() => {
     let id = props.currentUserId;
     props.getFeedPostReq(id);
     props.getUserProfileReq(id);
@@ -64,7 +66,7 @@ function Feed(props) {
       }
     });
   }
-  const classes = useStyles();
+
   return (
     (props.feedPosts && props.user) ?
       <div className={classes.root}>

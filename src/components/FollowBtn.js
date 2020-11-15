@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -16,7 +16,9 @@ const useStyles = makeStyles((theme) => ({
 const FollowBtn = (props) => {
   const classes = useStyles();
   let followedId = window.location.href.split("/")[4];
-  React.useEffect(() => {
+
+
+  useEffect(() => {
     let userId = parseInt(window.localStorage.getItem("currentUserId"));
     props.getFollowings(userId);
   }, []);

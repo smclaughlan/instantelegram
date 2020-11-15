@@ -17,6 +17,7 @@ export default function Splash() {
               borderRadius: "5px",
               maxWidth: "100%",
             }}
+            alt='instantelegram_iphone'
           />
         </div>
         <div className='splash-register-form'>

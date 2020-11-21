@@ -9,6 +9,12 @@ const setImgUrl = (avatarUrl) => ({
   avatarUrl,
 });
 
+// const updateBio = (newBio) => ({
+//   type: UPDATE_BIO,
+//   newBio,
+// });
+
+
 // THUNKS
 
 //sends POST request so the current user updates his profile image
@@ -53,9 +59,10 @@ export const updateBioReq = (userId, bio, token) => async (dispatch) => {
       },
     });
     if (!res.ok) throw res;
+    // const {newBio} = res.json();
 
     // todo: change to use dispatch to update bio
-    window.location.href = window.location.href;
+    // window.location.href = window.location.href;
     return;
   } catch (err) {
     console.error(err);

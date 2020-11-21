@@ -94,7 +94,7 @@ const Image = (props) => {
   };
 
   const handleDelete = () => {
-    props.deletePost(props.imageId, props.token);
+    props.deletePost(props.imageId, props.token, props.currentUserId);
   };
 
   const handleLike = () => {
@@ -155,6 +155,7 @@ const Image = (props) => {
   };
 
   const clickAvi = () => {
+
     window.location.href = `/profile/${props.imagePosterId}`;
   }
 

@@ -9,6 +9,7 @@ const UNFOLLOW = "instantelegram/profile/UNFOLLOW";
 const UPDATE_FOLLOW = "instantelegram/profile/UPDATE_FOLLOW";
 const UPDATE_CAPTION = "instantelegram/image/UPDATE_CAPTION";
 const FEED_POSTS = "instantelegram/feed/FEED_POSTS";
+const FEED_ORDER = "instantelegram/feed/FEED_ORDER";
 const UPDATE_LIKE = "instantelegram/like/UPDATE_LIKE";
 const GET_FOLLOWINGS = "instantelegram/profile/GET_FOLLOWINGS";
 const UPDATE_COMMENT = "instantelegram/comment/UPDATE_COMMENT";
@@ -55,7 +56,9 @@ export const sendUserUnfollowReq = (userId, followedId) => ({
   userId,
   followedId,
 });
-export const getFeedPost = (postsArr) => ({ type: FEED_POSTS, postsArr });
+export const getFeedPosts = (postsObj) => ({ type: FEED_POSTS, postsObj });
+export const getFeedOrder = (postsOrd) => ({ type: FEED_ORDER, postsOrd});
+// export const getFeedPostObj = (postsObj) => ({ type: FEED_POSTS_OBJ, postsObj});
 export const setFollowings = (followingsArr) => ({
   type: GET_FOLLOWINGS,
   followingsArr,
@@ -187,30 +190,16 @@ export const getFeedPostReq = (currentUserId) => async (dispatch) => {
 
   if (postsRes.ok) {
     const posts = await postsRes.json();
-    let postsArr = [];
+    const postsOrd = [];
 
-    for (const post in posts) {
-      const postObj = posts[post];
-      const postId = post;
-      const { user_id, ...postData } = postObj;
-
-      const postUserRes = await fetch(`${apiBaseUrl}/users/${user_id}`);
-
-      if (postUserRes.ok) {
-        const postUserData = await postUserRes.json();
-        const { avatarUrl, username } = postUserData;
-
-        postData.avatarUrl = avatarUrl;
-        postData.username = username;
-        postData.postId = postId;
-        postData.userId = user_id;
-      }
-      postsArr.push(postData);
+    for (const postId in posts) {
+      postsOrd.push({'timestamp': posts[postId].timestamp, postId});
     }
-    postsArr.sort((a, b) => {
-      return a.timestamp < b.timestamp;
+    postsOrd.sort((a, b) => {
+      return Date.parse(b.timestamp) - Date.parse(a.timestamp);
     });
-    dispatch(getFeedPost(postsArr));
+    dispatch(getFeedOrder(postsOrd));
+    dispatch(getFeedPosts(posts));
   }
 };
 
@@ -376,7 +365,7 @@ export const deleteComment = (commentId, postId, token) => async (dispatch) => {
 
 //sends DELETE request to delete a post
 //checking the user authorization is done on the backend side
-export const deletePostReq = (imageId, token) => async (dispatch) => {
+export const deletePostReq = (imageId, token, currentUserId) => async (dispatch) => {
   try {
     const res = await fetch(`${apiBaseUrl}/posts/${imageId}`, {
       method: "DELETE",
@@ -386,10 +375,8 @@ export const deletePostReq = (imageId, token) => async (dispatch) => {
       },
     });
     if (!res.ok) throw res;
-    dispatch(deletePost(imageId));
+    dispatch(getFeedPostReq(currentUserId))
 
-    // todo: update window.location.href to use react history object
-    window.location.href = window.location.href;
     return;
   } catch (err) {
     console.error(err);
@@ -443,10 +430,22 @@ export default function reducer(state = {}, action) {
       return newState;
     }
     case FEED_POSTS: {
-      return {
-        feedPosts: action.postsArr,
-        ...state,
-      };
+      const newState = Object.assign({}, state)
+      return Object.assign(
+        newState,
+        {
+          feedPosts: action.postsObj,
+        }
+      )
+    }
+    case FEED_ORDER: {
+      const newState = Object.assign({}, state)
+      return Object.assign(
+        newState,
+        {
+          feedPostsOrd: action.postsOrd,
+        }
+      )
     }
     case GET_FOLLOWINGS: {
       return {

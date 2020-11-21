@@ -85,7 +85,7 @@ function Profile(props) {
             </Grid>
           </Grid>
           <Grid>
-            {/* displays follow and message buttons only if the current logged user doesn't matche the user */}
+            {/* displays follow and message buttons only if the current logged user doesn't match the user */}
             {props.profileId !== userId ? (
               <div>
                 <FollowBtn></FollowBtn>

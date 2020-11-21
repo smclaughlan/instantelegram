@@ -57,18 +57,19 @@ function Feed(props) {
     props.getUserIds(props.token);
   }, []);
 
-  if (props.feedPosts) {
-    props.feedPosts.sort((a, b) => {
-      if (a.timestamp > b.timestamp) {
-        return -1;
-      } else {
-        return 1;
-      }
-    });
-  }
+
+  // if (props.feedPosts) {
+  //   props.feedPosts.sort((a, b) => {
+  //     if (a.timestamp > b.timestamp) {
+  //       return -1;
+  //     } else {
+  //       return 1;
+  //     }
+  //   });
+  // }
 
   return (
-    (props.feedPosts && props.user) ?
+    ((props.feedPosts && props.user) && props.feedPostsOrd) ?
       <div className={classes.root}>
         <Container className={classes.topLogo}>
           <img alt={"Instantelegram logo"} id='instantelegram-logo' src={"images/logoIG.png"} style={{ margin: '32px auto', borderRadius: '5px', maxWidth: '950px' }}></img>
@@ -82,12 +83,13 @@ function Feed(props) {
             alignContent="center"
             alignItems="flex-start"
           >
-            {props.feedPosts.map((post) => {
+            {props.feedPostsOrd.map(({timestamp, postId}) => {
+              const post = props.feedPosts[postId];
               return (
-                <Grid item className={classes.column1} key={post.postId}>
+                <Grid item className={classes.column1} key={postId}>
                   <Image
-                    imageId={post.postId}
-                    postDate={post.timestamp}
+                    imageId={postId}
+                    postDate={timestamp}
                     imageUrl={post.imageUrl}
                     imageCapt={post.caption}
                     imagePosterUsername={post.username}
@@ -117,6 +119,7 @@ const mapStateToProps = (state) => {
   return {
     token: state.user.token,
     feedPosts: state.user.feedPosts,
+    feedPostsOrd: state.user.feedPostsOrd,
     user: state.user.profile,
   };
 };

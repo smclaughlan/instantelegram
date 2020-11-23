@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { sendFollowReq, sendUnfollowReq } from "../redux/user";
-import { getFollowings } from "../redux/user";
+import { getFollowers } from "../redux/user";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,8 +19,8 @@ const FollowBtn = (props) => {
 
 
   useEffect(() => {
-    let userId = parseInt(window.localStorage.getItem("currentUserId"));
-    props.getFollowings(userId);
+
+    props.getFollowers(window.location.href.split("/")[4]);
   }, []);
 
   const handleFollow = async () => {
@@ -35,8 +35,8 @@ const FollowBtn = (props) => {
 
   //if the user is a following for the current user, displays Unfollow button
   //if not display Follow button
-  return props.followings && !props.updateFollowing ? (
-    props.followings.includes(parseInt(window.location.href.split("/")[4])) && !props.updateFollowing ? (
+  return props.followers ? (
+    props.followers.includes(props.currentUserId) ? (
       <div className={classes.root}>
         <Button variant="contained" color="primary" onClick={handleUnfollow}>
           UnFollow
@@ -61,7 +61,8 @@ const FollowBtn = (props) => {
 const mapStateToProps = (state) => {
   return {
     token: state.user.token,
-    followings: state.user.profile.followings,
+    currentUserId: parseInt(state.user.currentUserId),
+    followers: state.user.profile.followers,
     updateFollowing: state.user.profile.updateFollowing
   };
 };
@@ -70,7 +71,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     sendFollowReq: (...args) => dispatch(sendFollowReq(...args)),
     sendUnfollowReq: (...args) => dispatch(sendUnfollowReq(...args)),
-    getFollowings: (...args) => dispatch(getFollowings(...args)),
+    getFollowers: (...args) => dispatch(getFollowers(...args)),
   };
 };
 

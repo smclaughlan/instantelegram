@@ -28,7 +28,7 @@ export const getUserProfile = (
   posts,
   likes,
   comments
-) => ({
+  ) => ({
   type: USER_PROFILE,
   id,
   username,
@@ -226,17 +226,21 @@ export const sendFollowReq = (userId, followedId) => async (dispatch) => {
 
 //sends POST request to delete an existan following for the current user to the followedId
 export const sendUnfollowReq = (userId, followedId) => async (dispatch) => {
+  try {
+    const res = await fetch(`${apiBaseUrl}/users/${followedId}/follow`, {
+      method: "delete",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: userId,
+      }),
+    });
 
-  const res = await fetch(`${apiBaseUrl}/users/${followedId}/follow`, {
-    method: "delete",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      userId: userId,
-    }),
-  });
-  if (res.ok) {
-    // dispatch(sendUserUnfollowReq(userId, followedId));
+    if (!res.ok) throw res;
+    const {ids} = await res.json()
+    dispatch(setFollowers(ids));
 
+  } catch (err) {
+    console.error(err)
   }
 };
 
@@ -408,6 +412,7 @@ export default function reducer(state = {}, action) {
         username: action.username,
         bio: action.bio,
         avatarUrl: action.avatarUrl,
+        followers: newState.profile.followers,
       };
       newState.posts = action.posts;
       newState.likes = action.likes;

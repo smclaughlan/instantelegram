@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -15,26 +15,16 @@ const useStyles = makeStyles((theme) => ({
 
 const FollowBtn = (props) => {
   const classes = useStyles();
-  let followedId = window.location.href.split("/")[4];
-
-
-  useEffect(() => {
-
-    props.getFollowers(window.location.href.split("/")[4]);
-  }, []);
 
   const handleFollow = async () => {
-    let userId = window.localStorage.getItem("currentUserId");
-    props.sendFollowReq(userId, followedId);
+    props.sendFollowReq(props.currentUserId, props.profileId);
   };
 
   const handleUnfollow = async () => {
-    let userId = window.localStorage.getItem("currentUserId");
-    props.sendUnfollowReq(userId, followedId);
+    props.sendUnfollowReq(props.currentUserId, props.profileId);
   };
 
-  //if the user is a following for the current user, displays Unfollow button
-  //if not display Follow button
+  //if followers array includes current user, displays unfollow button, otherwise displays follow button
   return props.followers ? (
     props.followers.includes(props.currentUserId) ? (
       <div className={classes.root}>
@@ -50,6 +40,7 @@ const FollowBtn = (props) => {
       </div>
     )
   ) : (
+    // loading ... button in case followers array isn't loaded
     <div className={classes.root}>
     <Button variant="contained" color="primary">
       ...
@@ -63,7 +54,6 @@ const mapStateToProps = (state) => {
     token: state.user.token,
     currentUserId: parseInt(state.user.currentUserId),
     followers: state.user.profile.followers,
-    updateFollowing: state.user.profile.updateFollowing
   };
 };
 

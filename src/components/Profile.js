@@ -8,7 +8,7 @@ import Avatar from "@material-ui/core/Avatar";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import { getUserProfileReq } from "../redux/user";
+import { getUserProfileReq, getFollowers } from "../redux/user";
 import { getUserIds } from "../redux/search";
 import EditProfile from "./EditProfile";
 import Image from "./Image";
@@ -51,14 +51,11 @@ const useStyles = makeStyles((theme) => ({
 function Profile(props) {
   const classes = useStyles();
 
-  // todo: destructure props instead of assigning this const
-  const userId = props.currentUserId;
-
   useEffect(() => {
-    let id = window.location.href.split("/")[4];
-
+    const id = props.match.params.userid
     props.getUserProfileReq(id);
     props.getUserIds(props.token);
+    props.getFollowers(id);
   }, []);
 
   return props.profileId ? (
@@ -86,9 +83,9 @@ function Profile(props) {
           </Grid>
           <Grid>
             {/* displays follow and message buttons only if the current logged user doesn't match the user */}
-            {props.profileId !== userId ? (
+            {props.profileId !== props.currentUserId ? (
               <div>
-                <FollowBtn></FollowBtn>
+                <FollowBtn profileId={props.match.params.userid}></FollowBtn>
                 <MessageBtn></MessageBtn>
               </div>
             ) : (
@@ -98,7 +95,7 @@ function Profile(props) {
         </Grid>
       </Paper>
       {/* displays the edit profile option only if the current logged user matches the user */}
-      {props.profileId === userId ? (
+      {props.profileId === props.currentUserId ? (
         <Paper className={classes.paper}>
           <ExpansionPanel>
             <ExpansionPanelSummary>Edit Profile</ExpansionPanelSummary>
@@ -175,6 +172,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getUserProfileReq: (...args) => dispatch(getUserProfileReq(...args)),
     getUserIds: (...args) => dispatch(getUserIds(...args)),
+    getFollowers: (...args) => dispatch(getFollowers(...args)),
   };
 };
 

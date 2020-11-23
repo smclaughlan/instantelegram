@@ -4,14 +4,11 @@ import { apiBaseUrl } from "../config";
 const LOGIN_USER = "instantelegram/login/LOGIN_USER";
 const LOGOUT_USER = "instantelegram/logout/LOGOUT_USER";
 const USER_PROFILE = "instantelegram/profile/USER_PROFILE";
-const FOLLOW = "instantelegram/profile/FOLLOW";
-const UNFOLLOW = "instantelegram/profile/UNFOLLOW";
-const UPDATE_FOLLOW = "instantelegram/profile/UPDATE_FOLLOW";
 const UPDATE_CAPTION = "instantelegram/image/UPDATE_CAPTION";
 const FEED_POSTS = "instantelegram/feed/FEED_POSTS";
 const FEED_ORDER = "instantelegram/feed/FEED_ORDER";
 const UPDATE_LIKE = "instantelegram/like/UPDATE_LIKE";
-const GET_FOLLOWINGS = "instantelegram/profile/GET_FOLLOWINGS";
+const GET_FOLLOWERS = "instantelegram/profile/GET_FOLLOWERS";
 const UPDATE_COMMENT = "instantelegram/comment/UPDATE_COMMENT";
 const DEL_POST = "instantelegram/image/DEL_POST";
 const DELETE_COMMENT = "instantelegram/image/DELETE_COMMENT";
@@ -41,52 +38,45 @@ export const getUserProfile = (
   likes,
   comments,
 });
-export const awaitFollowUpdate = (val) => ({
-  type: UPDATE_FOLLOW,
-  val,
-})
 
-export const sendUserFollowReq = (userId, followedId) => ({
-  type: FOLLOW,
-  userId,
-  followedId,
-});
-export const sendUserUnfollowReq = (userId, followedId) => ({
-  type: UNFOLLOW,
-  userId,
-  followedId,
-});
 export const getFeedPosts = (postsObj) => ({ type: FEED_POSTS, postsObj });
+
 export const getFeedOrder = (postsOrd) => ({ type: FEED_ORDER, postsOrd});
-// export const getFeedPostObj = (postsObj) => ({ type: FEED_POSTS_OBJ, postsObj});
-export const setFollowings = (followingsArr) => ({
-  type: GET_FOLLOWINGS,
-  followingsArr,
+
+export const setFollowers = (followersArr) => ({
+  type: GET_FOLLOWERS,
+  followersArr,
 });
+
 export const updateCaption = (postObj, imageId) => ({
   type: UPDATE_CAPTION,
   postObj,
   imageId,
 });
+
 export const updateLike = (imageId, likesArr) => ({
   type: UPDATE_LIKE,
   imageId,
   likesArr,
 });
+
 export const updateComment = (postId, commentObj) => ({
   type: UPDATE_COMMENT,
   postId,
   commentObj,
 });
+
 export const deleteCommentDis = (postId, commentObj) => ({
   type: DELETE_COMMENT,
   postId,
   commentObj,
 });
+
 export const deletePost = (imageId) => ({
   type: DEL_POST,
   imageId,
 });
+
 export const errorMessage = (messageType, message) => ({
   type: ERROR_MESSAGE,
   messageType,
@@ -203,45 +193,40 @@ export const getFeedPostReq = (currentUserId) => async (dispatch) => {
   }
 };
 
-//sends Get request to get all followings for the current user
-export const getFollowings = (currentUserId) => async (dispatch) => {
+//sends Get request to get all followers for a user
+export const getFollowers = (currentUserId) => async (dispatch) => {
   const followingsRes = await fetch(
     `${apiBaseUrl}/users/${currentUserId}/followings`
   );
 
   if (followingsRes.ok) {
-    const followings = await followingsRes.json();
-
-    let followingsArr = [];
-
-    for (const key in followings) {
-      const followingId = followings[key].followingId;
-      followingsArr.push(followingId);
-    }
-
-    dispatch(setFollowings(followingsArr));
+    const {ids} = await followingsRes.json();
+    dispatch(setFollowers(ids));
   }
 };
 
 //sends POST request to add a new following for the current user to the followedId
 export const sendFollowReq = (userId, followedId) => async (dispatch) => {
-  dispatch(awaitFollowUpdate(true))
-  const res = await fetch(`${apiBaseUrl}/users/${followedId}/follow`, {
-    method: "post",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      userId: userId,
-    }),
-  });
-  if (res.ok) {
-    dispatch(sendUserFollowReq(userId, followedId));
-    dispatch(awaitFollowUpdate(false))
+  try {
+    const res = await fetch(`${apiBaseUrl}/users/${followedId}/follow`, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: userId,
+      }),
+    });
+
+    if (!res.ok) throw res;
+    const {ids} = await res.json()
+    dispatch(setFollowers(ids));
+  } catch (err) {
+    console.error(err)
   }
 };
 
 //sends POST request to delete an existan following for the current user to the followedId
 export const sendUnfollowReq = (userId, followedId) => async (dispatch) => {
-  dispatch(awaitFollowUpdate(true))
+
   const res = await fetch(`${apiBaseUrl}/users/${followedId}/follow`, {
     method: "delete",
     headers: { "Content-Type": "application/json" },
@@ -250,8 +235,8 @@ export const sendUnfollowReq = (userId, followedId) => async (dispatch) => {
     }),
   });
   if (res.ok) {
-    dispatch(sendUserUnfollowReq(userId, followedId));
-    dispatch(awaitFollowUpdate(false))
+    // dispatch(sendUserUnfollowReq(userId, followedId));
+
   }
 };
 
@@ -447,47 +432,16 @@ export default function reducer(state = {}, action) {
         }
       )
     }
-    case GET_FOLLOWINGS: {
+    case GET_FOLLOWERS: {
       return {
         ...state,
         profile: {
           ...state.profile,
-          followings: action.followingsArr,
+          followers: action.followersArr,
         },
       };
     }
-    case FOLLOW: {
-      return {
-        ...state,
-        profile: {
-          ...state.profile,
-          followings: [
-            ...state.profile.followings,
-            parseInt(action.followedId),
-          ],
-        },
-      };
-    }
-    case UNFOLLOW: {
-      return {
-        ...state,
-        profile: {
-          ...state.profile,
-          followings: state.profile.followings.filter(
-            (followingId) => followingId !== action.followedId
-          ),
-        },
-      };
-    }
-    case UPDATE_FOLLOW: {
-      return {
-        ...state,
-        profile: {
-          ...state.profile,
-          updateFollowing: action.val
-        }
-      }
-    }
+
     case UPDATE_CAPTION: {
       const newState = Object.assign({}, state);
       newState.posts[action.imageId] = action.postObj;

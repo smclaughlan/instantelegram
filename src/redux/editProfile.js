@@ -4,6 +4,8 @@ const { apiBaseUrl, cloudinaryUrl, cloudinaryPreset } = require("../config");
 const UPDATE_AVATAR = "instantelegram/profile/UPDATE_AVATAR";
 const UPDATE_BIO = "instantelegram/profile/UPDATE_BIO";
 
+
+// ACTION CREATORS
 const setImgUrl = (avatarUrl) => ({
   type: UPDATE_AVATAR,
   avatarUrl,

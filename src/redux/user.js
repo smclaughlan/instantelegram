@@ -412,7 +412,7 @@ export default function reducer(state = {}, action) {
         username: action.username,
         bio: action.bio,
         avatarUrl: action.avatarUrl,
-        followers: newState.profile.followers,
+        followers: newState.profile && newState.profile.followers ? newState.profile.followers : [],
       };
       newState.posts = action.posts;
       newState.likes = action.likes;

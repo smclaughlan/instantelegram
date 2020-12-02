@@ -1,9 +1,10 @@
-import { apiBaseUrl } from "../config";
+import { apiBaseUrl, cloudinaryUrl, cloudinaryPreset  } from "../config";
 
 // ACTIONS
 const LOGIN_USER = "instantelegram/login/LOGIN_USER";
 const LOGOUT_USER = "instantelegram/logout/LOGOUT_USER";
 const USER_PROFILE = "instantelegram/profile/USER_PROFILE";
+const USER_PROFILE_UPDATE = "instantelegram/profile/USER_PROFILE_UPDATE";
 const UPDATE_CAPTION = "instantelegram/image/UPDATE_CAPTION";
 const FEED_POSTS = "instantelegram/feed/FEED_POSTS";
 const FEED_ORDER = "instantelegram/feed/FEED_ORDER";
@@ -38,6 +39,14 @@ export const getUserProfile = (
   likes,
   comments,
 });
+
+export const updateUserProfile = (id, username, bio, avatarUrl) => ({
+  type: USER_PROFILE_UPDATE,
+  id,
+  username,
+  bio,
+  avatarUrl
+})
 
 export const getFeedPosts = (postsObj) => ({ type: FEED_POSTS, postsObj });
 
@@ -172,6 +181,55 @@ export const getUserProfileReq = (id) => async (dispatch) => {
     );
   }
 };
+
+// sends PUT request to update a user's information
+// calls updateUserProfile action creator to update redux state
+export const updateUserProfileReq = (userId, token, bio, newImg) => async (dispatch) => {
+  try {
+    if (newImg) {
+      const data = new FormData();
+      data.append("upload_preset", cloudinaryPreset);
+      data.append("file", newImg);
+      const resCloudinary = await fetch(`${cloudinaryUrl}/image/upload`, {
+        method: "POST",
+        body: data,
+      });
+      if (!resCloudinary.ok) throw resCloudinary;
+      const imgObj = await resCloudinary.json();
+
+      const body = JSON.stringify({ userId, bio, avatar: imgObj.secure_url, token });
+      const res = await fetch(`${apiBaseUrl}/users/${userId}`, {
+        method: "PUT",
+        body,
+        headers: {
+          "x-access-token": `${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) throw res;
+      //TODO: call action creator
+      debugger
+
+    } else if (bio) {
+      const body = JSON.stringify({ userId, bio, token });
+      const res = await fetch(`${apiBaseUrl}/users/${userId}`, {
+        method: "PUT",
+        body,
+        headers: {
+          "x-access-token": `${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) throw res;
+      //TODO: call action creator
+      debugger
+    }
+
+
+  } catch (err) {
+    console.error(err)
+  }
+}
 
 //sends GET request to get all posts for all the followings for the current user
 //and display it on the feed page, including the current user posts
@@ -419,6 +477,19 @@ export default function reducer(state = {}, action) {
       newState.comments = action.comments;
       return newState;
     }
+
+    case USER_PROFILE_UPDATE: {
+      const newState = Object.assign({}, state);
+      newState.profile = {
+        id: action.id,
+        username: action.username,
+        bio: action.bio,
+        avatarUrl: action.avatarUrl,
+        followers: newState.profile.followers,
+      }
+      return newState;
+    }
+
     case FEED_POSTS: {
       const newState = Object.assign({}, state)
       return Object.assign(

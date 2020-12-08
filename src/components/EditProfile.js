@@ -1,53 +1,67 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, Container, TextField, Input, InputLabel } from '@material-ui/core';
-// import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
+import "../css/editProfile.css";
+import { updateUserProfileReq } from '../redux/user';
 
-import { updateAvatar, updateBioReq } from '../redux/editProfile';
-
-// const useStyles = makeStyles(theme => ({
-//   bioUpdate: {
-//     width: "100%",
-//   },
-// }));
+const useStyles = makeStyles(theme => ({
+  bioUpdate: {
+    width: "100%",
+  },
+  imageLabel: {
+    display: 'flex',
+  },
+}));
 
 const EditProfile = (props) => {
   const [bio, setBio] = useState('')
-  // const classes = useStyles();
+  const classes = useStyles();
 
   const updateValue = cb => e => cb(e.target.value);
 
   const handleNewImage = e => {
     const newImg = e.target.files[0];
-    props.updateAvatar(props.currentUserId, newImg, props.token);
+    props.updateUserProfileReq(props.currentUserId, props.token, props.profileBio, newImg);
   }
 
   const updateBio = e => {
     e.preventDefault();
-    props.updateBioReq(props.currentUserId, bio, props.token)
+    props.updateUserProfileReq(props.currentUserId, props.token, bio)
   }
 
   return (
     <Container>
-      <div>
-        <InputLabel htmlFor="image-upload" >
-          <img src={props.avatarUrl} alt='preview' width="100" />
-          <div>select new image</div>
-        </InputLabel>
-        <Input id="image-upload" type="file" label="Image" style={{ display: 'none' }} onChange={handleNewImage} />
-      </div>
-
-      <div>
-        <div>Bio:</div>
-        <TextField
-          variant="outlined"
-          type="caption"
-          onChange={updateValue(setBio)}
-          // className={classes.bioUpdate}
-          defaultValue={props.profileBio}
-        />
+      <div className="update-profile">
         <div>
-          <Button color="primary" onClick={updateBio} >Update bio</Button>
+          <InputLabel
+            className={classes.imageLabel}
+            htmlFor="image-upload"
+            >
+            <div
+              className="new-image-label"
+              onMouseEnter={e => {e.currentTarget.querySelector(`div`).classList.remove('hidden')}}
+              onMouseLeave={e => {e.currentTarget.querySelector(`div`).classList.add('hidden')}}
+            >
+              <img className="new-image" src={props.avatarUrl} alt='preview'/>
+              <div className="image-shadow hidden">Edit Avi</div>
+            </div>
+          </InputLabel>
+          <Input id="image-upload" type="file" label="Image" style={{ display: 'none' }} onChange={handleNewImage} />
+        </div>
+
+        <div className="update-bio">
+          <div>Bio:</div>
+          <TextField
+            variant="outlined"
+            type="caption"
+            onChange={updateValue(setBio)}
+            className={classes.bioUpdate}
+            defaultValue={props.profileBio}
+          />
+          <div>
+            <Button color="primary" onClick={updateBio} >Update bio</Button>
+          </div>
         </div>
       </div>
 
@@ -65,8 +79,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateBioReq: (...args) => dispatch(updateBioReq(...args)),
-    updateAvatar: (...args) => dispatch(updateAvatar(...args)),
+    updateUserProfileReq: (...args) => dispatch(updateUserProfileReq(...args)),
   };
 };
 

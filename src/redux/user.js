@@ -207,8 +207,8 @@ export const updateUserProfileReq = (userId, token, bio, newImg) => async (dispa
         },
       });
       if (!res.ok) throw res;
-      //TODO: call action creator
-      debugger
+      const newProfile = await res.json()
+      dispatch(updateUserProfile(`${newProfile.id}`, newProfile.username, newProfile.bio, newProfile.avatarUrl))
 
     } else if (bio) {
       const body = JSON.stringify({ userId, bio, token });
@@ -221,8 +221,8 @@ export const updateUserProfileReq = (userId, token, bio, newImg) => async (dispa
         },
       });
       if (!res.ok) throw res;
-      //TODO: call action creator
-      debugger
+      const newProfile = await res.json()
+      dispatch(updateUserProfile(`${newProfile.id}`, newProfile.username, newProfile.bio, newProfile.avatarUrl))
     }
 
 

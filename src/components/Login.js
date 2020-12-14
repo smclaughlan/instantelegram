@@ -49,7 +49,7 @@ const Login = (props) => {
   }
 
   return (
-    <div className="wrapper">
+    // <div className="wrapper">
       <div className="form-wrapper">
         <h1>Log In</h1>
         <form onSubmit={loginUser}>
@@ -83,11 +83,15 @@ const Login = (props) => {
               :
               <></>
             }
-            <a href="/register">Create An Acount</a>
+            <input
+              type='button'
+              onClick={()=>{props.setIsReg(true)}}
+              value='Create an Account'
+            />
           </div>
         </form>
       </div>
-    </div>
+    // </div>
   );
 };
 

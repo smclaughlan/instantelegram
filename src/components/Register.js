@@ -60,7 +60,7 @@ const Register = (props) => {
   };
 
   return (
-    <div className="wrapper">
+    // <div className="wrapper">
       <div className="form-wrapper">
         <h1>Create Account</h1>
         <form onSubmit={registerUser}>
@@ -112,11 +112,15 @@ const Register = (props) => {
                 Submit
             </Button>
             }
-            <a href="/login">Already Have an Account?</a>
+            <input
+              type='button'
+              onClick={()=>{props.setIsReg(false)}}
+              value='Already have an account?'
+            />
           </div>
         </form>
       </div>
-    </div>
+    // </div>
   );
 };
 

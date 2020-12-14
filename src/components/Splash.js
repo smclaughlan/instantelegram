@@ -1,9 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 
-import RegisterForm from "./RegisterForm";
+import Login from "./Login";
+import Register from "./Register";
 import '../css/splash.css';
 
 export default function Splash() {
+  const [isReg, setIsReg] = useState(false);
 
   return (
     <>
@@ -21,7 +23,7 @@ export default function Splash() {
           />
         </div>
         <div className='splash-register-form'>
-          <RegisterForm />
+          {isReg ? <Register setIsReg={setIsReg} /> : <Login setIsReg={setIsReg} />}
         </div>
       </div>
     </>

@@ -78,9 +78,18 @@ h1 {
   border: 2px solid #8a64c7;
 }
 
-.createAccount a,
-.logIn a {
+.createAccount input,
+.logIn input {
   color: #999;
-  font-weight: lighter;
+  font-weight: 100;
+  font-size: 14px;
   text-decoration: none;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+.createAccount input:hover,
+.logIn input:hover {
+  cursor: pointer;
 }

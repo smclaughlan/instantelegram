@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 
-import Login from './components/Login';
-import Register from './components/Register'
 import Upload from './components/Upload'
 import NavBar from './components/Nav';
 import Feed from './components/Feed';
@@ -80,12 +78,12 @@ function App(props) {
                     />
                     <AuthRoute
                       path="/login"
-                      component={Login}
+                      component={Splash}
                       currentUserId={props.currentUserId}
                     />
                     <AuthRoute
                       path="/register"
-                      component={Register}
+                      component={Splash}
                       currentUserId={props.currentUserId}
                     />
                     <ProtectedRoute

@@ -107,8 +107,9 @@ export const sendRegisterReq = (userInfo) => async (dispatch) => {
     }),
   });
 
-  if (res.status === 401) {
+  if (res.status === 400) {
     const { error } = await res.json();
+    debugger
     const messageType = "register";
     dispatch(errorMessage(messageType, error));
   }

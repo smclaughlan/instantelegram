@@ -60,21 +60,23 @@ const Register = (props) => {
   };
 
   return (
-    // <div className="wrapper">
       <div className="form-wrapper">
         <h1>Create Account</h1>
         <form onSubmit={registerUser}>
+            {props.errorMessage ?
+                <h3 className="errors">{props.errorMessage}</h3>
+              :
+                <></>
+            }
           <div className="userName">
             <TextField
-              id="outlined-basic"
               label="Username"
               variant="outlined"
               onChange={userNameChange}
-            />
+              />
           </div>
           <div className="email">
             <TextField
-              id="outlined-basic"
               label="Email"
               variant="outlined"
               onChange={emailChange}
@@ -82,7 +84,6 @@ const Register = (props) => {
           </div>
           <div className="bio">
             <TextField
-              id="outlined-basic"
               label="Bio"
               variant="outlined"
               onChange={bioChange}
@@ -90,18 +91,12 @@ const Register = (props) => {
           </div>
           <div className="password">
             <TextField
-              id="outlined-basic"
               label="Password"
               variant="outlined"
               type="password"
               onChange={passwordChange}
             />
           </div>
-          {props.errorMessage ?
-              <h3>{props.errorMessage}</h3>
-              :
-              <></>
-            }
           <div className="createAccount">
             {submitButtonEnabled ?
               <Button color="primary" type="submit">
@@ -120,7 +115,6 @@ const Register = (props) => {
           </div>
         </form>
       </div>
-    // </div>
   );
 };
 

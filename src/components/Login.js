@@ -49,13 +49,16 @@ const Login = (props) => {
   }
 
   return (
-    // <div className="wrapper">
-      <div className="form-wrapper">
+    <div className="form-wrapper">
         <h1>Log In</h1>
         <form onSubmit={loginUser}>
+          {props.errorMessage ?
+              <h3 className="errors">{props.errorMessage}</h3>
+            :
+              <></>
+          }
           <div className="userName">
             <TextField
-              id="outlined-basic"
               label="Username"
               variant="outlined"
               onChange={userNameChange}
@@ -63,7 +66,6 @@ const Login = (props) => {
           </div>
           <div className="password">
             <TextField
-              id="outlined-basic"
               label="Password"
               variant="outlined"
               type="password"
@@ -78,11 +80,6 @@ const Login = (props) => {
               :
               <Button color="primary" type='submit' disabled>Submit</Button>
             }
-            {props.errorMessage ?
-              <h3>Error: Invalid login credentials</h3>
-              :
-              <></>
-            }
             <input
               type='button'
               onClick={()=>{props.setIsReg(true)}}
@@ -91,7 +88,6 @@ const Login = (props) => {
           </div>
         </form>
       </div>
-    // </div>
   );
 };
 

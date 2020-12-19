@@ -1,15 +1,19 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { connect } from "react-redux";
 import { Button, TextField } from "@material-ui/core";
 import "../css/register.css";
-import { sendLoginReq } from "../redux/user";
+import { sendLoginReq, errorMessage } from "../redux/user";
 
-const Login = (props) => {
-  const [loginData, setLoginData] = React.useState({
+const Login = ({errorMessage, ...props}) => {
+  const [loginData, setLoginData] = useState({
     username: "",
     password: "",
   });
-  const [loginButtonEnabled, setLoginButtonEnabled] = React.useState(false);
+  const [loginButtonEnabled, setLoginButtonEnabled] = useState(false);
+
+  useEffect(() => {
+    errorMessage("login", "")
+  }, [errorMessage])
 
   const checkLoginButton = () => {
     if (loginData.username.length > 0 && loginData.password.length > 0) {
@@ -52,8 +56,8 @@ const Login = (props) => {
     <div className="form-wrapper">
         <h1>Log In</h1>
         <form onSubmit={loginUser}>
-          {props.errorMessage ?
-              <h3 className="errors">{props.errorMessage}</h3>
+          {props.errorMessages ?
+              <h3 className="errors">{props.errorMessages}</h3>
             :
               <></>
           }
@@ -95,7 +99,7 @@ const mapStateToProps = (state) => {
   if (state && state.user && state.user.error && state.user.error.login) {
     return {
       token: state.user.token,
-      errorMessage: state.user.error.login,
+      errorMessages: state.user.error.login,
     };
   } else {
     return {
@@ -107,6 +111,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     sendLoginReq: (...args) => dispatch(sendLoginReq(...args)),
+    errorMessage: (...args) => dispatch(errorMessage(...args)),
   };
 };
 

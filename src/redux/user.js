@@ -86,11 +86,12 @@ export const deletePost = (imageId) => ({
   imageId,
 });
 
-export const errorMessage = (messageType, message) => ({
+export const errorMessage = (messageType, message) => {
+  return ({
   type: ERROR_MESSAGE,
   messageType,
   message,
-});
+})};
 
 // THUNKS
 //sends register request to the backend with user info
@@ -109,7 +110,6 @@ export const sendRegisterReq = (userInfo) => async (dispatch) => {
 
   if (res.status === 400) {
     const { error } = await res.json();
-    debugger
     const messageType = "register";
     dispatch(errorMessage(messageType, error));
   }

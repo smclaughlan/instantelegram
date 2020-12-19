@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Button, TextField } from "@material-ui/core";
 import "../css/register.css";
-import { sendRegisterReq } from "../redux/user";
+import { sendRegisterReq, errorMessage } from "../redux/user";
 
-const Register = (props) => {
-  const [registerData, setRegisterData] = React.useState({
+const Register = ({errorMessage, ...props}) => {
+  const [registerData, setRegisterData] = useState({
     username: "",
     password: "",
     email: "",
     bio: "",
   });
-  const [submitButtonEnabled, setSubmitButtonEnabled] = React.useState(false);
+  const [submitButtonEnabled, setSubmitButtonEnabled] = useState(false);
+
+  useEffect(() => {
+    errorMessage("register", "")
+  }, [errorMessage])
 
   const checkSubmitButton = () => {
     if (registerData.username.length > 0 && registerData.password.length > 0
@@ -63,8 +67,8 @@ const Register = (props) => {
       <div className="form-wrapper">
         <h1>Create Account</h1>
         <form onSubmit={registerUser}>
-            {props.errorMessage ?
-                <h3 className="errors">{props.errorMessage}</h3>
+            {props.errorMessages ?
+                <h3 className="errors">{props.errorMessages}</h3>
               :
                 <></>
             }
@@ -122,7 +126,7 @@ const mapStateToProps = (state) => {
   if (state && state.user && state.user.error && state.user.error.register) {
     return {
       token: state.user.token,
-      errorMessage: state.user.error.register,
+      errorMessages: state.user.error.register,
     }
   } else {
     return {
@@ -134,6 +138,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     sendRegisterReq: (...args) => dispatch(sendRegisterReq(...args)),
+    errorMessage: (...args) => dispatch(errorMessage(...args)),
   };
 };
 

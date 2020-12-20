@@ -8,7 +8,6 @@ import Button from "@material-ui/core/Button";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import { sendLogoutReq } from "../redux/user";
-// import Grid from "@material-ui/core/Grid";
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 
@@ -27,10 +26,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   logout: {
-
     width: 'min-content',
-    // justifyItems: 'end',
-    // alignItems: 'end'
   },
   search: {
     position: 'absolute',
@@ -42,12 +38,6 @@ const useStyles = makeStyles((theme) => ({
     },
     marginRight: theme.spacing(3),
     marginLeft: theme.spacing(3),
-    // width: '100%',
-    // [theme.breakpoints.up('sm')]: {
-    //   marginLeft: theme.spacing(3),
-    //   marginRight: theme.spacing(3),
-    // width: 'auto',
-    // },
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -66,10 +56,6 @@ const useStyles = makeStyles((theme) => ({
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
-    // width: '100%',
-    [theme.breakpoints.up('md')]: {
-      // width: '20ch',
-    },
   },
 }));
 
@@ -83,7 +69,6 @@ const NavBar = (props) => {
     if (navMenu.style.visibility === "hidden") {
       navMenu.style.visibility = "visible";
       navMenu.style.height = "180px";
-      closeSearch()
     } else {
       navMenu.style.visibility = "hidden";
       navMenu.style.height = 0;
@@ -92,11 +77,21 @@ const NavBar = (props) => {
 
   const openSearch = () => {
     const searchMenu = document.querySelector(".search-bar");
+    const navMenu = document.querySelector(".mobile-nav-overlay");
+
+    navMenu.style.visibility = "hidden";
+    navMenu.style.height = 0;
+
     searchMenu.style.visibility = "visible";
     searchMenu.style.height = "max-content";
   };
 
-  const closeSearch = () => {
+  const closeSearch = e => {
+    if (e && e.relatedTarget) {
+      if (e.relatedTarget.classList.contains('searchItem')) {
+        props.history.push(`/profile/${e.relatedTarget.value}`)
+      }
+  }
     const searchMenu = document.querySelector(".search-bar");
     if (searchMenu) {
       searchMenu.style.visibility = "hidden";
@@ -116,62 +111,6 @@ const NavBar = (props) => {
 
     props.sendLogoutReq();
   };
-
-  //when the user is logged in, navBar will display: profile, upload and logOut options
-  //if not navBar will display logIn and register options only
-  // const navigation = props.currentUserId ? (
-  //   <Grid
-  //     container
-  //     spacing={4}
-  //     style={{ "justify-content": "space-between" }}
-  //     id="navbar-items"
-  //   >
-  //     <Grid className={classes.navContainer} item xs={10}>
-  //       <NavLink style={{ color: "white" }} to="/">
-  //         <Button color="inherit">Instantelegram</Button>
-  //       </NavLink>
-  //       <NavLink
-  //         style={{ color: "white" }}
-  //         to={`/profile/${props.currentUserId}`}
-  //       >
-  //         <Button color="inherit">Profile</Button>
-  //       </NavLink>
-  //       <NavLink style={{ color: "white" }} to="/upload">
-  //         <Button color="inherit">Upload</Button>
-  //       </NavLink>
-  //       <div className={classes.search}>
-  //         <div className={classes.searchIcon}>
-  //           <SearchIcon />
-  //         </div>
-  //         <InputBase
-  //           placeholder="Search…"
-  //           className={classes.inputContainer}
-  //           classes={{
-  //             root: classes.inputRoot,
-  //             input: classes.inputInput,
-  //           }}
-  //           inputProps={{ 'aria-label': 'search' }}
-  //         />
-  //       </div>
-  //     </Grid>
-  //     <Grid item>
-  //       <div className={classes.logout} style={{ color: "white" }}>
-  //         <Button className={classes.logout} color="inherit" onClick={logOut}>
-  //           Logout
-  //         </Button>
-  //       </div>
-  //     </Grid>
-  //   </Grid>
-  // ) : (
-  //   <div id="navbar-items">
-  //     <NavLink style={{ color: "white" }} to="/register">
-  //       <Button color="inherit">Register</Button>
-  //     </NavLink>
-  //     <NavLink style={{ color: "white" }} to="/login">
-  //       <Button color="inherit">Login</Button>
-  //     </NavLink>
-  //   </div>
-  // );
 
   const mobileNavigation = props.currentUserId ? (
     <div
@@ -222,16 +161,15 @@ const NavBar = (props) => {
     >
       {Object.keys(props.userIds).map((key) => {
         if (props.userIds[key].username.toLowerCase().includes(searchTerm) && searchTerm !== "") {
-          // console.log(props.userIds[key].username)
           return (
-            <NavLink key={key} style={{ color: "white" }} to={`/profile/${key}`} onClick={closeSearch}>
-              <Button color="inherit">{props.userIds[key].username}</Button>
+            <NavLink key={key} style={{ color: "white" }} to={`/profile/${key}`} >
+              <Button className={'searchItem'} color="inherit" value={`${key}`} onClick={closeSearch}>{props.userIds[key].username}</Button>
             </NavLink>
           )
         } else if (searchTerm === "") {
           return (
-            <NavLink key={key} style={{ color: "white" }} to={`/profile/${key}`} onClick={closeSearch}>
-              <Button color="inherit">{props.userIds[key].username}</Button>
+            <NavLink key={key} style={{ color: "white" }} to={`/profile/${key}`} >
+              <Button className={'searchItem'} color="inherit" value={`${key}`} onClick={closeSearch}>{props.userIds[key].username}</Button>
             </NavLink>
           )
         } else {
@@ -244,21 +182,21 @@ const NavBar = (props) => {
     );
 
   const searchInput = props.currentUserId ? (
-    <div className={classes.search}>
-      <div className={classes.searchIcon}>
-        <SearchIcon />
+      <div className={classes.search}>
+        <div className={classes.searchIcon}>
+          <SearchIcon />
+        </div>
+        <InputBase
+          placeholder="Search…"
+          classes={{
+            root: classes.inputRoot,
+            input: classes.inputInput,
+          }}
+          onChange={(event) => { updateSearch(event) }}
+          inputProps={{ 'aria-label': 'search', 'onFocus': openSearch, 'onBlur': closeSearch,}}
+        />
       </div>
-      <InputBase
-        placeholder="Search…"
-        classes={{
-          root: classes.inputRoot,
-          input: classes.inputInput,
-        }}
-        onChange={(event) => { updateSearch(event) }}
-        inputProps={{ 'aria-label': 'search', 'onFocus': openSearch, 'onBlur': closeSearch }}
-      />
-    </div>
-  ) : (
+    ) : (
       ""
     )
 

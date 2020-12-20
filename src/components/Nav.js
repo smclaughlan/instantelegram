@@ -90,7 +90,6 @@ const NavBar = (props) => {
     if (e && e.relatedTarget) {
       if (e.relatedTarget.classList.contains('searchItem')) {
         props.history.push(`/profile/${e.relatedTarget.value}`)
-      } else if (e.relatedTarget.id === 'mobile-menu-icon') {
       }
   }
     const searchMenu = document.querySelector(".search-bar");

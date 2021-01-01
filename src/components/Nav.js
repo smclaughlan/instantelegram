@@ -62,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
 const NavBar = (props) => {
   const classes = useStyles();
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchHeight, setSearchHeight] = useState('0')
 
   const toggleNav = () => {
     const navMenu = document.querySelector(".mobile-nav-overlay");
@@ -83,7 +84,7 @@ const NavBar = (props) => {
     navMenu.style.height = 0;
 
     searchMenu.style.visibility = "visible";
-    searchMenu.style.height = "max-content";
+    setSearchHeight(`${45*searchMenu.childElementCount}`)
   };
 
   const closeSearch = e => {
@@ -95,12 +96,16 @@ const NavBar = (props) => {
     const searchMenu = document.querySelector(".search-bar");
     if (searchMenu) {
       searchMenu.style.visibility = "hidden";
-      searchMenu.style.height = 0;
+      setSearchHeight('0');
     }
   }
 
+
+
   const updateSearch = (e) => {
     setSearchTerm(e.target.value);
+    const numberOfResults = Object.keys(props.userIds).filter((key)=>{if(props.userIds[key].username.toLowerCase().includes(e.target.value.toLowerCase())){return true}}).length
+    setSearchHeight(`${45*numberOfResults}`)
   }
 
   const logOut = () => {
@@ -157,10 +162,10 @@ const NavBar = (props) => {
   const searchBar = props.userIds ? (
     <div
       className="search-bar"
-      style={{ height: 0, visibility: "hidden" }}
+      style={{ height: `${searchHeight}px`, visibility: "hidden" }}
     >
       {Object.keys(props.userIds).map((key) => {
-        if (props.userIds[key].username.toLowerCase().includes(searchTerm) && searchTerm !== "") {
+        if (props.userIds[key].username.toLowerCase().includes(searchTerm.toLowerCase()) && searchTerm !== "") {
           return (
             <NavLink key={key} style={{ color: "white" }} to={`/profile/${key}`} >
               <Button className={'searchItem'} color="inherit" value={`${key}`} onClick={closeSearch}>{props.userIds[key].username}</Button>

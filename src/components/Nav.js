@@ -59,17 +59,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
 const NavBar = (props) => {
   const classes = useStyles();
   const [searchTerm, setSearchTerm] = useState('');
   const [searchHeight, setSearchHeight] = useState('0')
 
-  const toggleNav = () => {
+  const toggleNav = e => {
     const navMenu = document.querySelector(".mobile-nav-overlay");
 
     if (navMenu.style.visibility === "hidden") {
       navMenu.style.visibility = "visible";
       navMenu.style.height = "180px";
+    } else if (e && e.relatedTarget && e.relatedTarget.classList.contains('menuItem')) {
+      props.history.push(`${e.relatedTarget.parentElement.pathname}`)
+      navMenu.style.visibility = "hidden";
+      navMenu.style.height = 0;
+    } else if (e && e.relatedTarget && e.relatedTarget.classList.contains('logoutButton')) {
+      logOut()
     } else {
       navMenu.style.visibility = "hidden";
       navMenu.style.height = 0;
@@ -100,8 +108,6 @@ const NavBar = (props) => {
     }
   }
 
-
-
   const updateSearch = (e) => {
     setSearchTerm(e.target.value);
     const numberOfResults = Object.keys(props.userIds).filter((key)=>{if(props.userIds[key].username.toLowerCase().includes(e.target.value.toLowerCase())){return true}}).length
@@ -113,7 +119,6 @@ const NavBar = (props) => {
     if (navMenu.style.visibility === "visible") {
       toggleNav();
     }
-
     props.sendLogoutReq();
   };
 
@@ -123,41 +128,41 @@ const NavBar = (props) => {
       style={{ height: 0, visibility: "hidden" }}
     >
       <NavLink
-        style={{ color: "white" }}
+        style={{ color: "white", width: "100%"}}
         to={`/`}
         onClick={toggleNav}
       >
-        <Button color="inherit">Home</Button>
+        <Button className="menuItem" style={{ width: "100%" }} color="inherit">Home</Button>
       </NavLink>
       <NavLink
-        style={{ color: "white" }}
+        style={{ color: "white", width: "100%"}}
         to={`/profile/${props.currentUserId}`}
         onClick={toggleNav}
       >
-        <Button color="inherit">Profile</Button>
+        <Button className="menuItem" style={{ width: "100%" }} color="inherit">Profile</Button>
       </NavLink>
-      <NavLink style={{ color: "white" }} to="/upload" onClick={toggleNav}>
-        <Button color="inherit">Upload</Button>
+      <NavLink style={{ color: "white", width: "100%"}} to="/upload" onClick={toggleNav}>
+        <Button className="menuItem" style={{ width: "100%" }} color="inherit">Upload</Button>
       </NavLink>
-      <div className={classes.logout} style={{ color: "white" }}>
-        <Button className={classes.logout} color="inherit" onClick={logOut}>
+      <div className={classes.logout} style={{ color: "white", width: "100%"}}>
+        <Button className={`${classes.logout} logoutButton`} style={{ width: "100%" }} color="inherit" onClick={logOut}>
           Logout
         </Button>
       </div>
     </div>
   ) : (
-      <div
-        className="mobile-nav-overlay"
-        style={{ height: 0, visibility: "hidden" }}
-      >
-        <NavLink style={{ color: "white" }} to="/register" onClick={toggleNav}>
-          <Button color="inherit">Register</Button>
-        </NavLink>
-        <NavLink style={{ color: "white" }} to="/login" onClick={toggleNav}>
-          <Button color="inherit">Login</Button>
-        </NavLink>
-      </div>
-    );
+    <div
+      className="mobile-nav-overlay"
+      style={{ height: 0, visibility: "hidden" }}
+    >
+      <NavLink style={{ color: "white", width: "100%"}} to="/register" onClick={toggleNav}>
+        <Button color="inherit">Register</Button>
+      </NavLink>
+      <NavLink style={{ color: "white", width: "100%"}} to="/login" onClick={toggleNav}>
+        <Button color="inherit">Login</Button>
+      </NavLink>
+    </div>
+  );
 
   const searchBar = props.userIds ? (
     <div
@@ -167,14 +172,14 @@ const NavBar = (props) => {
       {Object.keys(props.userIds).map((key) => {
         if (props.userIds[key].username.toLowerCase().includes(searchTerm.toLowerCase()) && searchTerm !== "") {
           return (
-            <NavLink key={key} style={{ color: "white" }} to={`/profile/${key}`} >
-              <Button className={'searchItem'} color="inherit" value={`${key}`} onClick={closeSearch}>{props.userIds[key].username}</Button>
+            <NavLink key={key} style={{ color: "white", width: "100%"}} to={`/profile/${key}`} >
+              <Button className={'searchItem'} style={{ width: "100%" }} color="inherit" value={`${key}`} onClick={closeSearch}>{props.userIds[key].username}</Button>
             </NavLink>
           )
         } else if (searchTerm === "") {
           return (
-            <NavLink key={key} style={{ color: "white" }} to={`/profile/${key}`} >
-              <Button className={'searchItem'} color="inherit" value={`${key}`} onClick={closeSearch}>{props.userIds[key].username}</Button>
+            <NavLink key={key} style={{ color: "white", width: "100%" }} to={`/profile/${key}`} >
+              <Button className={'searchItem'} style={{ width: "100%" }} color="inherit" value={`${key}`} onClick={closeSearch}>{props.userIds[key].username}</Button>
             </NavLink>
           )
         } else {
@@ -183,8 +188,8 @@ const NavBar = (props) => {
       })}
     </div>
   ) : (
-      ""
-    );
+    ""
+  );
 
   const searchInput = props.currentUserId ? (
       <div className={classes.search}>
@@ -216,6 +221,7 @@ const NavBar = (props) => {
             aria-label="menu"
             id="mobile-menu-icon"
             onClick={toggleNav}
+            onBlur={toggleNav}
           >
             <MenuIcon />
           </IconButton>

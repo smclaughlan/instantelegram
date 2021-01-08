@@ -247,8 +247,8 @@ export const getFeedPostReq = (currentUserId) => async (dispatch) => {
     postsOrd.sort((a, b) => {
       return Date.parse(b.timestamp) - Date.parse(a.timestamp);
     });
-    dispatch(getFeedOrder(postsOrd));
     dispatch(getFeedPosts(posts));
+    dispatch(getFeedOrder(postsOrd));
   }
 };
 

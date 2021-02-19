@@ -11,7 +11,8 @@
 ## Instantelegram at a Glance
 Instantelegram is a social image sharing web application. Instantelegram brings people together. It allows users to upload media, follow and unfollow other users. Users can browse, like and comment other users' content!
 
-![](/documentation/images/instag1.PNG)
+##### Instantelegram at a Glance
+![Instantelegram at a Glance](/documentation/readme-resources/Leaving_a_comment.gif)
 
 Instantelegram uses Cloudinary's Rest API to store images, and stores url references to those images in a postgres database.
 
@@ -19,6 +20,8 @@ Instantelegram uses Cloudinary's Rest API to store images, and stores url refere
 Instantelegram's stack includes [React](https://reactjs.org/), [Redux](https://redux.js.org/), [Node](https://nodejs.org/en/), [Flask](https://flask.palletsprojects.com/en/1.1.x/), and [PostgreSQL](https://www.postgresql.org/). Most of the application's logic happens on the front end, using Redux actions to make fetch calls to the backend, and to [Cloudinary's](https://cloudinary.com/documentation) Rest API to upload images.
 
 The backend serves the frontend and simply fetches data from the postgres database.
+
+![Instantelegram application architecture](/Documentation/readme-resources/Instantelegram_Application_Architecture.png)
 
 ## Frontend Overview
 Instantelegram is a fronend-leaning application, with most of the complexity coming from Redux and its interaction with the server and Cloudinary's Rest API. Below are the frontend technologies used with some notes regarding their implementation.

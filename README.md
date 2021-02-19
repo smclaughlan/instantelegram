@@ -12,7 +12,7 @@
 Instantelegram is a social image sharing web application. Instantelegram brings people together. It allows users to upload media, follow and unfollow other users. Users can browse, like and comment other users' content!
 
 ##### Instantelegram at a Glance
-![Instantelegram at a Glance](/documentation/readme-resources/Leaving_a_comment.gif)
+![Instantelegram at a Glance](/documentation/readme-resources/Leaving_a_Comment.gif)
 
 Instantelegram uses Cloudinary's Rest API to store images, and stores url references to those images in a postgres database.
 
@@ -21,7 +21,7 @@ Instantelegram's stack includes [React](https://reactjs.org/), [Redux](https://r
 
 The backend serves the frontend and simply fetches data from the postgres database.
 
-![Instantelegram application architecture](/Documentation/readme-resources/Instantelegram_Application_Architecture.png)
+![Instantelegram application architecture](/documentation/readme-resources/Instantelegram_Application_Architecture.png)
 
 ## Frontend Overview
 Instantelegram is a fronend-leaning application, with most of the complexity coming from Redux and its interaction with the server and Cloudinary's Rest API. Below are the frontend technologies used with some notes regarding their implementation.
@@ -36,6 +36,46 @@ Instantelegram is a [React](https://reactjs.org/) application, and takes advanta
 Posts are fetched and stored in the Redux store whenever the user navigates to a different view. This makes the data for each post immediately available to be displayed.
 
 When an post is uploaded, an action is called which takes the post's image and uploads it to Cloudninary using its Rest API. Once the image has been successfully uploaded, Cloudninary sends back a url which can be used to display the image. It is this url, along with the posts caption, that is sent to the server to be stored in the postgres database.
+
+##### Redux Thunks for uploading an image
+``` js
+//sends POST request to cloudinary, recieves back url and dispatches to Redux store to preview image
+export const updateImg = (newImg) => async (dispatch) => {
+  try {
+    const data = new FormData();
+    data.append("upload_preset", cloudinaryPreset);
+    data.append("file", newImg);
+    const res = await fetch(`${cloudinaryUrl}/image/upload`, {
+      method: "POST",
+      body: data,
+    });
+    if (!res.ok) throw res;
+    const imgObj = await res.json();
+    dispatch(setImgUrl(imgObj.secure_url));
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+//sends POST request to server create a new post with image and caption
+export const post = (caption, imgUrl, token) => async (dispatch) => {
+  try {
+    const body = JSON.stringify({ caption, imgUrl, token });
+    const res = await fetch(`${apiBaseUrl}/posts/`, {
+      method: "POST",
+      body,
+      headers: {
+        "x-access-token": `${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res.ok) throw res;
+    return;
+  } catch (err) {
+    console.error(err);
+  }
+};
+```
 
 #### Cloudinary Rest API
 Instantelegram takes advantage of [Cloudinary's](https://cloudinary.com/documentation) Rest API to store images on Cloudinary's database, and in turn storing url references to those files in a postgres database. Doing this frees up space on the postgres database and addresses some scaling concerns, as Cloudinary is able to handle a very large volume of requests.

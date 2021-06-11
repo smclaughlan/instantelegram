@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Button, TextField } from "@material-ui/core";
 import "../css/registerForm.css";
+import { sendLoginReq } from "../redux/user";
 import { sendRegisterReq } from "../redux/user";
 
 const RegisterForm = (props) => {
@@ -14,14 +15,18 @@ const RegisterForm = (props) => {
   const [submitButtonEnabled, setSubmitButtonEnabled] = React.useState(false);
 
   const checkSubmitButton = () => {
-    if (registerData.username.length > 0 && registerData.password.length > 0
-      && registerData.email.length > 0 && registerData.email.indexOf('@') !== -1
-      && registerData.email.indexOf('.') !== -1) {
+    if (
+      registerData.username.length > 0 &&
+      registerData.password.length > 0 &&
+      registerData.email.length > 0 &&
+      registerData.email.indexOf("@") !== -1 &&
+      registerData.email.indexOf(".") !== -1
+    ) {
       setSubmitButtonEnabled(true);
     } else {
       setSubmitButtonEnabled(false);
     }
-  }
+  };
 
   const userNameChange = (event) => {
     setRegisterData({
@@ -57,6 +62,14 @@ const RegisterForm = (props) => {
   const registerUser = (e) => {
     e.preventDefault();
     props.sendRegisterReq(registerData);
+  };
+
+  const loginDemo = (e) => {
+    e.preventDefault();
+    props.sendLoginReq({
+      username: "Guest",
+      password: "password",
+    });
   };
 
   return (
@@ -97,21 +110,20 @@ const RegisterForm = (props) => {
               onChange={passwordChange}
             />
           </div>
-          {props.errorMessage ?
-              <h3>{props.errorMessage}</h3>
-              :
-              <></>
-            }
+          {props.errorMessage ? <h3>{props.errorMessage}</h3> : <></>}
           <div className="createAccount">
-            {submitButtonEnabled ?
+            {submitButtonEnabled ? (
               <Button color="primary" type="submit">
                 Submit
-            </Button>
-              :
+              </Button>
+            ) : (
               <Button color="primary" type="submit" disabled>
                 Submit
+              </Button>
+            )}
+            <Button color="primary" onClick={loginDemo}>
+              Demo Login
             </Button>
-            }
             <a href="/login">Already Have an Account?</a>
           </div>
         </form>
@@ -125,16 +137,17 @@ const mapStateToProps = (state) => {
     return {
       token: state.user.token,
       errorMessage: state.user.error.register,
-    }
+    };
   } else {
     return {
       token: state.user.token,
-    }
+    };
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    sendLoginReq: (...args) => dispatch(sendLoginReq(...args)),
     sendRegisterReq: (...args) => dispatch(sendRegisterReq(...args)),
   };
 };

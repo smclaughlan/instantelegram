@@ -28,6 +28,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Comment from "./Comment";
+import TimeAgo from "react-timeago";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,8 +51,8 @@ const useStyles = makeStyles((theme) => ({
   },
   aviImage: {
     maxHeight: "100%",
-    '&:hover': {
-      cursor: 'pointer',
+    "&:hover": {
+      cursor: "pointer",
     },
   },
   captionUpdate: {
@@ -75,17 +76,16 @@ const Image = (props) => {
   const [numOfLikes, setNumOfLikes] = useState(0);
   const [upd, setUpd] = useState(1);
   const [submitEnabled, setSubmitEnabled] = useState(false);
+  const { currentUserId, imageId, imageLikes } = props;
 
   useEffect(() => {
-    if (props.imageLikes[props.imageId]) {
-      setNumOfLikes(props.imageLikes[props.imageId].length);
-      if (
-        props.imageLikes[props.imageId].includes(parseInt(props.currentUserId))
-      ) {
+    if (imageLikes[imageId]) {
+      setNumOfLikes(imageLikes[imageId].length);
+      if (imageLikes[imageId].includes(parseInt(currentUserId))) {
         setLikeState(true);
       }
     }
-  }, []);
+  }, [currentUserId, imageId, imageLikes]);
 
   const handleEdit = () => {
     setEditCaptionBool("flex");
@@ -139,7 +139,7 @@ const Image = (props) => {
     } else {
       setSubmitEnabled(false);
     }
-  }
+  };
 
   const submitComment = (e) => {
     e.preventDefault();
@@ -156,10 +156,10 @@ const Image = (props) => {
 
   const clickAvi = () => {
     window.location.href = `/profile/${props.imagePosterId}`;
-  }
+  };
 
   const editButton =
-    parseInt(props.currentUserId) == props.imagePosterId ? (
+    props.currentUserId === props.imagePosterId ? (
       <>
         <IconButton aria-label="settings" onClick={handleClick}>
           <MoreVertIcon />
@@ -176,10 +176,8 @@ const Image = (props) => {
         </Menu>
       </>
     ) : (
-        <></>
-      );
-
-  const timestampDate = new Date(props.postDate);
+      <></>
+    );
 
   return (
     <Card className={classes.root}>
@@ -196,8 +194,9 @@ const Image = (props) => {
         }
         action={editButton}
         title={`${props.imagePosterUsername}`}
-        subheader={`${timestampDate.toDateString()}`}
+        subheader={<TimeAgo date={props.postDate} />}
       />
+
       <CardMedia
         className={classes.media}
         image={props.imageUrl}
@@ -243,10 +242,10 @@ const Image = (props) => {
             <FavoriteIcon color="secondary" />
           </IconButton>
         ) : (
-            <IconButton aria-label="add to favorites" onClick={handleLike}>
-              <FavoriteIcon />
-            </IconButton>
-          )}
+          <IconButton aria-label="add to favorites" onClick={handleLike}>
+            <FavoriteIcon />
+          </IconButton>
+        )}
         <div>{numOfLikes}</div>
         <IconButton
           className={clsx(classes.expand, {
@@ -268,8 +267,9 @@ const Image = (props) => {
               variant="outlined"
               type="caption"
               onChange={enableButtonCheck}
+              style={{ marginBottom: "1rem" }}
             />
-            {submitEnabled ?
+            {submitEnabled ? (
               <Button
                 className={classes.commentButton}
                 variant="outlined"
@@ -277,8 +277,8 @@ const Image = (props) => {
                 type="submit"
               >
                 Submit
-            </Button>
-              :
+              </Button>
+            ) : (
               <Button
                 className={classes.commentButton}
                 variant="outlined"
@@ -287,8 +287,8 @@ const Image = (props) => {
                 disabled
               >
                 Submit
-            </Button>
-            }
+              </Button>
+            )}
           </form>
           {props.comments[props.imageId] ? (
             Object.keys(props.comments[props.imageId]).map((key) => {
@@ -301,12 +301,13 @@ const Image = (props) => {
                   commenterAvi={props.comments[props.imageId][key].commenterAvi}
                   commenter={props.comments[props.imageId][key].commenter}
                   comment={props.comments[props.imageId][key].body}
+                  timestamp={props.comments[props.imageId][key].timestamp}
                 />
               );
             })
           ) : (
-              <div></div>
-            )}
+            <div></div>
+          )}
         </CardContent>
       </Collapse>
     </Card>

@@ -14,14 +14,18 @@ const Register = (props) => {
   const [submitButtonEnabled, setSubmitButtonEnabled] = React.useState(false);
 
   const checkSubmitButton = () => {
-    if (registerData.username.length > 0 && registerData.password.length > 0
-      && registerData.email.length > 0 && registerData.email.indexOf('@') !== -1
-      && registerData.email.indexOf('.') !== -1) {
+    if (
+      registerData.username.length > 0 &&
+      registerData.password.length > 0 &&
+      registerData.email.length > 0 &&
+      registerData.email.indexOf("@") !== -1 &&
+      registerData.email.indexOf(".") !== -1
+    ) {
       setSubmitButtonEnabled(true);
     } else {
       setSubmitButtonEnabled(false);
     }
-  }
+  };
 
   const userNameChange = (event) => {
     setRegisterData({
@@ -97,21 +101,17 @@ const Register = (props) => {
               onChange={passwordChange}
             />
           </div>
-          {props.errorMessage ?
-              <h3>{props.errorMessage}</h3>
-              :
-              <></>
-            }
+          {props.errorMessage ? <h3>{props.errorMessage}</h3> : <></>}
           <div className="createAccount">
-            {submitButtonEnabled ?
+            {submitButtonEnabled ? (
               <Button color="primary" type="submit">
                 Submit
-            </Button>
-              :
+              </Button>
+            ) : (
               <Button color="primary" type="submit" disabled>
                 Submit
-            </Button>
-            }
+              </Button>
+            )}
             <a href="/login">Already Have an Account?</a>
           </div>
         </form>
@@ -125,11 +125,11 @@ const mapStateToProps = (state) => {
     return {
       token: state.user.token,
       errorMessage: state.user.error.register,
-    }
+    };
   } else {
     return {
       token: state.user.token,
-    }
+    };
   }
 };
 

@@ -1,23 +1,29 @@
-import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
-import thunk from 'redux-thunk';
+import { connectRouter, routerMiddleware } from "connected-react-router";
+import { createBrowserHistory } from "history";
+import { createStore, applyMiddleware, combineReducers, compose } from "redux";
+import thunk from "redux-thunk";
 
-import user from './user';
-import image from './image';
-import search from './search';
+import user from "./user";
+import image from "./image";
+import search from "./search";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const reducer = combineReducers({
-  user,
-  image,
-  search,
-});
+export const history = createBrowserHistory();
 
-const configureStore = initialState => {
+const createReducer = (history) =>
+  combineReducers({
+    router: connectRouter(history),
+    user,
+    image,
+    search,
+  });
+
+const configureStore = (initialState) => {
   return createStore(
-    reducer,
+    createReducer(history),
     initialState,
-    composeEnhancers(applyMiddleware(thunk)),
+    composeEnhancers(applyMiddleware(routerMiddleware(history), thunk))
   );
 };
 

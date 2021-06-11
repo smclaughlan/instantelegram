@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Button, TextField, Typography } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import "../css/register.css";
 import { sendLoginReq } from "../redux/user";
 
@@ -17,7 +17,7 @@ const Login = (props) => {
     } else {
       setLoginButtonEnabled(false);
     }
-  }
+  };
 
   const userNameChange = (event) => {
     setLoginData({
@@ -39,14 +39,6 @@ const Login = (props) => {
     e.preventDefault();
     props.sendLoginReq(loginData);
   };
-
-  const loginDemo = (e) => {
-    e.preventDefault()
-    props.sendLoginReq({
-      username: 'Guest',
-      password: 'password'
-    });
-  }
 
   return (
     <div className="wrapper">
@@ -71,18 +63,20 @@ const Login = (props) => {
             />
           </div>
           <div className="logIn">
-
-            <Button color="primary" onClick={loginDemo}>Demo Login</Button>
-            {loginButtonEnabled ?
-              <Button color="primary" type='submit'>Submit</Button>
-              :
-              <Button color="primary" type='submit' disabled>Submit</Button>
-            }
-            {props.errorMessage ?
+            {loginButtonEnabled ? (
+              <Button color="primary" type="submit">
+                Submit
+              </Button>
+            ) : (
+              <Button color="primary" type="submit" disabled>
+                Submit
+              </Button>
+            )}
+            {props.errorMessage ? (
               <h3>Error: Invalid login credentials</h3>
-              :
+            ) : (
               <></>
-            }
+            )}
             <a href="/register">Create An Acount</a>
           </div>
         </form>
@@ -100,7 +94,7 @@ const mapStateToProps = (state) => {
   } else {
     return {
       token: state.user.token,
-    }
+    };
   }
 };
 

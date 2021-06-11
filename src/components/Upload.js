@@ -7,16 +7,18 @@ import {
   Input,
   InputLabel,
 } from "@material-ui/core";
-
+import { motion } from "framer-motion";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-import { updateImg, post } from "../redux/image";
-import "../index.css";
-const useStyles = makeStyles((theme) => ({
 
+import { pageVariants } from "../App";
+import { post } from "../redux/image";
+import "../index.css";
+
+const useStyles = makeStyles((theme) => ({
   container: {
-    display: 'flex',
-    'flex-flow': 'column',
+    display: "flex",
+    "flex-flow": "column",
   },
 
   post: {
@@ -39,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   captionBtn: {
     margin: "auto",
     width: 100,
-    height: '100%'
+    height: "100%",
   },
   captionText: {
     margin: "auto",
@@ -50,58 +52,104 @@ const useStyles = makeStyles((theme) => ({
 const Upload = (props) => {
   const classes = useStyles();
   const [caption, setCaption] = useState("");
-  const [submitButtonEnabled, setSubmitButtonEnabled] = React.useState(false);
-  const updateValue = (cb) => (e) => cb(e.target.value);
-
-  const handleNewImage = (e) => {
-    const newImg = e.target.files[0];
-    props.updateImg(newImg);
-    setSubmitButtonEnabled(true);
-  };
+  const [postImage, setPostImage] = React.useState(null);
 
   const postImg = (e) => {
     e.preventDefault();
-    props.post(caption, props.previewImgUrl, props.token);
-    props.history.push("/");
+    let postFormData = new FormData();
+    postFormData.append("caption", caption);
+    postFormData.append("image", postImage);
+    props.post(postFormData, props.token);
   };
 
   return (
-    <Container className={classes.container}>
+    <motion.div
+      initial="enter"
+      animate="center"
+      exit="exit"
+      transition={{ duration: 0.5 }}
+      variants={pageVariants}
+      className="motion-div"
+    >
+      <Container className={classes.container} style={{ padding: "2rem 0" }}>
+        <div className={classes.post}>
+          <InputLabel
+            htmlFor="image-upload"
+            style={{
+              backgroundColor: "white",
+              borderRadius: "0.5rem",
+              boxShadow: "1px 1px 6px 0 rgba(0, 0, 0, 0.1)",
+              cursor: "pointer",
+              marginBottom: "1.5rem",
+              padding: "1.5rem",
+            }}
+            className="image-upload-select"
+          >
+            Select Image
+          </InputLabel>
+          <Input
+            id="image-upload"
+            type="file"
+            label="Image"
+            style={{ display: "none", width: "500px", margin: "20px" }}
+            onChange={(e) => setPostImage(e.target.files[0])}
+            className={classes.img}
+            inputProps={{ accept: "image/*" }}
+          />
+        </div>
+        <Paper elevation={3} className={classes.paper}>
+          {postImage ? (
+            <img
+              src={URL.createObjectURL(postImage)}
+              alt="preview"
+              className={"imgUpload"}
+            />
+          ) : (
+            <div></div>
+          )}
+        </Paper>
 
-      <div className={classes.post} >
-        <InputLabel htmlFor="image-upload" style={{ margin: '20px' }} >Select Image</InputLabel>
-        <Input id="image-upload" type="file" label="Image" style={{ display: 'none', width: '500px', margin: '20px' }} onChange={handleNewImage} className={classes.img} />
-
-      </div>
-      <Paper elevation={3} className={classes.paper}>
-        <img src={props.previewImgUrl} alt="preview" className={"imgUpload"} />
-      </Paper>
-
-      <div className={classes.caption}>
-
-        <TextField variant="outlined" type="caption" onChange={updateValue(setCaption)} className={classes.captionText} placeholder='Enter caption' />
-        {submitButtonEnabled ?
-          <Button color="primary" onClick={postImg} className={classes.captionBtn}>Post</Button>
-          :
-          <Button color="primary" onClick={postImg} className={classes.captionBtn} disabled>Post</Button>
-        }
-
-      </div>
-    </Container>
+        <div className={classes.caption}>
+          <TextField
+            variant="outlined"
+            type="caption"
+            onChange={(e) => setCaption(e.target.value)}
+            className={classes.captionText}
+            placeholder="Enter caption"
+          />
+          {postImage !== null ? (
+            <Button
+              color="primary"
+              onClick={postImg}
+              className={classes.captionBtn}
+            >
+              Post
+            </Button>
+          ) : (
+            <Button
+              color="primary"
+              onClick={postImg}
+              className={classes.captionBtn}
+              disabled
+            >
+              Post
+            </Button>
+          )}
+        </div>
+      </Container>
+    </motion.div>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
     token: state.user.token,
-    previewImgUrl: state.image.previewImgUrl,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     post: (...args) => dispatch(post(...args)),
-    updateImg: (newImg) => dispatch(updateImg(newImg)),
   };
 };
 

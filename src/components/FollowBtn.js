@@ -16,10 +16,11 @@ const useStyles = makeStyles((theme) => ({
 const FollowBtn = (props) => {
   const classes = useStyles();
   let followedId = window.location.href.split("/")[4];
+  const { getFollowings } = props;
   React.useEffect(() => {
     let userId = parseInt(window.localStorage.getItem("currentUserId"));
-    props.getFollowings(userId);
-  }, []);
+    getFollowings(userId);
+  }, [getFollowings]);
 
   const handleFollow = async () => {
     let userId = window.localStorage.getItem("currentUserId");
@@ -34,7 +35,8 @@ const FollowBtn = (props) => {
   //if the user is a following for the current user, displays Unfollow button
   //if not display Follow button
   return props.followings && !props.updateFollowing ? (
-    props.followings.includes(parseInt(window.location.href.split("/")[4])) && !props.updateFollowing ? (
+    props.followings.includes(parseInt(window.location.href.split("/")[4])) &&
+    !props.updateFollowing ? (
       <div className={classes.root}>
         <Button variant="contained" color="primary" onClick={handleUnfollow}>
           UnFollow
@@ -49,10 +51,10 @@ const FollowBtn = (props) => {
     )
   ) : (
     <div className={classes.root}>
-    <Button variant="contained" color="primary">
-      ...
-    </Button>
-  </div>
+      <Button variant="contained" color="primary">
+        ...
+      </Button>
+    </div>
   );
 };
 
@@ -60,7 +62,7 @@ const mapStateToProps = (state) => {
   return {
     token: state.user.token,
     followings: state.user.profile.followings,
-    updateFollowing: state.user.profile.updateFollowing
+    updateFollowing: state.user.profile.updateFollowing,
   };
 };
 

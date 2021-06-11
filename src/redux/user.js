@@ -15,6 +15,9 @@ const UPDATE_COMMENT = "instantelegram/comment/UPDATE_COMMENT";
 const DEL_POST = "instantelegram/image/DEL_POST";
 const DELETE_COMMENT = "instantelegram/image/DELETE_COMMENT";
 const ERROR_MESSAGE = "instantelegram/ERROR_MESSAGE";
+const UPDATE_AVATAR = "instantelegram/profile/UPDATE_AVATAR";
+const UPDATE_BIO = "instantelegram/profile/UPDATE_BIO";
+const SET_UPDATE_PROFILE = "instantelegram/profile/SET_UPDATE_PROFILE";
 
 export const loginUser = (token, currentUserId) => ({
   type: LOGIN_USER,
@@ -43,7 +46,7 @@ export const getUserProfile = (
 export const awaitFollowUpdate = (val) => ({
   type: UPDATE_FOLLOW,
   val,
-})
+});
 
 export const sendUserFollowReq = (userId, followedId) => ({
   type: FOLLOW,
@@ -60,10 +63,10 @@ export const setFollowings = (followingsArr) => ({
   type: GET_FOLLOWINGS,
   followingsArr,
 });
-export const updateCaption = (postObj, imageId) => ({
+export const updateCaption = (updatedCaption, imgId) => ({
   type: UPDATE_CAPTION,
-  postObj,
-  imageId,
+  updatedCaption,
+  imgId,
 });
 export const updateLike = (imageId, likesArr) => ({
   type: UPDATE_LIKE,
@@ -89,6 +92,18 @@ export const errorMessage = (messageType, message) => ({
   messageType,
   message,
 });
+export const setUpdatedBio = (updatedBio) => ({
+  type: UPDATE_BIO,
+  updatedBio,
+});
+export const setUpdatedAvatar = (updatedAvatarURL) => ({
+  type: UPDATE_AVATAR,
+  updatedAvatarURL,
+});
+export const setIsEditingProfile = (boolean) => ({
+  type: SET_UPDATE_PROFILE,
+  isEditingProfile: boolean,
+});
 
 // THUNKS
 //sends register request to the backend with user info
@@ -112,14 +127,13 @@ export const sendRegisterReq = (userInfo) => async (dispatch) => {
   }
   if (res.ok) {
     // const { token, currentUserId } = await res.json();
-    
+
     const test = await res.json();
     const { token, currentUserId } = test;
-    console.log(test)
     // Stores token, currentUserId in localStorage
     window.localStorage.setItem("x-access-token", token);
-    window.localStorage.setItem("currentUserId", currentUserId);
-    dispatch(loginUser(token, currentUserId));
+    window.localStorage.setItem("currentUserId", currentUserId.toString());
+    dispatch(loginUser(token, currentUserId.toString()));
   }
 };
 
@@ -149,6 +163,7 @@ export const sendLoginReq = (userInfo) => async (dispatch) => {
     }
   } catch (err) {
     console.log(err);
+    alert(err);
   }
 };
 
@@ -173,6 +188,16 @@ export const getUserProfileReq = (id) => async (dispatch) => {
     const username = resJson.username;
     const bio = resJson.bio;
     const avatarUrl = resJson.avatarUrl;
+
+    /* Loop through each post's comments */
+    Object.keys(comments).forEach((commentKey) => {
+      let postWithComment = comments[commentKey];
+      /* Loop through comments and change commenterId */
+      Object.keys(postWithComment).forEach((postKey) => {
+        postWithComment[postKey].commenterId =
+          postWithComment[postKey].commenterId.toString();
+      });
+    });
 
     dispatch(
       getUserProfile(id, username, bio, avatarUrl, posts, likes, comments)
@@ -203,13 +228,10 @@ export const getFeedPostReq = (currentUserId) => async (dispatch) => {
         postData.avatarUrl = avatarUrl;
         postData.username = username;
         postData.postId = postId;
-        postData.userId = user_id;
+        postData.userId = user_id.toString();
       }
       postsArr.push(postData);
     }
-    postsArr.sort((a, b) => {
-      return a.timestamp < b.timestamp;
-    });
     dispatch(getFeedPost(postsArr));
   }
 };
@@ -236,7 +258,7 @@ export const getFollowings = (currentUserId) => async (dispatch) => {
 
 //sends POST request to add a new following for the current user to the followedId
 export const sendFollowReq = (userId, followedId) => async (dispatch) => {
-  dispatch(awaitFollowUpdate(true))
+  dispatch(awaitFollowUpdate(true));
   const res = await fetch(`${apiBaseUrl}/users/${followedId}/follow`, {
     method: "post",
     headers: { "Content-Type": "application/json" },
@@ -246,13 +268,13 @@ export const sendFollowReq = (userId, followedId) => async (dispatch) => {
   });
   if (res.ok) {
     dispatch(sendUserFollowReq(userId, followedId));
-    dispatch(awaitFollowUpdate(false))
+    dispatch(awaitFollowUpdate(false));
   }
 };
 
 //sends POST request to delete an existan following for the current user to the followedId
 export const sendUnfollowReq = (userId, followedId) => async (dispatch) => {
-  dispatch(awaitFollowUpdate(true))
+  dispatch(awaitFollowUpdate(true));
   const res = await fetch(`${apiBaseUrl}/users/${followedId}/follow`, {
     method: "delete",
     headers: { "Content-Type": "application/json" },
@@ -262,7 +284,7 @@ export const sendUnfollowReq = (userId, followedId) => async (dispatch) => {
   });
   if (res.ok) {
     dispatch(sendUserUnfollowReq(userId, followedId));
-    dispatch(awaitFollowUpdate(false))
+    dispatch(awaitFollowUpdate(false));
   }
 };
 
@@ -281,10 +303,12 @@ export const updateCapt = (caption, imageId, token) => async (dispatch) => {
     });
     if (!res.ok) throw res;
     const postObj = await res.json();
-    const imgId = postObj.id;
+    const imgId = postObj.id.toString();
     delete postObj["id"];
 
-    dispatch(updateCaption(postObj, imgId));
+    const { caption: updatedCaption } = postObj;
+
+    dispatch(updateCaption(updatedCaption, imgId));
 
     return;
   } catch (err) {
@@ -333,26 +357,30 @@ export const deleteLike = (imageId, token) => async (dispatch) => {
 };
 
 //sends POST request to create a new comment for a particular post
-export const createComment = (postId, commentBody, token) => async (
-  dispatch
-) => {
-  try {
-    const body = JSON.stringify({ commentBody });
-    const res = await fetch(`${apiBaseUrl}/comments/${postId}`, {
-      method: "POST",
-      body,
-      headers: {
-        "x-access-token": `${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-    if (!res.ok) throw res;
-    const commentObj = await res.json();
-    dispatch(updateComment(postId, commentObj));
-  } catch (err) {
-    console.error(err);
-  }
-};
+export const createComment =
+  (postId, commentBody, token) => async (dispatch) => {
+    try {
+      const body = JSON.stringify({ commentBody });
+      const res = await fetch(`${apiBaseUrl}/comments/${postId}`, {
+        method: "POST",
+        body,
+        headers: {
+          "x-access-token": `${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) throw res;
+      const commentObj = await res.json();
+      Object.keys(commentObj).forEach(
+        (commentObjKey) =>
+          (commentObj[commentObjKey].commenterId =
+            commentObj[commentObjKey].commenterId.toString())
+      );
+      dispatch(updateComment(postId, commentObj));
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
 //sends a DELETE request to delete a comment for a particular post
 export const deleteComment = (commentId, postId, token) => async (dispatch) => {
@@ -387,7 +415,52 @@ export const deletePostReq = (imageId, token) => async (dispatch) => {
     });
     if (!res.ok) throw res;
     dispatch(deletePost(imageId));
-    window.location.href = window.location.href;
+    // window.location.href = window.location.href;
+    return;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+//sends POST request so the current user updates his profile image
+export const updateAvatar = (userId, newImg, token) => async (dispatch) => {
+  try {
+    const res = await fetch(`${apiBaseUrl}/users/${userId}`, {
+      method: "PUT",
+      body: newImg,
+      headers: {
+        "x-access-token": `${token}`,
+      },
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      alert(err.message.split(":")[1]);
+    }
+    const avatarUrlRes = await res.json();
+    alert("Successfully updated image.");
+    dispatch(setIsEditingProfile(false));
+    dispatch(setUpdatedAvatar(avatarUrlRes.avatarUrl));
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+//sends PUT request so the current user updates his bio
+export const updateBioReq = (userId, bio, token) => async (dispatch) => {
+  try {
+    const body = JSON.stringify({ userId, bio, token });
+    const res = await fetch(`${apiBaseUrl}/users/${userId}`, {
+      method: "PUT",
+      body,
+      headers: {
+        "x-access-token": `${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res.ok) throw res;
+    const bioRes = await res.json();
+    dispatch(setIsEditingProfile(false));
+    dispatch(setUpdatedBio(bioRes.bio));
     return;
   } catch (err) {
     console.error(err);
@@ -430,7 +503,7 @@ export default function reducer(state = {}, action) {
     case USER_PROFILE: {
       const newState = Object.assign({}, state);
       newState.profile = {
-        id: action.id,
+        id: action.id.toString(),
         username: action.username,
         bio: action.bio,
         avatarUrl: action.avatarUrl,
@@ -441,9 +514,21 @@ export default function reducer(state = {}, action) {
       return newState;
     }
     case FEED_POSTS: {
+      const filteredPosts = state.feedPosts
+        ? action.postsArr
+            .filter((post) => {
+              return !state.feedPosts.some(
+                (existingPost) => existingPost.postId === post.postId
+              );
+            })
+            .map((post) => {
+              return post;
+            })
+        : action.postsArr;
+      const existingPosts = state.feedPosts ? state.feedPosts : [];
       return {
-        feedPosts: action.postsArr,
         ...state,
+        feedPosts: [...existingPosts, ...filteredPosts],
       };
     }
     case GET_FOLLOWINGS: {
@@ -473,7 +558,7 @@ export default function reducer(state = {}, action) {
         profile: {
           ...state.profile,
           followings: state.profile.followings.filter(
-            (followingId) => followingId != action.followedId
+            (followingId) => followingId !== action.followedId
           ),
         },
       };
@@ -483,14 +568,32 @@ export default function reducer(state = {}, action) {
         ...state,
         profile: {
           ...state.profile,
-          updateFollowing: action.val
-        }
-      }
+          updateFollowing: action.val,
+        },
+      };
     }
     case UPDATE_CAPTION: {
-      const newState = Object.assign({}, state);
-      newState.posts[action.imageId] = action.postObj;
-      return newState;
+      const updatedFeedPostIdx = state.feedPosts.findIndex(
+        (ele) => ele.postId === action.imgId
+      );
+      return {
+        ...state,
+        posts: {
+          ...state.posts,
+          [action.imgId]: {
+            ...state.posts[action.imgId],
+            caption: action.updatedCaption,
+          },
+        },
+        feedPosts: [
+          ...state.feedPosts.slice(0, updatedFeedPostIdx),
+          {
+            ...state.feedPosts[updatedFeedPostIdx],
+            caption: action.updatedCaption,
+          },
+          ...state.feedPosts.slice(updatedFeedPostIdx + 1),
+        ],
+      };
     }
 
     case UPDATE_LIKE: {
@@ -515,9 +618,35 @@ export default function reducer(state = {}, action) {
       delete state.posts[action.imageId];
       return {
         ...state,
+        feedPosts: state.feedPosts.filter(
+          (post) => post.postId !== action.imageId
+        ),
       };
     }
-
+    case UPDATE_BIO: {
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          bio: action.updatedBio,
+        },
+      };
+    }
+    case UPDATE_AVATAR: {
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          avatarUrl: action.updatedAvatarURL,
+        },
+      };
+    }
+    case SET_UPDATE_PROFILE: {
+      return {
+        ...state,
+        isEditingProfile: action.isEditingProfile,
+      };
+    }
     default:
       return state;
   }

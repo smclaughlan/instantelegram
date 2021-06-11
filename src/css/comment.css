@@ -1,9 +1,21 @@
 .commentContainer {
-    display: flex;
+  display: flex;
 }
 
 .commentDetail {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  align-items: center;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+  display: flex;
+
+  justify-content: flex-start;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+.commentOwner {
+  margin-left: 1rem;
+}
+
+.commentOwner:hover {
+  cursor: pointer;
 }

@@ -1,5 +1,8 @@
 /* TODO Add site wide styles */
-body, html, #root, .body-container {
+body,
+html,
+#root,
+.body-container {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -8,37 +11,51 @@ body, html, #root, .body-container {
   overflow-x: hidden;
 }
 
-/* Page Transitions */
-.fade-enter {
-    opacity: 0;
-    transition: opacity 300ms ease-in;
-}
-.fade-enter.fade-enter-active {
-    opacity: 1;
-    z-index: 3;
-}
-.fade-exit {
-    opacity: 1;
-    transition: opacity 300ms ease-in;
-}
-.fade-exit.fade-exit-active {
-    opacity: 0;
+a {
+  text-decoration: none;
 }
 
+/* Page Transitions */
 .body-wrapper {
-    width: 100%;
-    position: absolute;
-    transition: all .5s;
-    will-change: opacity, right;
-    margin-top: 64px;
-    display: flex;
-    flex-flow: column;
-    justify-content: space-between;
-    height: calc(100% - 64px);
+  width: 100%;
+  position: absolute;
+  transition: all 0.5s;
+  will-change: opacity, right;
+  margin-top: 64px;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  min-height: calc(100% - 64px);
+}
+
+.motion-div {
+  flex: 1 1 auto;
+  height: inherit;
+  width: 100%;
 }
 
 .imgUpload {
   width: 500px;
   height: 500px;
-  margin: auto,
+  margin: auto;
+}
+
+.image-upload-select {
+  transition: all 250ms ease !important;
+}
+
+.image-upload-select:hover {
+  color: #8a64c7;
+}
+
+.image-upload-select:active {
+  transform: scale(0.9);
+}
+
+.iconify.new-post {
+  transition: transform 150ms ease;
+}
+
+.iconify.new-post:hover {
+  transform: rotate(360deg) scale(1.1) !important;
 }

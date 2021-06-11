@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Switch } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { AnimatePresence } from "framer-motion";
+import SimpleReactLightbox from "simple-react-lightbox";
 
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -66,41 +67,43 @@ function App(props) {
         <NavBar location={props.location} />
         {/* <NavBar location={props.location} /> */}
         <div className="body-wrapper">
-          <AnimatePresence exitBeforeEnter={true}>
-            <Switch>
-              <AuthRoute
-                exact
-                path="/"
-                component={Splash}
-                currentUserId={props.currentUserId}
-              />
-              <ProtectedRoute
-                path="/profile/:userid"
-                component={Profile}
-                currentUserId={props.currentUserId}
-              />
-              <AuthRoute
-                path="/login"
-                component={Login}
-                currentUserId={props.currentUserId}
-              />
-              <AuthRoute
-                path="/register"
-                component={Register}
-                currentUserId={props.currentUserId}
-              />
-              <ProtectedRoute
-                path="/upload"
-                component={Upload}
-                currentUserId={props.currentUserId}
-              />
-              <ProtectedRoute
-                path="/home"
-                component={Feed}
-                currentUserId={props.currentUserId}
-              />
-            </Switch>
-          </AnimatePresence>
+          <SimpleReactLightbox>
+            <AnimatePresence exitBeforeEnter={true}>
+              <Switch>
+                <AuthRoute
+                  exact
+                  path="/"
+                  component={Splash}
+                  currentUserId={props.currentUserId}
+                />
+                <ProtectedRoute
+                  path="/profile/:userid"
+                  component={Profile}
+                  currentUserId={props.currentUserId}
+                />
+                <AuthRoute
+                  path="/login"
+                  component={Login}
+                  currentUserId={props.currentUserId}
+                />
+                <AuthRoute
+                  path="/register"
+                  component={Register}
+                  currentUserId={props.currentUserId}
+                />
+                <ProtectedRoute
+                  path="/upload"
+                  component={Upload}
+                  currentUserId={props.currentUserId}
+                />
+                <ProtectedRoute
+                  path="/home"
+                  component={Feed}
+                  currentUserId={props.currentUserId}
+                />
+              </Switch>
+            </AnimatePresence>
+          </SimpleReactLightbox>
           <BottomNavigation
             value={value}
             onChange={(event, newValue) => {

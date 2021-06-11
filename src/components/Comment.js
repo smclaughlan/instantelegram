@@ -2,11 +2,19 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography, Avatar, Paper, IconButton } from "@material-ui/core";
+import {
+  TextField,
+  Avatar,
+  IconButton,
+  Typography,
+  Button,
+  Paper,
+} from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import TimeAgo from "react-timeago";
 import "../css/comment.css";
-import { deleteComment } from "../redux/user";
+import { editComment, deleteComment } from "../redux/user";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -27,20 +35,28 @@ const useStyles = makeStyles((theme) => ({
 
 const Comment = (props) => {
   const classes = useStyles();
-  const [display, setDisplay] = useState(true);
+  const [displayCommentEdit, setDisplayCommentEdit] = useState(false);
+  const [newCommentBody, setnewCommentBody] = useState("");
 
   const routeToProfile = () => {
     props.history.push(`/profile/${props.commenterId}`);
   };
 
-  const handleDelete = () => {
-    (async () => {
-      await props.deleteComment(props.commentId, props.imageId, props.token);
-      setDisplay(false);
-    })();
-  };
+  // const handleEdit = () => {
+  //   (async () => {
+  //     await props.editComment(props.commentId, , props.token);
+  //     setDisplay(false);
+  //   })();
+  // };
 
-  return display ? (
+  // const handleDelete = () => {
+  //   (async () => {
+  //     await props.deleteComment(props.commentId, props.imageId, props.token);
+  //     setDisplay(false);
+  //   })();
+  // };
+
+  return (
     <Paper className={classes.paper}>
       <div className="commentDetail">
         {/* diplays the owner image of the comment */}
@@ -59,21 +75,77 @@ const Comment = (props) => {
         </div>
         {/* the DeleteIcon will be shown only if current user matches the owner/commenter */}
         {props.commenterId === props.currentUserId ? (
-          <IconButton
-            aria-label="delete"
-            onClick={handleDelete}
-            style={{ marginLeft: "auto" }}
-          >
-            <DeleteIcon />
-          </IconButton>
+          <div style={{ marginLeft: "auto" }}>
+            <IconButton
+              aria-label="delete"
+              onClick={() => setDisplayCommentEdit(!displayCommentEdit)}
+              style={{ marginLeft: "auto" }}
+            >
+              <EditIcon />
+            </IconButton>
+            <IconButton
+              aria-label="delete"
+              onClick={() =>
+                deleteComment(props.commentId, props.imageId, props.token)
+              }
+              style={{ marginLeft: "auto" }}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </div>
         ) : null}
       </div>
       <div className="commentContainer">
-        <Typography>{props.comment}</Typography>
+        {displayCommentEdit ? (
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              props.editComment(
+                props.commentId,
+                newCommentBody,
+                props.token,
+                props.imageId
+              );
+              setDisplayCommentEdit(false);
+            }}
+          >
+            <TextField
+              defaultValue={props.comment}
+              placeholder={props.comment}
+              className={classes.captionUpdate}
+              variant="outlined"
+              type="caption"
+              onChange={(e) => setnewCommentBody(e.target.value)}
+              style={{ marginBottom: "1rem", width: "100%" }}
+            />
+            {newCommentBody.length > 0 && newCommentBody !== props.comment ? (
+              <Button
+                className={classes.commentButton}
+                variant="outlined"
+                color="primary"
+                type="submit"
+                style={{ width: "100%" }}
+              >
+                Submit
+              </Button>
+            ) : (
+              <Button
+                className={classes.commentButton}
+                variant="outlined"
+                color="primary"
+                type="submit"
+                disabled
+                style={{ width: "100%" }}
+              >
+                Submit
+              </Button>
+            )}
+          </form>
+        ) : (
+          <Typography>{props.comment}</Typography>
+        )}
       </div>
     </Paper>
-  ) : (
-    <></>
   );
 };
 
@@ -86,6 +158,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    editComment: (...args) => dispatch(editComment(...args)),
     deleteComment: (...args) => dispatch(deleteComment(...args)),
   };
 };

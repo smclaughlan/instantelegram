@@ -5,7 +5,6 @@ import {
   TextField,
   Card,
   CardHeader,
-  CardMedia,
   CardContent,
   CardActions,
   Collapse,
@@ -29,6 +28,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Comment from "./Comment";
 import TimeAgo from "react-timeago";
+import { SRLWrapper } from "simple-react-lightbox";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,8 +36,7 @@ const useStyles = makeStyles((theme) => ({
     width: 345,
   },
   media: {
-    height: 0,
-    paddingTop: "100%", // 16:9
+    height: "100%",
   },
   expand: {
     transform: "rotate(0deg)",
@@ -171,7 +170,7 @@ const Image = (props) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <MenuItem onClick={handleEdit}>Edit</MenuItem>
+          <MenuItem onClick={handleEdit}>Edit Caption</MenuItem>
           <MenuItem onClick={handleDelete}>Delete</MenuItem>
         </Menu>
       </>
@@ -196,12 +195,31 @@ const Image = (props) => {
         title={`${props.imagePosterUsername}`}
         subheader={<TimeAgo date={props.postDate} />}
       />
+      <SRLWrapper
+        options={{
+          settings: {
+            autoplaySpeed: 0,
+            disableKeyboardControls: true,
+            disableWheelControls: true,
+          },
+          buttons: {
+            showNextButton: false,
+            showPrevButton: false,
+            showThumbnailsButton: false,
+          },
+          thumbnails: {
+            showThumbnails: false,
+          },
+        }}
+      >
+        <img
+          alt={props.imageCapt ? props.imageCapt : "Post Img"}
+          className={classes.media}
+          src={props.imageUrl}
+          style={{ height: "100%", width: "100%" }}
+        />
+      </SRLWrapper>
 
-      <CardMedia
-        className={classes.media}
-        image={props.imageUrl}
-        title="image"
-      />
       <CardContent>
         <Typography
           style={{ display: editTypographyBool }}

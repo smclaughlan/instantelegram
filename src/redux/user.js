@@ -18,6 +18,7 @@ const ERROR_MESSAGE = "instantelegram/ERROR_MESSAGE";
 const UPDATE_AVATAR = "instantelegram/profile/UPDATE_AVATAR";
 const UPDATE_BIO = "instantelegram/profile/UPDATE_BIO";
 const SET_UPDATE_PROFILE = "instantelegram/profile/SET_UPDATE_PROFILE";
+const SET_UPDATED_COMMENT = "instantelegram/profile/SET_UPDATED_COMMENT";
 
 export const loginUser = (token, currentUserId) => ({
   type: LOGIN_USER,
@@ -103,6 +104,12 @@ export const setUpdatedAvatar = (updatedAvatarURL) => ({
 export const setIsEditingProfile = (boolean) => ({
   type: SET_UPDATE_PROFILE,
   isEditingProfile: boolean,
+});
+export const setUpdatedComment = (commentId, updatedBody, postId) => ({
+  type: SET_UPDATED_COMMENT,
+  commentId,
+  updatedBody,
+  postId,
 });
 
 // THUNKS
@@ -402,6 +409,28 @@ export const deleteComment = (commentId, postId, token) => async (dispatch) => {
   }
 };
 
+//sends a PUT request to update a comment for a particular post
+export const editComment =
+  (commentId, newBody, token, postId) => async (dispatch) => {
+    try {
+      const bodyToSend = JSON.stringify({ body: newBody });
+      const res = await fetch(`${apiBaseUrl}/comments/${commentId}`, {
+        method: "PUT",
+        body: bodyToSend,
+        headers: {
+          "x-access-token": `${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) throw res;
+      const commentObj = await res.json();
+      const { id, body } = commentObj;
+      dispatch(setUpdatedComment(id, body, postId));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
 //sends DELETE request to delete a post
 //checking the user authorization is done on the backend side
 export const deletePostReq = (imageId, token) => async (dispatch) => {
@@ -645,6 +674,21 @@ export default function reducer(state = {}, action) {
       return {
         ...state,
         isEditingProfile: action.isEditingProfile,
+      };
+    }
+    case SET_UPDATED_COMMENT: {
+      return {
+        ...state,
+        comments: {
+          ...state.comments,
+          [action.postId]: {
+            ...state.comments[action.postId],
+            [action.commentId]: {
+              ...state.comments[action.postId][action.commentId],
+              body: action.updatedBody,
+            },
+          },
+        },
       };
     }
     default:

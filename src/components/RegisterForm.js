@@ -9,6 +9,7 @@ const RegisterForm = (props) => {
   const [registerData, setRegisterData] = React.useState({
     username: "",
     password: "",
+    passwordConfirm: "",
     email: "",
     bio: "",
   });
@@ -44,6 +45,14 @@ const RegisterForm = (props) => {
     checkSubmitButton();
   };
 
+  const checkPasswordMatch = (event) => {
+    setRegisterData({
+      ...registerData,
+      passwordConfirm: event.target.value,
+    });
+    checkSubmitButton();
+  };
+
   const emailChange = (event) => {
     setRegisterData({
       ...registerData,
@@ -75,7 +84,9 @@ const RegisterForm = (props) => {
   return (
     <>
       <div className="form-wrapper">
-        <h1 className="header">Instantelegram</h1>
+        <h1 className="header">
+          {props.header ? props.header : "Instantelegram"}
+        </h1>
         <form onSubmit={registerUser}>
           <div className="userName">
             <TextField
@@ -108,6 +119,26 @@ const RegisterForm = (props) => {
               variant="outlined"
               type="password"
               onChange={passwordChange}
+            />
+          </div>
+          <div className="password">
+            <TextField
+              id="outlined-basic"
+              label={
+                registerData.password &&
+                registerData.passwordConfirm &&
+                registerData.password !== registerData.passwordConfirm
+                  ? "Passwords do not match"
+                  : "Confirm Password"
+              }
+              variant="outlined"
+              type="password"
+              onChange={checkPasswordMatch}
+              error={
+                registerData.password &&
+                registerData.passwordConfirm &&
+                registerData.password !== registerData.passwordConfirm
+              }
             />
           </div>
           {props.errorMessage ? <h3>{props.errorMessage}</h3> : <></>}

@@ -288,7 +288,7 @@ const NavBar = (props) => {
         />
       </div>
       <InputBase
-        placeholder="Search…"
+        placeholder="Select User"
         classes={{
           root: classes.inputRoot,
           input: `${classes.inputInput} instantelegram-search`,

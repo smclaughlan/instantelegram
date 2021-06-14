@@ -308,24 +308,24 @@ const Image = (props) => {
               </Button>
             )}
           </form>
-          {props.comments[props.imageId] ? (
-            Object.keys(props.comments[props.imageId]).map((key) => {
-              return (
-                <Comment
-                  key={key}
-                  commentId={key}
-                  imageId={props.imageId}
-                  commenterId={props.comments[props.imageId][key].commenterId}
-                  commenterAvi={props.comments[props.imageId][key].commenterAvi}
-                  commenter={props.comments[props.imageId][key].commenter}
-                  comment={props.comments[props.imageId][key].body}
-                  timestamp={props.comments[props.imageId][key].timestamp}
-                />
-              );
-            })
-          ) : (
-            <div></div>
-          )}
+          {props.comments[props.imageId]
+            ? Object.keys(props.comments[props.imageId]).map((key) => {
+                return (
+                  <Comment
+                    key={key}
+                    commentId={key}
+                    imageId={props.imageId}
+                    commenterId={props.comments[props.imageId][key].commenterId}
+                    commenterAvi={
+                      props.comments[props.imageId][key].commenterAvi
+                    }
+                    commenter={props.comments[props.imageId][key].commenter}
+                    comment={props.comments[props.imageId][key].body}
+                    timestamp={props.comments[props.imageId][key].timestamp}
+                  />
+                );
+              })
+            : null}
         </CardContent>
       </Collapse>
     </Card>
